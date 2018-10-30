@@ -1,0 +1,207 @@
+enable_ansible_debug: true # set value to true for verbose output from ansible
+
+# format: "http://<jumphost_ip>:40001"
+#nsx_image_webserver: "http://192.168.110.11:40001"
+#ova_file_name: "nsx-unified-appliance-2.2.0.0.0.8680778.ova" #Uncomment this if downloaded file manually and placed under /home/concourse
+#ovftool_file_name: "VMware-ovftool-4.2.0-5965791-lin.x86_64.bundle"   #Uncomment this if downloaded file manually and placed under /home/concourse
+
+# vCenter to deploy the NSX manager
+vcenter_ip: 10.27.32.69
+vcenter_username: administrator@vsphere.local
+vcenter_password: "VMware123!"
+vcenter_datacenter: Datacenter
+vcenter_cluster: MGMT-Cluster      #management cluster
+vcenter_datastore: Shared-Datastore
+
+# NSX manager general network settings
+mgmt_portgroup: 'DVS-VM'
+dns_server: 10.27.32.68
+dns_domain: poc-gss.local
+ntp_servers: time2.vmware.com
+default_gateway: 10.27.47.254
+netmask: 255.255.240.0
+
+nsx_manager_ip: 10.27.45.83
+nsx_manager_username: admin
+nsx_manager_password: "VMware123!"
+nsx_manager_assigned_hostname: "manager" # this hostname+dns_domain will be FQDN
+nsx_manager_root_pwd: "VMware123!"    # Min 8 chars, upper, lower, number, special digit
+nsx_manager_deployment_size: small   # Recommended for real barebones demo, smallest setup
+nsx_manager_ssh_enabled: true
+resource_reservation_off: true
+
+# Compute manager credentials should be the same as above vCenter's if
+# controllers and edges are to be on the same vCenter
+compute_manager_username: "administrator@vsphere.local"
+compute_manager_password: "VMware123!"
+# compute manager for the compute cluster (2nd vCenter)
+compute_manager_2_vcenter_ip: "null"
+compute_manager_2_username: "null"
+compute_manager_2_password: "null"
+
+edge_uplink_profile_vlan: 0 # For outbound uplink connection used by Edge, usually keep as 0
+esxi_uplink_profile_vlan: 100 # For internal overlay connection used by Esxi hosts, usually trasnport VLAN ID
+
+# Virtual Tunnel Endpoint network ip pool
+vtep_ip_pool_cidr: 192.168.213.0/24
+vtep_ip_pool_gateway: 192.168.213.1
+vtep_ip_pool_start: 192.168.213.10
+vtep_ip_pool_end: 192.168.213.200
+
+# Tier 0 router
+tier0_router_name: DefaultT0Router
+tier0_uplink_port_ip: 10.27.45.102
+tier0_uplink_port_subnet: 20
+tier0_uplink_next_hop_ip: 10.27.47.254
+tier0_uplink_port_ip_2:
+tier0_ha_vip:
+
+## Controllers
+controller_ips: 10.27.45.84 #comma separated based on number of required controllers
+controller_default_gateway: 10.27.47.254
+controller_ip_prefix_length: 20
+controller_hostname_prefix: controller # Generated hostname: controller_1.corp.local.io
+controller_cli_password: "VMware123!" # Min 8 chars, upper, lower, num, special char
+controller_root_password: "VMware123!"
+controller_deployment_size: "SMALL"
+vc_datacenter_for_controller: Datacenter
+vc_cluster_for_controller: MGMT-Cluster
+vc_datastore_for_controller: Shared-Datastore
+vc_management_network_for_controller: "DVS-VM"
+controller_shared_secret: "VMware123!"
+
+## Edge nodes
+edge_ips: 10.27.45.85    #comma separated based in number of required edges
+edge_default_gateway: 10.27.47.254
+edge_ip_prefix_length: 20
+edge_hostname_prefix: edge
+edge_transport_node_prefix: edge-transp-node
+edge_cli_password: "VMware123!"
+edge_root_password: "VMware123!"
+edge_deployment_size: "large" #Large recommended for PKS deployments
+vc_datacenter_for_edge: Datacenter
+vc_cluster_for_edge: MGMT-Cluster
+vc_datastore_for_edge: Shared-Datastore
+vc_uplink_network_for_edge: "DVS-VM"
+vc_overlay_network_for_edge: "EDGE-Overlay"
+vc_management_network_for_edge: "DVS-VM"
+
+## ESX hosts
+#Intsll vSphere clusters automatically
+clusters_to_install_nsx: PKS-Cluster    #Comma seprated
+per_cluster_vlans: 100  #Comma seprated, order of VLANs applied same as order of clusters
+
+esx_ips: "" # additional esx hosts, if any, to be individually installed
+esx_os_version: "6.5.0"
+esx_root_password: "ca$hc0w"
+esx_hostname_prefix: "esx-host"
+
+esx_available_vmnic: vmnic4,vmnic5 # comma separated physical NICs, applies to both cluster installation or ESXi installation
+
+nsx_t_t1router_logical_switches_spec: |
+  t1_routers:
+  # Add additional T1 Routers or collapse switches into same T1 Router as needed
+  - name: T1-PKS-Infra
+    switches:
+    - name: PKS-Infra
+      logical_switch_gw: 172.16.0.1 # Last octet should be 1 rather than 0
+      subnet_mask: 24
+
+#  - name: T1-PKS-Services
+#    switches:
+#    - name: PKS-Services
+#      logical_switch_gw: 192.168.60.1 # Last octet should be 1 rather than 0
+#      subnet_mask: 24
+
+
+nsx_t_container_ip_block_spec: |
+  container_ip_blocks:
+  - name: PKS-node-ip-block
+    cidr: 172.23.0.0/16
+
+  - name: PKS-pod-ip-block
+    cidr: 172.24.0.0/16
+
+
+nsx_t_external_ip_pool_spec: |
+  external_ip_pools:
+
+  - name: snat-vip-pool-for-pks
+    cidr: 10.27.45.0/20
+    start: 10.27.45.91 # Should not include gateway
+    end: 10.27.45.101  # Should not include gateway
+
+
+nsx_t_nat_rules_spec: |
+  nat_rules:
+  # Sample entry for  PKS-Infra network
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 172.16.0.0/24        # PKS Infra network cidr
+    translated_network: 10.27.45.87      # SNAT External Address for PKS networks
+    rule_priority: 8001                  # Lower priority
+
+#  # Sample entry for PKS-Services network
+#  - t0_router: DefaultT0Router
+#    nat_type: snat
+#    source_network: 192.168.60.0/24      # PKS Clusters network cidr
+#    translated_network: 10.27.45.91      # SNAT External Address for PKS networks
+#    rule_priority: 8001                  # Lower priority
+
+  # Sample entry for allowing inbound to PKS Ops manager
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.27.45.88     # External IP address for PKS opsmanager
+    translated_network: 172.16.0.88     # Internal IP of PKS Ops manager
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from PKS Ops Mgr to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 172.16.0.88         # Internal IP of PAS opsmanager
+    translated_network: 10.27.45.88      # External IP address for PAS opsmanager
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to PKS Controller
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.27.45.90     # External IP address for PKS opsmanager
+    translated_network: 172.16.0.90     # Internal IP of PKS Ops Controller
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from PKS Controller to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 172.16.0.90        # Internal IP of PKS controller
+    translated_network: 10.27.45.90      # External IP address for PKS controller
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to Harbor
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.27.45.90     # External IP address for Harbor
+    translated_network: 172.16.0.90     # Internal IP of PKS Ops Controller
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from Harbor to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 172.16.0.91        # Internal IP of Harbor
+    translated_network: 10.27.45.89      # External IP address for PKS controller
+    rule_priority: 1024                  # Higher priority
+
+
+nsx_t_csr_request_spec: |
+  csr_request:
+    #common_name not required - would use nsx_t_manager_host_name
+    org_name: Company            # EDIT
+    org_unit: net-integ          # EDIT
+    country: US                  # EDIT
+    state: CA                    # EDIT
+    city: SF                     # EDIT
+    key_size: 2048               # Valid values: 2048 or 3072
+    algorithm: RSA               # Valid values: RSA or DSA
+
+
+nsx_t_lbr_spec: |
+  loadbalancers:
