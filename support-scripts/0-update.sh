@@ -3,16 +3,6 @@
 #Only tested on Ubuntu 16.04/18.04 LTS
 # run this script as sudo
 
-BINDIR=/usr/local/bin
-#BOSHRELEASE=5.3.1
-#HELMRELEASE=2.11.0
-#OMRELEASE=0.42.0
-#PIVNETRELEASE=0.0.55
-#BITSDIR=/DATA/bits
-#PIVOTALTOKEN=''
-#PKSRELEASE=1.2.0
-#checking and creating BITSDIR if needed
-
 f_info(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
@@ -252,13 +242,7 @@ f_prep_vars(){
 #####################################
 # MAIN
 #####################################
-#BOSHRELEASE=5.3.1
-#HELMRELEASE=2.11.0
-#OMRELEASE=0.42.0
-#PIVNETRELEASE=0.0.55
-#BITSDIR=/DATA/bits
-#PIVOTALTOKEN=''
-#PKSRELEASE=1.2.0
+BINDIR=/usr/local/bin
 
 f_startup_question
 f_choice_question
