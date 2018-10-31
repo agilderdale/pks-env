@@ -107,13 +107,6 @@ nsx_t_t1router_logical_switches_spec: |
       logical_switch_gw: 172.16.0.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
 
-#  - name: T1-PKS-Services
-#    switches:
-#    - name: PKS-Services
-#      logical_switch_gw: 192.168.60.1 # Last octet should be 1 rather than 0
-#      subnet_mask: 24
-
-
 nsx_t_container_ip_block_spec: |
   container_ip_blocks:
   - name: PKS-node-ip-block
@@ -140,13 +133,6 @@ nsx_t_nat_rules_spec: |
     source_network: 172.16.0.0/24        # PKS Infra network cidr
     translated_network: 10.27.45.87      # SNAT External Address for PKS networks
     rule_priority: 8001                  # Lower priority
-
-#  # Sample entry for PKS-Services network
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.60.0/24      # PKS Clusters network cidr
-#    translated_network: 10.27.45.91      # SNAT External Address for PKS networks
-#    rule_priority: 8001                  # Lower priority
 
   # Sample entry for allowing inbound to PKS Ops manager
   - t0_router: DefaultT0Router
