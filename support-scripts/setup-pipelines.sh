@@ -129,7 +129,7 @@ f_start_nsx_docker(){
       -e VMWARE_USER='$VMWARE_USER' \
       -e VMWARE_PASSWORD='$VMWARE_PASSWORD' \
       -e NSXT_VERSION='$NSXT_VERSION' \
-      nsx-t-install:0.1
+      nsx-t-install
 }
 
 
