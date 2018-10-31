@@ -114,7 +114,8 @@ f_download_vmmare_repo(){
 }
 
 f_start_nsx_docker(){
-    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+#    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+    f_input_vars CONCOURSE_IP CONCOURSE_IP
     f_input_vars EXTERNAL_DNS DNS_IP
     f_input_vars VMWARE_USER my_user
     f_input_vars_sec VMWARE_PASSWORD my_passwd
