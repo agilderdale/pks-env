@@ -96,10 +96,27 @@ f_install_packages() {
     npm install vmw-cli --global
 }
 
+f_download_git_repos() {
+
+    f_info "Downloading supporting github repos"
+    if [[ ! -e /DATA/GIT-REPOS ]]; then
+        mkdir -p /DATA/GIT-REPOS/
+    fi
+
+    git clone https://github.com/agilderdale/pks-env.git
+    git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
+    git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
+
+}
+
 f_download_vmmare_repo(){
     wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
     docker load -i nsx-t-install.tar
     mkdir -p /home/concourse
+
+    f_download_git_repos
+    cp /DATA/GIT-REPOS/pks-env/config_files/*.yml /home/concourse/
+
 }
 
 f_start_nsx_docker(){
@@ -196,18 +213,6 @@ f_verify_cli_tools() {
     if uaac version 2> /dev/null | grep -q 'UAA client ' ; then echo "UAA CLI - OK" ; else echo "UAA CLI FAILED" ;fi
 }
 
-f_download_git_repos() {
-
-    f_info "Downloading supporting github repos"
-    if [[ ! -e /DATA/GIT-REPOS ]]; then
-        mkdir -p /DATA/GIT-REPOS/
-    fi
-
-    git clone https://github.com/bdereims/pks-prep.git
-    git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
-    git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
-
-}
 
 f_install_all() {
 
