@@ -156,7 +156,6 @@ f_install_helm_cli() {
     rm helm-v${HELMRELEASE}-linux-amd64.tar.gz
 }
 
-
 f_install_pivnet_cli() {
     f_info "Installing pivnet CLI"
     # pivnet cli
