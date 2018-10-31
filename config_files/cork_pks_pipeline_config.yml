@@ -59,7 +59,7 @@ az_3_name: mgmt-az1                   # Logical name of availability zone. No sp
 az_3_cluster_name: PKS-Cluster      # Name of cluster in vCenter for PKS
 az_3_rp_name: mgmt-az1             # Resource pool name in vCenter for PKS
 
-ntp_servers: time2.vmware.com                 # Comma-separated list of NTP servers to use for VMs deployed by BOSH
+ntp_servers: ad.poc-gss.local                 # Comma-separated list of NTP servers to use for VMs deployed by BOSH
 enable_vm_resurrector: true   # Whether to enable BOSH VM resurrector
 max_threads: 30               # Max threads count for deploying VMs
 
