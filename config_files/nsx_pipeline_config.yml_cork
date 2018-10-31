@@ -120,7 +120,7 @@ nsx_t_external_ip_pool_spec: |
   external_ip_pools:
 
   - name: snat-vip-pool-for-pks
-    cidr: 10.27.45.0/20
+    cidr: 10.27.32.0/20
     start: 10.27.45.91 # Should not include gateway
     end: 10.27.45.101  # Should not include gateway
 

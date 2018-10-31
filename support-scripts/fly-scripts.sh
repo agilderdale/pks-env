@@ -39,9 +39,7 @@ docker stop nginx-server
 docker rm nginx-server
 exit 0
 
-
-
-  5  ROOT_WORK_DIR="/home/workspace"
+   5  ROOT_WORK_DIR="/home/workspace"
     6  BIND_MOUNT_DIR="/home/concourse"
     7  CONFIG_FILE_NAME="nsx_pipeline_config.yml"
     8  pipeline_internal_config="pipeline_config_internal.yml"
