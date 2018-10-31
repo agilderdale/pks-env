@@ -83,11 +83,11 @@ nsx_password: "VMware123!"                # password for nsx access
 # Additional network for PKS Controller & Harbor
 pks_network_name: "PKS-Services"             # Logical switch for PKS-Services
 pks_vsphere_network: "PKS-Services"          # vCenter PKS-Services  network name for PKS - if empty quotes, then this network would be skipped
-pks_nw_cidr: 172.23.2.0/24          # PKS-Services network CIDR, ex: 10.0.0.0/22
-pks_excluded_range: 172.23.2.1      # PKS-Services network exclusion range
+pks_nw_cidr: 10.1.1.0/24          # PKS-Services network CIDR, ex: 10.0.0.0/22
+pks_excluded_range: 10.1.1.1      # PKS-Services network exclusion range
 pks_nw_dns: 10.1.1.2                # PKS-Services network DNS
-pks_nw_gateway: 172.23.2.1          # PKS-Services network Gateway
-pks_nw_azs: az1,az2,az3                     # Comma separated list of AZ's to be associated with this network
+pks_nw_gateway: 10.1.1.1          # PKS-Services network Gateway
+pks_nw_azs: comp-az1,comp-az2                     # Comma separated list of AZ's to be associated with this network
 is_service_network: true  # Required select service network option in Ops man true or false
 
 ## PKS Tile section ##
