@@ -12,6 +12,7 @@ f_info(){
 }
 
 f_startup_question() {
+    clear
     echo "***************************************************************"
     echo "RUN THIS SCRIPT AS SUDO!"
     echo "***************************************************************"
@@ -31,6 +32,7 @@ f_startup_question() {
 }
 
 f_choice_question() {
+    clear
     echo "***************************************************************"
     echo "What would you like to do today?"
     echo "Menu:"
@@ -42,33 +44,33 @@ f_choice_question() {
     while true; do
         read -p "Do you wish to start? (v|a|p|b|u|o|h|k|d)" vapbuohek
         case $vapbuohek in
-            [Vv]* ) f_verify_cli_tools;
+            [Vv]* ) clear; f_verify_cli_tools;
                     break;;
             [Aa]* ) f_install_all;
                     break;;
-            [Pp]* ) f_prep_vars;
+            [Pp]* ) clear; f_prep_vars;
                     f_input_vars PKSRELEASE 1.2.0;
                     f_input_vars_sec PIVOTALTOKEN;
                     f_input_vars PIVNETRELEASE 0.0.55;
                     f_install_pivnet_cli;
                     f_install_pks_cli;
                     break;;
-            [Bb]* ) f_prep_vars;
+            [Bb]* ) clear; f_prep_vars;
                     f_input_vars BOSHRELEASE 5.3.1;
                     f_install_bosh_cli;
                     break;;
-            [Uu]* ) f_prep_vars;
+            [Uu]* ) clear; f_prep_vars;
                     f_install_uaac_cli;
                     break;;
-            [Oo]* ) f_prep_vars;
+            [Oo]* ) clear; f_prep_vars;
                     f_input_vars OMRELEASE 0.42.0;
                     f_install_om_cli;
                     break;;
-            [Hh]* ) f_prep_vars;
+            [Hh]* ) clear; f_prep_vars;
                     f_input_vars HELMRELEASE 2.11.0;
                     f_install_helm_cli;
                     break;;
-            [Kk]* ) f_prep_vars;
+            [Kk]* ) clear; f_prep_vars;
                     f_install_kubectl_cli;
                     break;;
             [Ee]* ) exit;;
