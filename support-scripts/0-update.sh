@@ -43,7 +43,7 @@ f_choice_question() {
     echo "  e - exit"
     echo "***************************************************************"
     while true; do
-        read -p "   Do you wish to start? (v|a|p|b|u|o|h|k|d)" vapbuohek
+        read -p "   Do you wish to start? (v|a|p|b|u|o|h|k|)" vapbuohek
         case $vapbuohek in
             [Vv]* ) clear; f_verify_cli_tools;
                     break;;
