@@ -110,7 +110,9 @@ f_install_packages() {
     f_info "Updating OS and installing packages"
     add-apt-repository universe
     apt-get update ; sudo apt-get upgrade
-    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
+    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
+    apt-get zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
+    apt-get sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
 
     f_info "Installing vmw-cli tool"
     # vwm-cli - requires nodejs >=8
