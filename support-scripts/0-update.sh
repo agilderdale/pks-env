@@ -91,7 +91,7 @@ f_choice_question() {
 
 f_input_vars() {
 
-    read -p "$1 [ $2 or higher ]: " $1
+    read -p "$1 [ i.e. $2 ]: " $1
     echo $1 " = " ${!1}
     echo "---------------------------"
 }
