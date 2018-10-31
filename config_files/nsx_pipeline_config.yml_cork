@@ -50,9 +50,9 @@ vtep_ip_pool_end: 192.168.213.200
 
 # Tier 0 router
 tier0_router_name: DefaultT0Router
-tier0_uplink_port_ip: 10.27.45.102
-tier0_uplink_port_subnet: 20
-tier0_uplink_next_hop_ip: 10.27.47.254
+tier0_uplink_port_ip: 172.25.0.1    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
+tier0_uplink_port_subnet: 24
+tier0_uplink_next_hop_ip: 172.25.0.2
 tier0_uplink_port_ip_2:
 tier0_ha_vip:
 
@@ -137,28 +137,28 @@ nsx_t_nat_rules_spec: |
   # Sample entry for allowing inbound to PKS Ops manager
   - t0_router: DefaultT0Router
     nat_type: dnat
-    destination_network: 10.27.45.88     # External IP address for PKS opsmanager
+    destination_network: 10.27.45.88/32     # External IP address for PKS opsmanager
     translated_network: 172.16.0.88     # Internal IP of PKS Ops manager
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from PKS Ops Mgr to external
   - t0_router: DefaultT0Router
     nat_type: snat
-    source_network: 172.16.0.88         # Internal IP of PAS opsmanager
+    source_network: 172.16.0.88/32         # Internal IP of PAS opsmanager
     translated_network: 10.27.45.88      # External IP address for PAS opsmanager
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing inbound to PKS Controller
   - t0_router: DefaultT0Router
     nat_type: dnat
-    destination_network: 10.27.45.90     # External IP address for PKS opsmanager
+    destination_network: 10.27.45.90/32     # External IP address for PKS opsmanager
     translated_network: 172.16.0.90     # Internal IP of PKS Ops Controller
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from PKS Controller to external
   - t0_router: DefaultT0Router
     nat_type: snat
-    source_network: 172.16.0.90        # Internal IP of PKS controller
+    source_network: 172.16.0.90/32        # Internal IP of PKS controller
     translated_network: 10.27.45.90      # External IP address for PKS controller
     rule_priority: 1024                  # Higher priority
 
