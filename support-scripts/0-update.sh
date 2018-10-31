@@ -1,5 +1,5 @@
 #!/bin/bash
-# Updated 0-update.sh script from bdereims@vmware.com
+# This script contains commands from 0-update.sh script from bdereims@vmware.com
 #Only tested on Ubuntu 16.04/18.04 LTS
 # run this script as sudo
 
