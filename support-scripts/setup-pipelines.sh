@@ -128,7 +128,7 @@ f_start_nsx_docker(){
       -e IMAGE_WEBSERVER_PORT=40001 \
       -e VMWARE_USER='$VMWARE_USER' \
       -e VMWARE_PASSWORD='$VMWARE_PASSWORD' \
-      -e NSXT_VERSION='$NSXT_VERSION'
+      -e NSXT_VERSION='$NSXT_VERSION' \
       nsx-t-install:0.1
 }
 
