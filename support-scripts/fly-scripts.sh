@@ -38,3 +38,23 @@ docker-compose down
 docker stop nginx-server
 docker rm nginx-server
 exit 0
+
+
+
+  5  ROOT_WORK_DIR="/home/workspace"
+    6  BIND_MOUNT_DIR="/home/concourse"
+    7  CONFIG_FILE_NAME="nsx_pipeline_config.yml"
+    8  pipeline_internal_config="pipeline_config_internal.yml"
+    9  concourse_version=3.14.1
+   10  CONCOURSE_TARGET=nsx-concourse
+   11  PIPELINE_NAME=nsx-t-install
+   12  fly -t $CONCOURSE_TARGET sync
+   13  fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -n main
+   14  ly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
+   15  fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
+   16  concourse_docker_dir=${ROOT_WORK_DIR}/concourse-docker
+   17  pipeline_dir=${ROOT_WORK_DIR}/nsx-t-datacenter-ci-pipelines
+   18  fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
+   19  history
+   20  fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
+   21  history

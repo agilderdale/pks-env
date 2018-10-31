@@ -60,7 +60,7 @@ tier0_ha_vip:
 controller_ips: 10.27.45.84 #comma separated based on number of required controllers
 controller_default_gateway: 10.27.47.254
 controller_ip_prefix_length: 20
-controller_hostname_prefix: controller # Generated hostname: controller_1.corp.local.io
+controller_hostname_prefix: controller # Generated hostname: controller-1.corp.local.io
 controller_cli_password: "VMware123!" # Min 8 chars, upper, lower, num, special char
 controller_root_password: "VMware123!"
 controller_deployment_size: "SMALL"
