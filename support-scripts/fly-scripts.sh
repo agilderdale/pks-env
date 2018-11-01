@@ -97,3 +97,9 @@ fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipel
    42  pipeline_dir=${ROOT_WORK_DIR}/nsx-t-datacenter-ci-pipelines
    43  fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
    44  history
+
+
+export BOSH_CLIENT=ops_manager
+export BOSH_CLIENT_SECRET=ILkwwW14fGf5SOA1LpxL1AQl20D7-Aq3
+export BOSH_CA_CERT=/var/tempest/workspaces/default/root_ca_certificate
+export BOSH_ENVIRONMENT=172.16.0.89 bosh
