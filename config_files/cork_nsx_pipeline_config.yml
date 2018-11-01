@@ -184,6 +184,19 @@ nsx_t_nat_rules_spec: |
     translated_network: 23.23.23.91      # External IP address for PKS controller
     rule_priority: 1024                  # Higher priority
 
+  # Sample entry for allowing outbound from BOSH
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 172.16.0.89        # Internal IP of BOSH
+    translated_network: 23.23.23.89      # External IP address for BOSH
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to BOSH
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 23.23.23.89     # External IP address for BOSH
+    translated_network: 172.16.0.89     # Internal IP of BOSH
+    rule_priority: 1024                  # Higher priority
 
 nsx_t_csr_request_spec: |
   csr_request:

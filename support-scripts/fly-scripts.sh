@@ -51,3 +51,49 @@ fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -
 concourse_docker_dir=${ROOT_WORK_DIR}/concourse-docker
 pipeline_dir=${ROOT_WORK_DIR}/nsx-t-datacenter-ci-pipelines
 fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
+
+
+   1  ls /home/concourse/
+    2  clear
+    3  ls -lrt /home/concourse/
+    4  cd /home/concourse/
+    5  ls
+    6  ./run_pks.sh
+    7  cat run_pks.sh
+    8  ./run_pks.sh > log
+    9  vi run_pks.sh
+   10  cd /home/workspace/
+   11  ls
+   12  ls -lrt
+   13  cd /home/concourse/
+   14  ls
+   15  ./run_pks.sh
+   16  cd /home/concourse/
+   17  ./run_pks.sh
+   18  fly target
+   19  fly
+   20  fly env
+   21  fly hijack
+   22  fly hijack -t nsx-cocnourse
+   23  fly hijack -t nsx-concourse
+   24  fly targets
+   25  fly hijack -t nsx-concourse -j configure-director/configure-director
+   26  fly hijack -t nsx-concourse -j pks-install/configure-director
+   27  pwd
+   28  ll /tmp
+   29  fly hijack -t nsx-concourse -j pks-install/configure-director
+   30  $?
+   31  fly hijack -t nsx-concourse -j pks-install/configure-director
+   32  ROOT_WORK_DIR="/home/workspace"
+   33  BIND_MOUNT_DIR="/home/concourse"
+   34  CONFIG_FILE_NAME="nsx_pipeline_config.yml"
+   35  pipeline_internal_config="pipeline_config_internal.yml"
+   36  concourse_version=3.14.1
+   37  CONCOURSE_TARGET=nsx-concourse
+   38  PIPELINE_NAME=nsx-t-install
+   39  fly -t $CONCOURSE_TARGET sync
+   40  fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -n main
+   41  concourse_docker_dir=${ROOT_WORK_DIR}/concourse-docker
+   42  pipeline_dir=${ROOT_WORK_DIR}/nsx-t-datacenter-ci-pipelines
+   43  fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}
+   44  history
