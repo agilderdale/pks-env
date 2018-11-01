@@ -107,6 +107,14 @@ nsx_t_t1router_logical_switches_spec: |
       logical_switch_gw: 172.16.0.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
 
+  t1_routers:
+  # T1 for PKS-Services - place holder (not used but PKS pipeline will fail if it is not defined)
+  - name: T1-PKS-Services
+    switches:
+    - name: T1-PKS-Services
+      logical_switch_gw: 172.15.0.1 # Last octet should be 1 rather than 0
+      subnet_mask: 24
+
 nsx_t_container_ip_block_spec: |
   container_ip_blocks:
   - name: PKS-node-ip-block
