@@ -39,21 +39,28 @@ f_verify(){
 
 f_startup_question() {
     clear
-    echo "***************************************************************"
-    echo "RUN THIS SCRIPT AS SUDO!"
-    echo "***************************************************************"
-    echo "Welcome to PKS Client configuration steps!"
-    echo "Note: In order to run the script you will need Pivotal Token generated."
-    echo "***************************************************************"
+    echo "    ========================================"
+    echo "    ========================================"
+    echo ""
+    echo "    ======= RUN THIS SCRIPT AS SUDO! ======="
+    echo ""
+    echo "    ========================================"
+    echo ""
+    echo "    Welcome to PKS Client configuration!"
+    echo ""
+    echo "    NOTE: To run the script you need Pivotal Token"
+    echo ""
+    echo "    ========================================"
+    echo ""
     while true; do
-        read -p "Do you wish to start? (y/n)" yn
+        read -p "    Do you wish to start? (y/n)" yn
         case $yn in
             [Yy]* ) break;;
             [Nn]* ) exit;;
             * ) echo "Please answer yes or no.";;
         esac
     done
-    echo "***************************************************************"
+    echo "    ========================================"
 
 }
 
@@ -71,7 +78,8 @@ f_choice_question() {
     while true; do
         read -p "   Do you wish to start? (v|a|p|b|u|o|h|k|)" vapbuohek
         case $vapbuohek in
-            [Vv]* ) clear; f_verify_cli_tools;
+            [Vv]* ) clear;
+                    f_verify_cli_tools;
                     break;;
             [Aa]* ) f_prep_vars;
                     f_install_all;
@@ -240,7 +248,7 @@ f_install_all() {
     f_input_vars PKSRELEASE 1.2.0
     f_input_vars_sec PIVOTALTOKEN
 
-    f_install_packages
+#    f_install_packages
     f_install_uaac_cli
     f_install_kubectl_cli
     f_install_bosh_cli
