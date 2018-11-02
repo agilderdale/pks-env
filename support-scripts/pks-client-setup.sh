@@ -9,14 +9,22 @@ f_info(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
     echo "***************************************************************"
-    echo "[ $today ]  INFO  $*"
+    echo "[ $today ]  INF  $*"
+    echo "***************************************************************"
+}
+
+f_error(){
+    today=`date +%Y-%m-%d.%H:%M:%S`
+
+    echo "***************************************************************"
+    echo "[ $today ]  ERR  $*"
     echo "***************************************************************"
 }
 
 f_verify(){
     rc=`echo $?`
     if [ $rc != 0 ] ; then
-        f_info "Last command - FAILED"
+        f_error "Last command - FAILED !!!"
         exit 1
     fi
 }
@@ -243,14 +251,16 @@ f_install_all() {
 }
 
 f_prep_vars(){
-    if [[ ! -e $BITSDIR ]];
+    f_input_vars BITSDIR /DATA/bits
+
+    if [[ ! -e $BITSDIR ]]
     then
         f_info "Creating $BITSDIR directory:"
-        mkdir -p $BITSDIR;
+        mkdir -p $BITSDIR
         f_verify
     fi
+
     f_install_packages
-    f_input_vars BITSDIR /DATA/bits
 }
 
 #####################################
