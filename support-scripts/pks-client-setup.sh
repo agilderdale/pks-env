@@ -121,7 +121,7 @@ f_choice_question() {
 f_input_vars() {
 
     read -p "${parameter:-${!1}}: " $1
-    echo parameter=$parameter
+    echo "parameter="$parameter
 #    read -p "$1 [ i.e. ${!1} ]: " $1
     echo $1 " = " ${!1}
     echo "---------------------------"
