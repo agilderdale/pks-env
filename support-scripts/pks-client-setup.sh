@@ -131,7 +131,7 @@ f_input_vars() {
         declare $var=$temp
         echo $1
     else
-       echo "Variable is set"
+       echo "Variable is set: " ${!1}
     fi
     echo "---------------------------"
 }
