@@ -132,6 +132,7 @@ f_input_vars() {
     else
 #       echo "temp="$temp
        echo "Variable is set to: $1 = " ${!1}
+       echo -e "export $1=${!1}" >> /tmp/pks_variables
     fi
     echo "---------------------------"
 }
