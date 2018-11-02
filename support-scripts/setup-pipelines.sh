@@ -75,6 +75,7 @@ f_choice_question() {
         echo "  Available options:"
         echo "  p - setup PKS and NSX-T pipelines"
         echo "  t - test variables"
+        echo "  c - clean up docker"
         echo "  e - exit"
         echo "*******************************************************************************************"
         read -p "   Select one of the options? (p|e|t): " pet
