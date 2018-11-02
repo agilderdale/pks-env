@@ -12,6 +12,7 @@ EXTERNAL_DNS=''
 VMWARE_USER=''
 VMWARE_PASSWORD=''
 NSXT_VERSION=2.3
+CONFIG_DIR='/DATA/GIT-REPOS/pks-env/config_files/home-lab'
 
 f_info(){
     today=`date +%H:%M:%S`
@@ -152,14 +153,6 @@ f_install_packages() {
     npm install vmw-cli --global
 }
 
-f_install_docker(){
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-    apt update
-    apt-cache policy docker-ce
-    sudo apt install docker-ce
-}
-
 f_download_vmmare_repo(){
     wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
     docker load -i nsx-t-install.tar
@@ -174,7 +167,7 @@ f_download_vmmare_repo(){
     git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
 
-    cp /DATA/GIT-REPOS/pks-env/config_files/*.yml /home/concourse/
+    cp ${CONFIG_DIR}/*.yml /home/concourse/
 }
 
 f_start_docker(){
