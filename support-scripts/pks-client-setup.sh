@@ -59,7 +59,7 @@ f_startup_question() {
     echo "  ================================================"
     echo ""
     while true; do
-        read -p "    Do you wish to start? (y/n)" yn
+        read -p "    Do you wish to start? (y/n): " yn
         case $yn in
             [Yy]* ) break;;
             [Nn]* ) exit;;
