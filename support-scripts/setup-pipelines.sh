@@ -2,72 +2,120 @@
 # This script contains commands from pks-client-setup.sh script from bdereims@vmware.com
 #Only tested on Ubuntu 16.04/18.04 LTS
 # run this script as sudo
+BINDIR=/usr/local/bin
+
+CONCOURSE_IP=''
+EXTERNAL_DNS=''
+VMWARE_USER=''
+VMWARE_PASSWORD=''
+NSXT_VERSION=2.3
 
 f_info(){
+    today=`date +%H:%M:%S`
+
+    echo "*******************************************************************************************"
+    echo "[ $today ] INF  ${FUNCNAME[ 1 ]}: $*"
+    echo "*******************************************************************************************"
+}
+
+f_error(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
-    echo "***************************************************************"
-    echo "[ $today ]  INFO  $*"
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
+    echo "[ $today ] ERR  ${FUNCNAME[ 1 ]}: $*"
+    echo "*******************************************************************************************"
+}
+
+f_verify(){
+    rc=`echo $?`
+    if [ $rc != 0 ] ; then
+        f_error "Last command - FAILED !!!"
+        exit 1
+    fi
 }
 
 f_startup_question() {
     clear
-    echo "***************************************************************"
-    echo "RUN THIS SCRIPT AS SUDO!"
-    echo "***************************************************************"
-    echo "Welcome to NSX-T and PKS Pipeline configuration!"
-    echo "Note: In order to run the script you will need VMware user, VMware password and DNS details"
-    echo "***************************************************************"
+    echo "  ================================================"
+    echo "  ================================================"
+    echo ""
+    echo "  =========== RUN THIS SCRIPT AS SUDO! ==========="
+    echo ""
+    echo "  ================================================"
+    echo ""
+    echo "  Welcome to SETUP CONCOURSE PIPELINE script!"
+    echo ""
+    echo "  ================================================"
+    echo ""
     while true; do
-        read -p "Do you wish to start? (y/n)" yn
+        read -p "    Do you wish to start? (y/n): " yn
         case $yn in
             [Yy]* ) break;;
-            [Nn]* ) exit;;
+            [Nn]* ) echo "   =============="
+                    echo "      GOODBYE!"
+                    echo "   =============="
+                    exit;;
             * ) echo "Please answer yes or no.";;
         esac
     done
-    echo "***************************************************************"
+    echo "    ========================================"
 
 }
 
 f_choice_question() {
     clear
-    echo "***************************************************************"
-    echo "  What would you like to do today?"
-    echo "***************************************************************"
-    echo "  Available options:"
-    echo "  a - prepare all pipelines for PKS and NSX-T "
-    echo "  n - prepare pipeline for NSX-T only"
-    echo "  p - prepare pipeline for PKS only"
-    echo "  c - clean-up pipelines"
-    echo "  e - exit"
-    echo "***************************************************************"
     while true; do
-        read -p "   Do you wish to start? (a|n|p|c|e)" anpce
-        case $anpce in
-            [Aa]* ) clear;
-                    break;;
-            [Nn]* ) f_install_packages;
-                    f_download_vmmare_repo;
-                    f_start_nsx_docker;
-                    break;;
+        echo "*******************************************************************************************"
+        echo "  What would you like to do today?"
+        echo "*******************************************************************************************"
+        echo "  Available options:"
+        echo "  p - setup PKS and NSX-T pipelines"
+        echo "  t - test variables"
+        echo "  e - exit"
+        echo "*******************************************************************************************"
+        read -p "   Select one of the options? (p|e|t): " pe
+
+        case $pet in
             [Pp]* ) clear;
-                    break;;
-            [Cc]* ) clear;
-                    break;;
+                    f_init;
+                    f_install_packages;
+                    f_download_vmmare_repo;
+                    f_start_docker;
+                    ;;
+            [Tt]* ) clear;
+                    f_init;
+                    f_input_vars CONCOURSE_IP;
+                    f_input_vars EXTERNAL_DNS;
+                    f_input_vars VMWARE_USER;
+                    f_input_vars_sec VMWARE_PASSWORD;
+                    f_input_vars NSXT_VERSION;
+                    ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
         esac
     done
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
 
 }
 
 f_input_vars() {
+    var=$1
+    temp=${!1}
+    read -p "Set $1 [ default: ${!1} ]: " $1
 
-    read -p "$1 [ i.e. $2 ]: " $1
-    echo $1 " = " ${!1}
+    if [[ -z ${!1} ]] ; then
+        if [[ -z $temp ]] ; then
+            f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+            exit 1
+        else
+            declare $var=$temp
+            echo "export $var=${!var}" >> /tmp/pks_variables
+            echo "Set to default: $var="${!var}
+        fi
+    else
+        echo "Variable set to: $1 = " ${!1}
+        echo "export $1=${!1}" >> /tmp/pks_variables
+    fi
     echo "---------------------------"
 }
 
@@ -75,7 +123,11 @@ f_input_vars_sec() {
 
     read -sp "$1: " $1
     echo
-    echo $1 = ${!1}
+    if [[ -z ${!1} ]]
+    then
+        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+        exit 1
+    fi
     echo "Set: $1 = **************"
     echo "---------------------------"
 }
@@ -113,13 +165,13 @@ f_download_vmmare_repo(){
     cp /DATA/GIT-REPOS/pks-env/config_files/*.yml /home/concourse/
 }
 
-f_start_nsx_docker(){
+f_start_docker(){
 #    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-    f_input_vars CONCOURSE_IP CONCOURSE_IP
-    f_input_vars EXTERNAL_DNS DNS_IP
-    f_input_vars VMWARE_USER my_user
-    f_input_vars_sec VMWARE_PASSWORD my_passwd
-    f_input_vars NSXT_VERSION 2.3
+    f_input_vars CONCOURSE_IP
+    f_input_vars EXTERNAL_DNS
+    f_input_vars VMWARE_USER
+    f_input_vars_sec VMWARE_PASSWORD
+    f_input_vars NSXT_VERSION
 
     docker run --name nsx-t-install -d \
       -v /var/run/docker.sock:/var/run/docker.sock \
@@ -133,25 +185,33 @@ f_start_nsx_docker(){
       nsx-t-install
 }
 
+f_init(){
+    f_input_vars BITSDIR
 
+    source /tmp/pks_variables
 
-f_prep_vars(){
-    if [[ ! -e $BITSDIR ]];
+    if [[ ! -e $BITSDIR ]]
     then
+        f_info "Creating $BITSDIR directory:"
         mkdir -p $BITSDIR;
+        f_verify
     fi
-    f_install_packages
-    f_input_vars BITSDIR /DATA/bits
 }
 
 #####################################
 # MAIN
 #####################################
-BINDIR=/usr/local/bin
+if [ ! -f /tmp/pks_variables ] ; then
+    touch /tmp/pks_variables
+else
+    >/tmp/pks_variables
+fi
 
 f_startup_question
 f_choice_question
 
+cat /tmp/pks_variables
+rm -Rf /tmp/pks_variables
 
 f_info "PKS Client setup COMPLETED - please check logs for details"
 

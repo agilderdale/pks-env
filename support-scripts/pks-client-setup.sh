@@ -378,7 +378,8 @@ fi
 f_startup_question
 f_choice_question
 
-#rm -Rf /tmp/pks_variables
+cat /tmp/pks_variables
+rm -Rf /tmp/pks_variables
 
 f_info "PKS Client setup COMPLETED - please check logs for details"
 
