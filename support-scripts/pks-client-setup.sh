@@ -99,6 +99,7 @@ f_choice_question() {
                     f_input_vars_sec PIVOTALTOKEN;
                     f_input_vars PIVNETRELEASE;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_pivnet_cli;
                     f_install_pks_cli;
                     break;;
@@ -106,24 +107,29 @@ f_choice_question() {
                     f_input_vars BOSHRELEASE;
                     f_init;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_bosh_cli;
                     ;;
             [Uu]* ) clear; f_init;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_uaac_cli;
                     break;;
             [Oo]* ) clear; f_init;
                     f_input_vars OMRELEASE;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_om_cli;
                     break;;
             [Hh]* ) clear; f_init;
                     f_input_vars HELMRELEASE;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_helm_cli;
                     break;;
             [Kk]* ) clear; f_init;
                     source /tmp/pks_variables;
+                    f_install_packages;
                     f_install_kubectl_cli;
                     break;;
             [Ee]* ) exit;;
@@ -354,8 +360,6 @@ f_init(){
         mkdir -p $BITSDIR;
         f_verify
     fi
-
-    f_install_packages
 }
 
 #####################################
