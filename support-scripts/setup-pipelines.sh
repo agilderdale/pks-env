@@ -6,7 +6,7 @@
 # bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pipelines.sh)"
 
 BINDIR=/usr/local/bin
-
+BITSDIR=/DATA/bits
 CONCOURSE_IP=''
 EXTERNAL_DNS=''
 VMWARE_USER=''
