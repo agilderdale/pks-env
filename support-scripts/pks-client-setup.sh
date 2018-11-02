@@ -44,17 +44,19 @@ f_verify(){
 
 f_startup_question() {
     clear
-    echo "    ========================================"
-    echo "    ========================================"
+    echo "  ================================================"
+    echo "  ================================================"
     echo ""
-    echo "    ======= RUN THIS SCRIPT AS SUDO! ======="
+    echo "  =========== RUN THIS SCRIPT AS SUDO! ==========="
     echo ""
-    echo "    ========================================"
+    echo "  ================================================"
     echo ""
-    echo "    Welcome to PKS Client configuration!"
-    echo "    NOTE: To run the script you need Pivotal Token"
+    echo "  Welcome to PKS Client configuration!"
+    echo "  NOTE: To run the script you need Pivotal Token"
+    echo "  Go to user settings to generate the token:"
+    echo "  https://login.run.pivotal.io/login"
     echo ""
-    echo "    ========================================"
+    echo "  ================================================"
     echo ""
     while true; do
         read -p "    Do you wish to start? (y/n)" yn
