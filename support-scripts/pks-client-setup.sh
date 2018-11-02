@@ -166,7 +166,8 @@ f_input_vars_sec() {
     echo
     if [[ -z ${!1} ]]
     then
-        f_error "The $1 variable has no default value - EXITING! "
+        f_error "The $1 variable has no default value !!! "
+        f_error "User input is required - EXITING! "
         exit 1
     fi
 #    echo $1 = ${!1}
