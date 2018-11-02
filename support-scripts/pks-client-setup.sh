@@ -125,14 +125,16 @@ f_input_vars() {
 #    echo "parameter=" $parameter
     var=$1
     temp=${!1}
-    read -p "$1 [ i.e. ${!1} ]: " $1
+    read -p "$1 [ default: ${!1} ]: " $1
 
     if [[ -z ${!1} ]]
     then
         declare $var=$temp
         echo ${!var}
+        echo "export $var=${!var}"
+
     else
-       echo "temp="$temp
+#       echo "temp="$temp
        echo "Variable is set to: $1 = " ${!1}
     fi
     echo "---------------------------"
