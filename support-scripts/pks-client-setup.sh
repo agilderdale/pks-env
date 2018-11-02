@@ -85,25 +85,25 @@ f_choice_question() {
                     f_install_all;
                     break;;
             [Pp]* ) clear; f_prep_vars;
-                    f_input_vars PKSRELEASE 1.2.0;
+                    f_input_vars PKSRELEASE;
                     f_input_vars_sec PIVOTALTOKEN;
-                    f_input_vars PIVNETRELEASE 0.0.55;
+                    f_input_vars PIVNETRELEASE;
                     f_install_pivnet_cli;
                     f_install_pks_cli;
                     break;;
             [Bb]* ) clear; f_prep_vars;
-                    f_input_vars BOSHRELEASE 5.3.1;
+                    f_input_vars BOSHRELEASE;
                     f_install_bosh_cli;
                     break;;
             [Uu]* ) clear; f_prep_vars;
                     f_install_uaac_cli;
                     break;;
             [Oo]* ) clear; f_prep_vars;
-                    f_input_vars OMRELEASE 0.42.0;
+                    f_input_vars OMRELEASE;
                     f_install_om_cli;
                     break;;
             [Hh]* ) clear; f_prep_vars;
-                    f_input_vars HELMRELEASE 2.11.0;
+                    f_input_vars HELMRELEASE;
                     f_install_helm_cli;
                     break;;
             [Kk]* ) clear; f_prep_vars;
@@ -241,14 +241,13 @@ f_download_git_repos() {
 
 f_install_all() {
 
-    f_input_vars BOSHRELEASE 5.3.1
-    f_input_vars HELMRELEASE 2.11.0
-    f_input_vars OMRELEASE 0.42.0
-    f_input_vars PIVNETRELEASE 0.0.55
-    f_input_vars PKSRELEASE 1.2.0
+    f_input_vars BOSHRELEASE
+    f_input_vars HELMRELEASE
+    f_input_vars OMRELEASE
+    f_input_vars PIVNETRELEASE
+    f_input_vars PKSRELEASE
     f_input_vars_sec PIVOTALTOKEN
 
-#    f_install_packages
     f_install_uaac_cli
     f_install_kubectl_cli
     f_install_bosh_cli
@@ -263,7 +262,7 @@ f_install_all() {
 }
 
 f_prep_vars(){
-    f_input_vars BITSDIR /DATA/bits
+    f_input_vars BITSDIR
 
     if [[ ! -e $BITSDIR ]]
     then
