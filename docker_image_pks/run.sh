@@ -168,8 +168,8 @@ if [[ -f ${BIND_MOUNT_DIR}/nsx_pipeline_config.yml ]] ; then
 fi
 
 # Checking and uploading PKS and Harbor pipeline
-if [[ -f ${BIND_MOUNT_DIR}/pks_pipeline_config.yml ]] ; then
-    if [[ -f ${BIND_MOUNT_DIR}/harbor_pipeline_config.yml ]] ; then
+if [ -f ${BIND_MOUNT_DIR}/pks_pipeline_config.yml ] ; then
+    if [ -f ${BIND_MOUNT_DIR}/harbor_pipeline_config.yml ] ; then
         f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
     else
         f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml
