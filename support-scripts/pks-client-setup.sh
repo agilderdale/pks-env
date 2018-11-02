@@ -1,4 +1,6 @@
 #!/bin/bash
+BINDIR=/usr/local/bin
+
 # This script contains commands from pks-client-setup.sh script from bdereims@vmware.com
 #Only tested on Ubuntu 16.04/18.04 LTS
 # run this script as sudo
@@ -9,6 +11,14 @@ f_info(){
     echo "***************************************************************"
     echo "[ $today ]  INFO  $*"
     echo "***************************************************************"
+}
+
+f_verify(){
+    rc=`echo $?`
+    if [ $rc != 0] ; then
+        f_info "Last command - FAILED"
+        exit 1
+    fi
 }
 
 f_startup_question() {
@@ -235,7 +245,8 @@ f_install_all() {
 f_prep_vars(){
     if [[ ! -e $BITSDIR ]];
     then
-        mkdir -p $BITSDIR;
+        mkdir -p $BITSDIR
+        f_verify
     fi
     f_install_packages
     f_input_vars BITSDIR /DATA/bits
@@ -244,7 +255,6 @@ f_prep_vars(){
 #####################################
 # MAIN
 #####################################
-BINDIR=/usr/local/bin
 
 f_startup_question
 f_choice_question
