@@ -14,10 +14,10 @@ BITSDIR="/DATA/bits"
 # run this script as sudo
 
 f_info(){
-    today=`date +%Y-%m-%d.%H:%M:%S`
+    today=`date +%H:%M:%S`
 
     echo "***************************************************************"
-    echo "[ $today ]  INF  ${FUNCNAME[ 1 ]}: $*"
+    echo "[ $today ] INF  ${FUNCNAME[ 1 ]}: $*"
     echo "***************************************************************"
 }
 
@@ -25,7 +25,7 @@ f_error(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
     echo "***************************************************************"
-    echo "[ $today ]  ERR  ${FUNCNAME[ 1 ]}: $*"
+    echo "[ $today ] ERR  ${FUNCNAME[ 1 ]}: $*"
     echo "***************************************************************"
 }
 
