@@ -91,9 +91,10 @@ f_choice_question() {
                     f_install_pivnet_cli;
                     f_install_pks_cli;
                     break;;
-            [Bb]* ) clear; f_prep_vars;
-                    f_input_vars BOSHRELEASE $DEF_BOSHRELEASE;
-                    f_install_bosh_cli;
+            [Bb]* ) clear;
+                    f_input_vars BOSHRELEASE;
+                    #f_prep_vars;
+                    #f_install_bosh_cli;
                     break;;
             [Uu]* ) clear; f_prep_vars;
                     f_install_uaac_cli;
