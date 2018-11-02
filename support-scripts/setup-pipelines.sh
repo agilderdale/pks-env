@@ -179,6 +179,8 @@ f_start_docker(){
     f_input_vars NSXT_VERSION
     f_input_vars CONFIG_DIR
 
+    source /tmp/pks_variables
+
     docker run --name nsx-t-install -d \
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v /home/concourse:/home/concourse \
