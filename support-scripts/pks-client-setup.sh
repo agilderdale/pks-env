@@ -1,5 +1,13 @@
 #!/bin/bash
+
 BINDIR=/usr/local/bin
+BOSHRELEASE=5.3.1
+HELMRELEASE=2.11.0
+OMRELEASE=0.42.0
+PIVNETRELEASE=0.0.55
+PKSRELEASE=1.2.0
+PIVOTALTOKEN=''
+BITSDIR="/DATA/bits"
 
 # This script contains commands from pks-client-setup.sh script from bdereims@vmware.com
 #Only tested on Ubuntu 16.04/18.04 LTS
@@ -65,7 +73,8 @@ f_choice_question() {
         case $vapbuohek in
             [Vv]* ) clear; f_verify_cli_tools;
                     break;;
-            [Aa]* ) f_install_all;
+            [Aa]* ) f_prep_vars;
+                    f_install_all;
                     break;;
             [Pp]* ) clear; f_prep_vars;
                     f_input_vars PKSRELEASE 1.2.0;
@@ -102,7 +111,7 @@ f_choice_question() {
 
 f_input_vars() {
 
-    read -p "$1 [ i.e. $2 ]: " $1
+    read -p "$1 [ i.e. ${!1} ]: " $1
     echo $1 " = " ${!1}
     echo "---------------------------"
 }
@@ -228,13 +237,8 @@ f_install_all() {
     f_input_vars HELMRELEASE 2.11.0
     f_input_vars OMRELEASE 0.42.0
     f_input_vars PIVNETRELEASE 0.0.55
-    f_input_vars BITSDIR /DATA/bits
     f_input_vars PKSRELEASE 1.2.0
     f_input_vars_sec PIVOTALTOKEN
-
-    if [[ ! -e $BITSDIR ]]; then
-        mkdir $BITSDIR
-    fi
 
     f_install_packages
     f_install_uaac_cli
