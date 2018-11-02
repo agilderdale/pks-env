@@ -158,7 +158,12 @@ f_input_vars_sec() {
 
     read -sp "$1: " $1
     echo
-    echo $1 = ${!1}
+    if [[ -z ${!1} ]]
+    then
+        f_error "The $1 variable has no default value - EXITING! "
+        exit 1
+    fi
+#    echo $1 = ${!1}
     echo "Set: $1 = **************"
     echo "---------------------------"
 }
