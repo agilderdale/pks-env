@@ -245,6 +245,7 @@ f_install_all() {
 f_prep_vars(){
     if [[ ! -e $BITSDIR ]];
     then
+        f_info "Creating $BITSDIR directory:"
         mkdir -p $BITSDIR
         f_verify
     fi
