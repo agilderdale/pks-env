@@ -82,7 +82,7 @@ f_choice_question() {
     echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
     echo "  e - exit"
     echo "***************************************************************"
-        read -p "   Select one of the options? (v|a|p|b|u|o|h|k|)" vapbuohek
+        read -p "   Select one of the options? (v|a|p|b|u|o|h|k|): " vapbuohek
         case $vapbuohek in
             [Vv]* ) clear;
                     f_verify_cli_tools;
@@ -163,16 +163,24 @@ f_install_packages() {
 
     f_info "Updating OS and installing packages"
     add-apt-repository universe
+    f_verify
     apt-get update ; sudo apt-get upgrade
+    f_verify
     apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
+    f_verify
     apt-get install -y zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
+    f_verify
     apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
+    f_verify
 
     f_info "Installing vmw-cli tool"
     # vwm-cli - requires nodejs >=8
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    f_verify
     apt-get install -y nodejs
+    f_verify
     npm install vmw-cli --global
+    f_verify
 }
 
 
@@ -180,66 +188,105 @@ f_install_uaac_cli() {
     f_info "Installing UAAC tool"
     # uuac
     gem install cf-uaac
+    f_verify
 }
 
 f_install_kubectl_cli() {
     f_info "Installing kubectl CLI"
     # kubectl
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    f_verify
     chmod +x kubectl
+    f_verify
     cp kubectl $BINDIR/kubectl
+    f_verify
     rm kubectl
+    f_verify
 }
 
 f_install_bosh_cli() {
     f_info "Installing bosh CLI"
     # bosh
     curl -LO https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${BOSHRELEASE}-linux-amd64
+    f_verify
     cp bosh-cli-${BOSHRELEASE}-linux-amd64 ${BINDIR}/bosh
+    f_verify
     chmod ugo+x ${BINDIR}/bosh
+    f_verify
     rm bosh-cli-${BOSHRELEASE}-linux-amd64
+    f_verify
+
+    f_info "Installing bosh CLI - COMPLETED"
 }
 
 f_install_om_cli() {
     f_info "Installing OpsManager CLI"
     # om
     curl -LO https://github.com/pivotal-cf/om/releases/download/${OMRELEASE}/om-linux
+    f_verify
     chown root om-linux
+    f_verify
     chmod ugo+x om-linux
+    f_verify
     mv om-linux ${BINDIR}/om
+    f_verify
+
+    f_info "Installing om CLI - COMPLETED"
 }
 
 f_install_helm_cli() {
     f_info "Installing Helm CLI"
     # helm
     curl -LO https://kubernetes-helm.storage.googleapis.com/helm-v${HELMRELEASE}-linux-amd64.tar.gz
+    f_verify
     tar xvzf helm-v${HELMRELEASE}-linux-amd64.tar.gz linux-amd64/helm
+    f_verify
     chmod +x linux-amd64/helm
+    f_verify
     cp linux-amd64/helm ${BINDIR}/helm
+    f_verify
     rm -fr linux-amd64
+    f_verify
     rm helm-v${HELMRELEASE}-linux-amd64.tar.gz
+    f_verify
+
+    f_info "Installing helm CLI - COMPLETED"
 }
 
 f_install_pivnet_cli() {
     f_info "Installing pivnet CLI"
     # pivnet cli
     curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNETRELEASE}/pivnet-linux-amd64-${PIVNETRELEASE}
+    f_verify
 
     chown root pivnet-linux-amd64-${PIVNETRELEASE}
+    f_verify
     chmod ugo+x pivnet-linux-amd64-${PIVNETRELEASE}
+    f_verify
     mv pivnet-linux-amd64-${PIVNETRELEASE} ${BINDIR}/pivnet
+    f_verify
+
+    f_info "Installing pivnet CLI - COMPLETED"
 }
 
 f_install_pks_cli() {
     # pks cli
     pivnet login --api-token=$PIVOTALTOKEN
+    f_verify
     PKSFileID=`pivnet pfs -p pivotal-container-service -r $PKSRELEASE | grep 'PKS CLI - Linux' | awk '{ print $2}'`
     pivnet download-product-files -p pivotal-container-service -r $PKSRELEASE -i $PKSFileID
+    f_verify
 
     mv pks-linux-amd64* pks
+    f_verify
     chown root:root pks
+    f_verify
     chmod +x pks
+    f_verify
     cp pks ${BINDIR}/pks
+    f_verify
+
+    f_info "Installing pks CLI - COMPLETED"
 }
 
 f_verify_cli_tools() {
@@ -249,6 +296,7 @@ f_verify_cli_tools() {
     if om version 2> /dev/null | grep -q .[0-9]* ; then echo "OM CLI - OK" ; else echo "OM CLI FAILED" ;fi
     if bosh -version 2> /dev/null | grep -q 'version' ; then echo "BOSH CLI - OK" ; else echo "OM CLI FAILED" ;fi
     if uaac version 2> /dev/null | grep -q 'UAA client ' ; then echo "UAA CLI - OK" ; else echo "UAA CLI FAILED" ;fi
+    f_info "Installing verify CLI tools - COMPLETED"
 }
 
 f_download_git_repos() {
@@ -259,8 +307,12 @@ f_download_git_repos() {
     fi
 
     git clone https://github.com/bdereims/pks-prep.git
+    f_verify
     git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
+    f_verify
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
+    f_verify
+    f_info "Download git repos - COMPLETED"
 
 }
 
