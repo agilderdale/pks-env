@@ -337,6 +337,7 @@ f_install_all() {
 
     source /tmp/pks_variables
 
+    f_install_packages
     f_install_uaac_cli
     f_install_kubectl_cli
     f_install_bosh_cli
