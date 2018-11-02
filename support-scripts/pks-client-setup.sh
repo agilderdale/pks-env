@@ -306,6 +306,7 @@ f_verify_cli_tools() {
     if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else echo "   OM CLI FAILED" ;fi
     if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else echo "   UAA CLI FAILED" ;fi
     f_info "Installing verify CLI tools - COMPLETED"
+    sleep 5
 }
 
 f_download_git_repos() {
