@@ -285,6 +285,8 @@ f_install_all() {
 f_init(){
     f_input_vars BITSDIR
 
+    source /tmp/pks_variables
+
     if [[ ! -e $BITSDIR ]]
     then
         f_info "Creating $BITSDIR directory:"
