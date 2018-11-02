@@ -85,7 +85,7 @@ f_choice_question() {
         echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|p|b|u|o|h|k|): " vapbuohek
+        read -p "   Select one of the options? (v|a|p|b|u|o|h|k|e): " vapbuohek
 
         case $vapbuohek in
             [Vv]* ) clear;
