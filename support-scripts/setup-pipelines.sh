@@ -163,6 +163,7 @@ f_download_vmmare_repo(){
         mkdir -p /DATA/GIT-REPOS/
     fi
 
+    cd /DATA/GIT-REPOS
     git clone https://github.com/agilderdale/pks-env.git
     git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
