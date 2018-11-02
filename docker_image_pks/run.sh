@@ -74,6 +74,53 @@ f_start_concourse(){
     done
 }
 
+f_download_ovftool(){
+    # download the ovftool and OVA files
+    cd $BIND_MOUNT_DIR
+    ova_file_name=$(ls -l *.ova | sed 's/.* nsx/nsx/;s/ova.*/ova/' | tail -n1)
+    ovftool_file_name=$(ls -l *.bundle | sed 's/.* VMware-ovftool/VMware-ovftool/;s/bundle.*/bundle/' | tail -n1)
+    nsxt_version=2.3.0
+    if [[ $NSXT_VERSION != "" ]]; then
+        nsxt_version=$NSXT_VERSION
+    fi
+
+    if [[ $ova_file_name == "" ]] || [[ $ovftool_file_name == "" ]]; then
+        #ovftool_file_name="VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle"
+        #ova_file_name="nsx-unified-appliance-2.2.0.0.0.8680778.ova"
+        set -e
+        docker run -itd --name vmw-cli -e VMWINDEXDIR="/state" -e VMWUSER=$VMWARE_USER -e VMWPASS=$VMWARE_PASSWORD -v ${BIND_MOUNT_DIR}:/files --entrypoint=sh apnex/vmw-cli
+
+        docker exec -t vmw-cli vmw-cli index OVFTOOL430
+        ovftool_file_name=$(docker exec -t vmw-cli vmw-cli find fileType:bundle,version:4.3 | grep VMware-ovftool | sed 's/.* VMware-ovftool/VMware-ovftool/;s/bundle.*/bundle/' | tail -n1)
+        docker exec -t vmw-cli vmw-cli get $ovftool_file_name
+
+        version_no_dots=$(echo $nsxt_version | sed 's/\.//g')
+        docker exec -t vmw-cli vmw-cli index NSX-T-${version_no_dots}
+        ova_file_name=$(docker exec -t vmw-cli vmw-cli find fileType:ova,version:${nsxt_version} | grep nsx-unified-appliance | sed 's/.* nsx/nsx/;s/ova.*/ova/' | tail -n1)
+        docker exec -t vmw-cli vmw-cli get $ova_file_name
+        docker stop vmw-cli
+        docker rm vmw-cli
+
+            if [[ $ova_file_name == "" ]]; then
+            echo "OVA not found for NSX version $nsxt_version. Please specify a supported version and recreate the container."
+            exit 1
+        fi
+        set +e
+    fi
+
+    nsx_t_pipeline_branch=master
+    if [[ $PIPELINE_BRANCH != "" ]]; then
+        nsx_t_pipeline_branch=$PIPELINE_BRANCH
+    fi
+
+    pipeline_internal_config="pipeline_config_internal.yml"
+    echo "ovftool_file_name: $ovftool_file_name" > $pipeline_internal_config
+    echo "ova_file_name: $ova_file_name" >> $pipeline_internal_config
+    echo "nsx_t_pipeline_branch: $nsx_t_pipeline_branch" >> $pipeline_internal_config
+
+    # start a web server to host static files such as ovftool and NSX manager OVA
+    docker run --name nginx-server -v ${BIND_MOUNT_DIR}:/usr/share/nginx/html:ro -p ${IMAGE_WEBSERVER_PORT}:80 -d nginx
+}
 
 f_pipeline(){
     # using fly to start the pipeline
@@ -87,9 +134,16 @@ f_pipeline(){
     echo "Logging into concourse at $CONCOURSE_URL"
     fly -t $CONCOURSE_TARGET sync
     fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -n main
+
     echo "Setting the ${PRODUCT}-install pipeline"
-    fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p ${PRODUCT}-install -c ${ROOT_WORK_DIR}/${GIT_REPO}/pipelines/${INSTALL_YML} -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE}"
+    if [ ! -z $HARBOR_FILE ] ; then
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p ${PRODUCT}-install -c ${ROOT_WORK_DIR}/${GIT_REPO}/pipelines/${INSTALL_YML} -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE}"
+    else
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p ${PRODUCT}-install -c ${ROOT_WORK_DIR}/${GIT_REPO}/pipelines/${INSTALL_YML} -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE}"
+    fi
+
     yes | $fly_reset_cmd
+
     echo "Unpausing the ${PRODUCT}-install pipepline:"
     fly -t $CONCOURSE_TARGET unpause-pipeline -p ${PRODUCT}-install
 
@@ -116,9 +170,9 @@ fi
 # Checking and uploading PKS and Harbor pipeline
 if [[ -f ${BIND_MOUNT_DIR}/pks_pipeline_config.yml ]] ; then
     if [[ -f ${BIND_MOUNT_DIR}/harbor_pipeline_config.yml ]] ; then
-        f_pipeline pks pks-install install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
+        f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
     else
-        f_pipeline pks pks-install install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml
+        f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml
     fi
 fi
 
