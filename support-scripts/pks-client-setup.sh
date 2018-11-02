@@ -125,12 +125,13 @@ f_input_vars() {
     temp=${!1}
     read -p "$1 [ i.e. ${!1} ]: " $1
 
-    if [[ "$1" == '' ]]
+    if [ "$1" = '' ]
     then
         declare $1=$temp
         echo $1
-     else
+    else
        echo "$1 set to ${!1}"
+    fi
 #    echo $1 " = " ${!1}
     echo "---------------------------"
 }
