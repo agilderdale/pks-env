@@ -137,7 +137,7 @@ f_choice_question() {
 f_input_vars() {
     var=$1
     temp=${!1}
-    read -p "Set $1 [ default:${!1} ]: " $1
+    read -p "Set $1 [ default: ${!1} ]: " $1
 
     if [[ -z ${!1} ]]
     then
@@ -176,9 +176,7 @@ f_install_packages() {
     f_info "Installing vmw-cli tool"
     # vwm-cli - requires nodejs >=8
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    f_verify
     apt-get install -y nodejs
-    f_verify
     npm install vmw-cli --global
     f_verify
 }
