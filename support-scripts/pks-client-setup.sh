@@ -93,7 +93,6 @@ f_choice_question() {
                     break;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
-                    echo "This is BOSHRELEASE="$BOSHRELEASE;
                     #f_prep_vars;
                     #f_install_bosh_cli;
                     break;;
@@ -131,6 +130,7 @@ f_input_vars() {
     then
         declare $var=$temp
         echo -e "export $var=${!var}" >> /tmp/pks_variables
+        cat /tmp/pks_variables
 
     else
 #       echo "temp="$temp
@@ -302,7 +302,7 @@ f_prep_vars(){
 f_startup_question
 f_choice_question
 
-rm -Rf /tmp/pks_variables
+#rm -Rf /tmp/pks_variables
 
 f_info "PKS Client setup COMPLETED - please check logs for details"
 
