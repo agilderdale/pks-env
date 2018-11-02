@@ -3,6 +3,8 @@
 # This script is for setting up concourse pipeline to run NSX-T and PKS install and config.
 #Tested on Ubuntu 18.04 LTS
 # run this script as sudo
+# bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pipelines.sh)"
+
 BINDIR=/usr/local/bin
 
 CONCOURSE_IP=''
