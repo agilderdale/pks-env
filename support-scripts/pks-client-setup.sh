@@ -276,12 +276,6 @@ f_install_all() {
 }
 
 f_init(){
-    if [ ! -f /tmp/pks_variables ] ; then
-        touch /tmp/pks_variables
-    else
-        >/tmp/pks_variables
-    fi
-
     f_input_vars BITSDIR
 
     if [[ ! -e $BITSDIR ]]
@@ -297,6 +291,12 @@ f_init(){
 #####################################
 # MAIN
 #####################################
+
+if [ ! -f /tmp/pks_variables ] ; then
+    touch /tmp/pks_variables
+else
+    >/tmp/pks_variables
+fi
 
 f_startup_question
 f_choice_question
