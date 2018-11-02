@@ -130,7 +130,7 @@ f_input_vars() {
     if [[ -z ${!1} ]]
     then
         declare $var=$temp
-        echo $var
+        echo ${!var}
     else
        echo "temp="$temp
        echo "Variable is set to: $1 = " ${!1}
