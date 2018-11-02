@@ -127,13 +127,13 @@ f_input_vars() {
     then
         declare $var=$temp
         echo "export $var=${!var}" >> /tmp/pks_variables
-        cat /tmp/pks_variables
+#        cat /tmp/pks_variables
 
     else
 #       echo "temp="$temp
        echo "Variable is set to: $1 = " ${!1}
        echo "export $1=${!1}" >> /tmp/pks_variables
-       cat /tmp/pks_variables
+#       cat /tmp/pks_variables
     fi
     echo "---------------------------"
 }
