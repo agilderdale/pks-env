@@ -76,7 +76,7 @@ f_choice_question() {
         echo "  t - test variables"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (p|e|t): " pe
+        read -p "   Select one of the options? (p|e|t): " pet
 
         case $pet in
             [Pp]* ) clear;
