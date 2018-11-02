@@ -1,6 +1,7 @@
 #!/bin/bash
-# This script contains commands from pks-client-setup.sh script from bdereims@vmware.com
-#Only tested on Ubuntu 16.04/18.04 LTS
+# Created and maintained by Alicja Gilderdale - https://github.com/agilderdale/pks-env.git
+# This script is for setting up concourse pipeline to run NSX-T and PKS install and config.
+#Tested on Ubuntu 18.04 LTS
 # run this script as sudo
 BINDIR=/usr/local/bin
 
