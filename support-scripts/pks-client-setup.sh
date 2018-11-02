@@ -47,7 +47,6 @@ f_startup_question() {
     echo "    ========================================"
     echo ""
     echo "    Welcome to PKS Client configuration!"
-    echo ""
     echo "    NOTE: To run the script you need Pivotal Token"
     echo ""
     echo "    ========================================"
@@ -97,7 +96,7 @@ f_choice_question() {
                     f_init;
                     source /tmp/pks_variables;
                     f_install_bosh_cli;
-                    break;;
+                    return;;
             [Uu]* ) clear; f_init;
                     source /tmp/pks_variables;
                     f_install_uaac_cli;
