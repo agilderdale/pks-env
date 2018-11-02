@@ -62,7 +62,8 @@ f_startup_question() {
         read -p "    Do you wish to start? (y/n): " yn
         case $yn in
             [Yy]* ) break;;
-            [Nn]* ) exit;;
+            [Nn]* ) echo "Goodbye!"
+                    exit;;
             * ) echo "Please answer yes or no.";;
         esac
     done
