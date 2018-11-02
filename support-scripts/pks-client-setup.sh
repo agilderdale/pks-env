@@ -15,7 +15,7 @@ f_info(){
 
 f_verify(){
     rc=`echo $?`
-    if [ $rc != 0] ; then
+    if [ $rc != 0 ] ; then
         f_info "Last command - FAILED"
         exit 1
     fi
