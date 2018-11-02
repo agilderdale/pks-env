@@ -143,18 +143,21 @@ f_install_packages() {
     apt-get install -y openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
     apt-get install -y net-tools zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
     apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
-
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-    apt update
-    apt-cache policy docker-ce
-    sudo apt install docker-ce
+    apt install docker.io
 
     f_info "Installing vmw-cli tool"
     # vwm-cli - requires nodejs >=8
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     apt-get install -y nodejs
     npm install vmw-cli --global
+}
+
+f_install_docker(){
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    apt update
+    apt-cache policy docker-ce
+    sudo apt install docker-ce
 }
 
 f_download_vmmare_repo(){
