@@ -93,7 +93,7 @@ f_choice_question() {
                     break;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
-                    echo $BOSHRELEASE;
+                    echo "BOSHRELEASE="$BOSHRELEASE;
                     #f_prep_vars;
                     #f_install_bosh_cli;
                     break;;
