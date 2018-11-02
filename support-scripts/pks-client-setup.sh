@@ -122,15 +122,16 @@ f_input_vars() {
 #    parameter=''
 #    read -p "${parameter:-default} :" $1
 #    echo "parameter=" $parameter
+    var=$1
     temp="${!1}"
     read -p "$1 [ i.e. ${!1} ]: " $1
 
     if [ "$1" = '' ]
     then
-        declare $1=$temp
+        declare $var=$temp
         echo $1
     else
-       echo "$1 set to ${!1}"
+       echo "Variable is set"
     fi
 #    echo $1 " = " ${!1}
     echo "---------------------------"
