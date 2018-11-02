@@ -188,9 +188,9 @@ f_start_docker(){
       -e CONCOURSE_URL="http://${CONCOURSE_IP}:8080" \
       -e EXTERNAL_DNS="$EXTERNAL_DNS" \
       -e IMAGE_WEBSERVER_PORT=40001 \
-      -e VMWARE_USER='$VMWARE_USER' \
-      -e VMWARE_PASSWORD='$VMWARE_PASSWORD' \
-      -e NSXT_VERSION='$NSXT_VERSION' \
+      -e VMWARE_USER="$VMWARE_USER" \
+      -e VMWARE_PASSWORD="$VMWARE_PASSWORD" \
+      -e NSXT_VERSION="$NSXT_VERSION" \
       nsx-t-install
 }
 
