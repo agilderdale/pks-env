@@ -288,7 +288,7 @@ f_init(){
     if [[ ! -e $BITSDIR ]]
     then
         f_info "Creating $BITSDIR directory:"
-        mkdir -p $BITSDIR
+        mkdir -p $BITSDIR;
         f_verify
     fi
 
