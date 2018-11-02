@@ -96,7 +96,7 @@ f_choice_question() {
                     f_init;
                     source /tmp/pks_variables;
                     f_install_bosh_cli;
-                    return;;
+                    ;;
             [Uu]* ) clear; f_init;
                     source /tmp/pks_variables;
                     f_install_uaac_cli;
