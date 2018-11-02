@@ -88,26 +88,32 @@ f_choice_question() {
                     f_input_vars PKSRELEASE;
                     f_input_vars_sec PIVOTALTOKEN;
                     f_input_vars PIVNETRELEASE;
+                    source /tmp/pks_variables;
                     f_install_pivnet_cli;
                     f_install_pks_cli;
                     break;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
                     f_init;
+                    source /tmp/pks_variables;
                     f_install_bosh_cli;
                     break;;
             [Uu]* ) clear; f_init;
+                    source /tmp/pks_variables;
                     f_install_uaac_cli;
                     break;;
             [Oo]* ) clear; f_init;
                     f_input_vars OMRELEASE;
+                    source /tmp/pks_variables;
                     f_install_om_cli;
                     break;;
             [Hh]* ) clear; f_init;
                     f_input_vars HELMRELEASE;
+                    source /tmp/pks_variables;
                     f_install_helm_cli;
                     break;;
             [Kk]* ) clear; f_init;
+                    source /tmp/pks_variables;
                     f_install_kubectl_cli;
                     break;;
             [Ee]* ) exit;;
@@ -231,7 +237,6 @@ f_install_pks_cli() {
 }
 
 f_verify_cli_tools() {
-
     f_info "Verifying installed CLI tools"
     if pks --version 2> /dev/null | grep -q 'PKS CLI version' ; then echo "PKS CLI - OK" ; else echo "PKS CLI FAILED" ;fi
     if kubectl version 2> /dev/null | grep -q 'Client Version:' ; then echo "kubectl CLI - OK" ; else echo "kubectl CLI FAILED" ;fi
@@ -261,6 +266,8 @@ f_install_all() {
     f_input_vars PIVNETRELEASE
     f_input_vars PKSRELEASE
     f_input_vars_sec PIVOTALTOKEN
+
+    source /tmp/pks_variables
 
     f_install_uaac_cli
     f_install_kubectl_cli
