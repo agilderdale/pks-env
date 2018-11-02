@@ -177,6 +177,7 @@ f_start_docker(){
     f_input_vars VMWARE_USER
     f_input_vars_sec VMWARE_PASSWORD
     f_input_vars NSXT_VERSION
+    f_input_vars CONFIG_DIR
 
     docker run --name nsx-t-install -d \
       -v /var/run/docker.sock:/var/run/docker.sock \
