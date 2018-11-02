@@ -73,16 +73,17 @@ f_startup_question() {
 f_choice_question() {
     clear
     while true; do
-    echo "***************************************************************"
-    echo "  What would you like to do today?"
-    echo "***************************************************************"
-    echo "  Available options:"
-    echo "  v - verify CLI tools"
-    echo "  a - install all (pks, bosh, om, kubectl, uaac, om, helm)"
-    echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
-    echo "  e - exit"
-    echo "***************************************************************"
+        echo "***************************************************************"
+        echo "  What would you like to do today?"
+        echo "***************************************************************"
+        echo "  Available options:"
+        echo "  v - verify CLI tools"
+        echo "  a - install all (pks, bosh, om, kubectl, uaac, om, helm)"
+        echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
+        echo "  e - exit"
+        echo "***************************************************************"
         read -p "   Select one of the options? (v|a|p|b|u|o|h|k|): " vapbuohek
+
         case $vapbuohek in
             [Vv]* ) clear;
                     f_verify_cli_tools;
