@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Created and maintained by Alicja Gilderdale - https://github.com/agilderdale/pks-env.git
+# This script is for setting up PKS Client VM from the scratch.
+# Only basic Ubuntu image is required - I personally use Ubuntu Desktop version to have browser:
+# https://www.ubuntu.com/download/desktop
+# Some commands has been used from from pks-prep bdereims@vmware.com
+#Tested on Ubuntu 18.04 LTS
+# run this script as sudo
+
 BINDIR=/usr/local/bin
 BOSHRELEASE=5.3.1
 HELMRELEASE=2.11.0
@@ -9,9 +17,6 @@ PKSRELEASE=1.2.0
 PIVOTALTOKEN=''
 BITSDIR="/DATA/bits"
 
-# This script contains commands from pks-client-setup.sh script from bdereims@vmware.com
-#Only tested on Ubuntu 16.04/18.04 LTS
-# run this script as sudo
 
 f_info(){
     today=`date +%H:%M:%S`
@@ -65,6 +70,7 @@ f_startup_question() {
 
 f_choice_question() {
     clear
+    while true; do
     echo "***************************************************************"
     echo "  What would you like to do today?"
     echo "***************************************************************"
@@ -74,8 +80,7 @@ f_choice_question() {
     echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
     echo "  e - exit"
     echo "***************************************************************"
-    while true; do
-        read -p "   Do you wish to start? (v|a|p|b|u|o|h|k|)" vapbuohek
+        read -p "   Select one of the options? (v|a|p|b|u|o|h|k|)" vapbuohek
         case $vapbuohek in
             [Vv]* ) clear;
                     f_verify_cli_tools;
