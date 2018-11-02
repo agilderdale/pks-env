@@ -21,17 +21,17 @@ BITSDIR="/DATA/bits"
 f_info(){
     today=`date +%H:%M:%S`
 
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
     echo "[ $today ] INF  ${FUNCNAME[ 1 ]}: $*"
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
 }
 
 f_error(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
     echo "[ $today ] ERR  ${FUNCNAME[ 1 ]}: $*"
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
 }
 
 f_verify(){
@@ -76,24 +76,24 @@ f_startup_question() {
 f_choice_question() {
     clear
     while true; do
-        echo "***************************************************************"
+        echo "*******************************************************************************************"
         echo "  What would you like to do today?"
-        echo "***************************************************************"
+        echo "*******************************************************************************************"
         echo "  Available options:"
         echo "  v - verify CLI tools"
         echo "  a - install all (pks, bosh, om, kubectl, uaac, om, helm)"
         echo "  p - pks | b - bosh | u - uaac | o - om | h - helm | k - kubectl"
         echo "  e - exit"
-        echo "***************************************************************"
+        echo "*******************************************************************************************"
         read -p "   Select one of the options? (v|a|p|b|u|o|h|k|): " vapbuohek
 
         case $vapbuohek in
             [Vv]* ) clear;
                     f_verify_cli_tools;
-                    break;;
+                    ;;
             [Aa]* ) f_init;
                     f_install_all;
-                    break;;
+                    ;;
             [Pp]* ) clear; f_init;
                     f_input_vars PKSRELEASE;
                     f_input_vars_sec PIVOTALTOKEN;
@@ -102,7 +102,7 @@ f_choice_question() {
                     f_install_packages;
                     f_install_pivnet_cli;
                     f_install_pks_cli;
-                    break;;
+                    ;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
                     f_init;
@@ -114,29 +114,29 @@ f_choice_question() {
                     source /tmp/pks_variables;
                     f_install_packages;
                     f_install_uaac_cli;
-                    break;;
+                    ;;
             [Oo]* ) clear; f_init;
                     f_input_vars OMRELEASE;
                     source /tmp/pks_variables;
                     f_install_packages;
                     f_install_om_cli;
-                    break;;
+                    ;;
             [Hh]* ) clear; f_init;
                     f_input_vars HELMRELEASE;
                     source /tmp/pks_variables;
                     f_install_packages;
                     f_install_helm_cli;
-                    break;;
+                    ;;
             [Kk]* ) clear; f_init;
                     source /tmp/pks_variables;
                     f_install_packages;
                     f_install_kubectl_cli;
-                    break;;
+                    ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
         esac
     done
-    echo "***************************************************************"
+    echo "*******************************************************************************************"
 
 }
 
