@@ -93,6 +93,7 @@ f_choice_question() {
                     break;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
+                    echo $BOSHRELEASE;
                     #f_prep_vars;
                     #f_install_bosh_cli;
                     break;;
@@ -129,7 +130,6 @@ f_input_vars() {
     if [[ -z ${!1} ]]
     then
         declare $var=$temp
-        echo ${!1}
         echo $var
     else
        echo "temp="$temp
