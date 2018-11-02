@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BINDIR=/usr/local/bin
-BOSHRELEASE=5.3.1
+DEF_BOSHRELEASE=5.3.1
 HELMRELEASE=2.11.0
 OMRELEASE=0.42.0
 PIVNETRELEASE=0.0.55
@@ -92,7 +92,7 @@ f_choice_question() {
                     f_install_pks_cli;
                     break;;
             [Bb]* ) clear; f_prep_vars;
-                    f_input_vars BOSHRELEASE;
+                    f_input_vars BOSHRELEASE $DEF_BOSHRELEASE;
                     f_install_bosh_cli;
                     break;;
             [Uu]* ) clear; f_prep_vars;
@@ -119,7 +119,12 @@ f_choice_question() {
 
 f_input_vars() {
 
-    read -p "$1 [ i.e. ${!1} ]: " $1
+    read -p "${parameter:-${!1}}: " $1
+    echo parameter=$parameter
+#    read -p "$1 [ i.e. ${!1} ]: " $1
+     if [ $1 == '' ]; then
+        $1=
+
     echo $1 " = " ${!1}
     echo "---------------------------"
 }
