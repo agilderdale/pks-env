@@ -126,13 +126,13 @@ f_input_vars() {
     if [[ -z ${!1} ]]
     then
         declare $var=$temp
-        echo -e "export $var=${!var}" >> /tmp/pks_variables
+        echo -e "export $var=${!var}" > /tmp/pks_variables
         cat /tmp/pks_variables
 
     else
 #       echo "temp="$temp
        echo "Variable is set to: $1 = " ${!1}
-       echo -e "export $1=${!1}" >> /tmp/pks_variables
+       echo -e "export $1=${!1}" > /tmp/pks_variables
        cat /tmp/pks_variables
     fi
     echo "---------------------------"
