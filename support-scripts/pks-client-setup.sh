@@ -81,10 +81,10 @@ f_choice_question() {
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     break;;
-            [Aa]* ) f_prep_vars;
+            [Aa]* ) f_init;
                     f_install_all;
                     break;;
-            [Pp]* ) clear; f_prep_vars;
+            [Pp]* ) clear; f_init;
                     f_input_vars PKSRELEASE;
                     f_input_vars_sec PIVOTALTOKEN;
                     f_input_vars PIVNETRELEASE;
@@ -93,21 +93,21 @@ f_choice_question() {
                     break;;
             [Bb]* ) clear;
                     f_input_vars BOSHRELEASE;
-                    #f_prep_vars;
-                    #f_install_bosh_cli;
+                    f_init;
+                    f_install_bosh_cli;
                     break;;
-            [Uu]* ) clear; f_prep_vars;
+            [Uu]* ) clear; f_init;
                     f_install_uaac_cli;
                     break;;
-            [Oo]* ) clear; f_prep_vars;
+            [Oo]* ) clear; f_init;
                     f_input_vars OMRELEASE;
                     f_install_om_cli;
                     break;;
-            [Hh]* ) clear; f_prep_vars;
+            [Hh]* ) clear; f_init;
                     f_input_vars HELMRELEASE;
                     f_install_helm_cli;
                     break;;
-            [Kk]* ) clear; f_prep_vars;
+            [Kk]* ) clear; f_init;
                     f_install_kubectl_cli;
                     break;;
             [Ee]* ) exit;;
@@ -119,12 +119,9 @@ f_choice_question() {
 }
 
 f_input_vars() {
-#    parameter=''
-#    read -p "${parameter:-default} :" $1
-#    echo "parameter=" $parameter
     var=$1
     temp=${!1}
-    read -p "$1 [ default: ${!1} ]: " $1
+    read -p "Set $1 [ default:${!1} ]: " $1
 
     if [[ -z ${!1} ]]
     then
@@ -276,7 +273,7 @@ f_install_all() {
 
 }
 
-f_prep_vars(){
+f_init(){
     if [ ! -f /tmp/pks_variables ] ; then
         touch /tmp/pks_variables
     else
