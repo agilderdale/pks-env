@@ -157,10 +157,16 @@ f_passwd(){
         fi
     done
 
-    echo ""
-    echo "$password"
     set $1=$password
-    echo "$1=${!1}"
+
+    if [[ -z ${!1} ]]
+    then
+        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+        exit 1
+    fi
+
+#    echo "$password"
+#    echo "$1=${!1}"
 }
 
 f_input_vars_sec() {
