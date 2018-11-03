@@ -298,9 +298,9 @@ f_start_docker(){
       -e NSXT_VERSION="$NSXT_VERSION" \
       nsx-t-install:${DOCKER_IMAGE_VERSION}
 
-    f_info "Waiting for docker to start before uploading pks pipeline..."
-    sleep 20
-    docker exec -t nsx-t-install /home/concource/run_pks.sh
+#    f_info "Waiting for docker to start before uploading pks pipeline..."
+#    sleep 20
+#    docker exec -t nsx-t-install
     f_banner "
                      nsx-t-install docker container has been launched. Exit this script and type:
 
