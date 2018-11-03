@@ -166,7 +166,7 @@ f_passwd(){
         f_error "The $1 variable has no default value!!! User input is required - EXITING! "
         exit 1
     fi
-
+    echo ""
 #    echo "$password"
 #    echo "$1=${!1}"
 }
