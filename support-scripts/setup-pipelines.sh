@@ -303,7 +303,7 @@ f_clean_docker(){
 
     f_banner ""
 
-    for i in nsx-t-install vmw-cli concourse-worker concourse-web concourse-db
+    for i in nsx-t-install vmw-cli concourse-worker concourse-web concourse-db nginx-server
     do
         var1=`docker ps -a |grep $i |awk '{print $1}'`
         if [ ! -z $var1 ] ; then
