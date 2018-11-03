@@ -140,6 +140,10 @@ f_input_vars() {
 
 f_passwd(){
 
+    if [ ! -f /tmp/.secret ] ; then
+        touch /tmp/secret
+    fi
+
     var=$1
     unset password
     echo -n "$1: "
@@ -159,14 +163,15 @@ f_passwd(){
         fi
     done
 
-    declare $var=$password
-    echo "$1=${!1}"
-
     if [[ -z ${!1} ]]
     then
         f_error "The $1 variable has no default value!!! User input is required - EXITING! "
         exit 1
     fi
+
+    declare $var=$password
+    echo "export $1=${!1}" > /tmp/.secret
+
     echo ""
 #    echo "$password"
 #    echo "$1=${!1}"
@@ -230,6 +235,7 @@ f_start_docker(){
 
     f_banner ""
     source /tmp/pks_variables
+    source /tmp/.secret
 
     docker run --name nsx-t-install -d \
       -v /var/run/docker.sock:/var/run/docker.sock \
@@ -285,6 +291,7 @@ f_init(){
     f_input_vars CONFIG_DIR
 
     source /tmp/pks_variables
+    source /tmp/.secret
 
     if [[ ! -e $BITSDIR ]]
     then
@@ -297,6 +304,8 @@ f_init(){
 #####################################
 # MAIN
 #####################################
+rm -Rf /tmp/.secret
+
 if [ ! -f /tmp/pks_variables ] ; then
     touch /tmp/pks_variables
 else
@@ -308,7 +317,7 @@ f_startup_question
 f_choice_question
 
 cat /tmp/pks_variables
-rm -Rf /tmp/pks_variables
+rm -Rf /tmp/.secret
 
 f_info "PKS Client setup COMPLETED - please check logs for details"
 
