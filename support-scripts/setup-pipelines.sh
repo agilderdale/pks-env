@@ -5,6 +5,7 @@
 # run this script as sudo
 # bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pipelines.sh)"
 
+
 BINDIR=/usr/local/bin
 BITSDIR=/DATA/bits
 CONCOURSE_IP=''
