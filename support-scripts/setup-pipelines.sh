@@ -133,7 +133,7 @@ f_input_vars() {
         echo "Variable set to: $1 = " ${!1}
         echo "export $1=${!1}" >> /tmp/pks_variables
     fi
-    echo "---------------------------"
+    echo "-------------------------------------------------------------------------------------------"
 }
 
 f_input_vars_sec() {
@@ -146,7 +146,7 @@ f_input_vars_sec() {
         exit 1
     fi
     echo "Set: $1 = **************"
-    echo "---------------------------"
+    echo "-------------------------------------------------------------------------------------------"
 }
 
 f_install_packages() {
@@ -173,6 +173,7 @@ f_download_vmmare_repo(){
     f_banner ""
     wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
     docker load -i nsx-t-install.tar
+    f_verify
     mkdir -p /home/concourse
 
     f_info "Downloading supporting github repos"
