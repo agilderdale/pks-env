@@ -47,26 +47,26 @@ f_verify(){
     fi
 }
 
-f_startup_question() {
+f_intro() {
     clear
-    echo "  ================================================"
-    echo "  ================================================"
+    echo "  ====================================================="
+    echo "  ====================================================="
     echo ""
-    echo "  =========== RUN THIS SCRIPT AS SUDO! ==========="
+    echo "  ============== RUN THIS SCRIPT AS SUDO! ============="
     echo ""
-    echo "  ================================================"
+    echo "  ====================================================="
     echo ""
     echo "  Welcome to SETUP CONCOURSE PIPELINE script!"
     echo ""
-    echo "  ================================================"
+    echo "  ====================================================="
     echo ""
     while true; do
         read -p "    Do you wish to start? (y/n): " yn
         case $yn in
             [Yy]* ) break;;
-            [Nn]* ) echo "   =============="
-                    echo "      GOODBYE!"
-                    echo "   =============="
+            [Nn]* ) echo "            =============="
+                    echo "               GOODBYE!"
+                    echo "            =============="
                     exit;;
             * ) echo "Please answer yes or no.";;
         esac
@@ -75,7 +75,7 @@ f_startup_question() {
 
 }
 
-f_choice_question() {
+f_main_menu() {
     clear
     while true; do
         echo "*******************************************************************************************"
@@ -321,6 +321,6 @@ else
     >/tmp/pks_variables
 fi
 
-f_startup_question
-f_choice_question
+f_intro
+f_main_menu
 
