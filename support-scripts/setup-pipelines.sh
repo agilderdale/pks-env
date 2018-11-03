@@ -323,5 +323,5 @@ cat /tmp/pks_variables
 
 rm -Rf /tmp/.secret >/dev/null
 
-f_info "PKS Client setup COMPLETED - please check logs for details"
+f_info "Pipeline task - COMPLETED"
 
