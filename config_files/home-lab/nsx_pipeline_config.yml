@@ -104,24 +104,22 @@ nsx_t_t1router_logical_switches_spec: |
   - name: T1-PKS-Infra
     switches:
     - name: PKS-Infra
-      logical_switch_gw: 10.173.61.253 # Last octet should be 1 rather than 0
+      logical_switch_gw: 192.168.50.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
 
-  t1_routers:
-  # T1 for PKS-Services - place holder (not used but PKS pipeline will fail if it is not defined)
   - name: T1-PKS-Services
     switches:
     - name: PKS-Services
-      logical_switch_gw: 172.15.0.1 # Last octet should be 1 rather than 0
+      logical_switch_gw: 192.168.60.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
 
 nsx_t_container_ip_block_spec: |
   container_ip_blocks:
   - name: PKS-node-ip-block
-    cidr: 10.1.0.0/16
+    cidr: 11.4.0.0/16
 
   - name: PKS-pod-ip-block
-    cidr: 10.2.0.0/16
+    cidr: 12.4.0.0/16
 
 
 nsx_t_external_ip_pool_spec: |
@@ -135,6 +133,68 @@ nsx_t_external_ip_pool_spec: |
 
 nsx_t_nat_rules_spec: |
   nat_rules:
+  # Sample entry for  PKS-Infra network
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 192.168.50.0/24      # PKS Infra network cidr
+    translated_network: 10.173.61.121    # SNAT External Address for PKS networks
+    rule_priority: 8001                  # Lower priority
+
+  # Sample entry for allowing inbound to PKS OpsManager
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.173.61.26    # External IP address for PKS OpsManager
+    translated_network: 192.168.50.2     # Internal IP of PKS OpsManager
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from PKS OpsManager to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 192.168.50.2         # Internal IP of PKS OpsManager
+    translated_network: 10.173.61.26     # External IP address for PKS OpsManager
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to BOSH
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.173.61.27    # External IP address for BOSH
+    translated_network: 192.168.50.11    # Internal IP of BOSH
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from BOSH to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 192.168.50.4         # Internal IP of BOSH
+    translated_network: 10.173.61.27     # External IP address for BOSH
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to PKS Controller
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.173.61.28    # External IP address for PKS Controller
+    translated_network: 192.168.50.11    # Internal IP of PKS Controller
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from PKS Controller to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 192.168.50.4         # Internal IP of PKS Controller
+    translated_network: 10.173.61.28     # External IP address for PKS Controller
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing inbound to Harbor
+  - t0_router: DefaultT0Router
+    nat_type: dnat
+    destination_network: 10.173.61.29    # External IP address for Harbor
+    translated_network: 192.168.50.11    # Internal IP of Harbor
+    rule_priority: 1024                  # Higher priority
+
+  # Sample entry for allowing outbound from BOSH to external
+  - t0_router: DefaultT0Router
+    nat_type: snat
+    source_network: 192.168.50.4         # Internal IP of Harbor
+    translated_network: 10.173.61.29     # External IP address for Harbor
+    rule_priority: 1024                  # Higher priority
 
 nsx_t_csr_request_spec: |
   csr_request:
