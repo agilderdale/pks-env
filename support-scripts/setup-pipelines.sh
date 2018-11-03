@@ -98,6 +98,7 @@ f_choice_question() {
                     ;;
             [Tt]* ) clear;
                     f_passwd VMWARE_PASSWORD;
+                    source /tmp/.secret;
                     echo "VMWARE_PASSWORD="$VMWARE_PASSWORD;
                     f_init;
                     ;;
