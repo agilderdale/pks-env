@@ -77,7 +77,7 @@ cd $BIND_MOUNT_DIR
 ./generate-keys.sh
 
 # prepare the yaml for docker compose
-concourse_version=3.14.1
+concourse_version=4.2.1
 sed -i "0,/^ *- CONCOURSE_EXTERNAL_URL/ s|CONCOURSE_EXTERNAL_URL.*$|CONCOURSE_EXTERNAL_URL=${CONCOURSE_URL}|" docker-compose.yml
 sed -i "0,/^ *- CONCOURSE_GARDEN_DNS_SERVER/ s|CONCOURSE_GARDEN_DNS_SERVER.*$|CONCOURSE_GARDEN_DNS_SERVER=${EXTERNAL_DNS}|" docker-compose.yml
 sed -i "0,/^ *- CONCOURSE_NO_REALLY_I_DONT_WANT_ANY_AUTH/ s|CONCOURSE_NO_REALLY_I_DONT_WANT_ANY_AUTH.*$|CONCOURSE_NO_REALLY_I_DONT_WANT_ANY_AUTH=true|" docker-compose.yml
@@ -126,10 +126,11 @@ source ~/.bashrc
 f_pipeline(){
     # using fly to start the pipeline
     CONCOURSE_TARGET=nsx-concourse
-    PIPELINE_NAME=${2}
-    pipeline_dir=${ROOT_WORK_DIR}/${1}
-    CONFIG_FILE=$3
-    HARBOR_FILE=$4
+    PRODUCT=$1
+    pipeline_dir=${ROOT_WORK_DIR}/${2}
+    PIPELINE_NAME=${3}
+    CONFIG_FILE=$4
+    HARBOR_FILE=$5
 
     echo "Logging into concourse at $CONCOURSE_URL"
     fly -t $CONCOURSE_TARGET sync
@@ -162,9 +163,9 @@ f_pipeline(){
 # Checking and uploading PKS and Harbor pipeline
 if [ -f ${BIND_MOUNT_DIR}/pks_pipeline_config.yml ] ; then
     if [ -f ${BIND_MOUNT_DIR}/harbor_pipeline_config.yml ] ; then
-        f_pipeline nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
+        f_pipeline pks nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
     else
-        f_pipeline nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml
+        f_pipeline pks nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml
     fi
 fi
 
