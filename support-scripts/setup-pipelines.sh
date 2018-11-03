@@ -338,6 +338,14 @@ f_init(){
     f_banner ""
 #    f_input_vars BITSDIR
 #    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+
+    if [ ! -f /tmp/pks_variables ] ; then
+        touch /tmp/pks_variables
+    else
+        cp /tmp/pks_variables /tmp/pks_variables_old
+        >/tmp/pks_variables
+    fi
+
     f_input_vars CONCOURSE_IP
     f_input_vars EXTERNAL_DNS
     f_input_vars NSXT_VERSION
@@ -362,13 +370,6 @@ f_init(){
 # MAIN
 #####################################
 rm -Rf /tmp/.secret >/dev/null
-
-if [ ! -f /tmp/pks_variables ] ; then
-    touch /tmp/pks_variables
-else
-    cp /tmp/pks_variables /tmp/pks_variables_old
-    >/tmp/pks_variables
-fi
 
 f_intro
 f_main_menu
