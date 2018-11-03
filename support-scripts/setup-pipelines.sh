@@ -86,7 +86,7 @@ f_main_menu() {
         echo "  t - test variables"
         echo "  c - clean-up concourse docker containers"
         echo "  o - download ovftool"
-        echo "  n - download nsx-t-appliance 2.3"
+        echo "  n - download nsx-t-appliance 2.3.0"
         echo "  e - exit"
         echo "*******************************************************************************************"
         read -p "   Select one of the options? (p|e|t|c|o|n): " petcon
@@ -237,14 +237,20 @@ f_install_packages() {
 f_download_vmmare_repo(){
 
     f_banner ""
-    wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
-    docker load -i nsx-t-install.tar
-    f_verify
     mkdir -p /home/concourse
 
     f_info "Downloading supporting github repos"
     if [[ ! -e /DATA/GIT-REPOS ]]; then
         mkdir -p /DATA/GIT-REPOS/
+    fi
+
+    if [ ! -f /tmp/nsx-t-install.tar ] ; then
+        wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O /tmp/nsx-t-install.tar
+        docker load -i /tmp/nsx-t-install.tar
+        f_verify
+    else
+        f_info "/tmp/nsx-t-install.tar has already been downloaded - SKIPPING..."
+        docker load -i /tmp/nsx-t-install.tar
     fi
 
     cd /DATA/GIT-REPOS
