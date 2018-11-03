@@ -203,11 +203,15 @@ f_start_docker(){
       -e NSXT_VERSION="$NSXT_VERSION" \
       nsx-t-install
 
-      f_info "nsx-t-install docker container has been launched. Exit this script and type: \n
-              docker ps -a  \n
-              All available containers will list on the screen. \n
-              If the nsx-t-install container is shown as stopped, check logs with the command below:\n
-              docker logs <container ID> \n
+      f_banner "
+                     nsx-t-install docker container has been launched. Exit this script and type:
+
+                     $ docker ps -a
+
+                     All available containers will list on the screen.
+                     If the nsx-t-install container is shown as stopped, check logs with the command below:
+
+                     $ docker logs <container ID>
               "
        sleep 10
 }
