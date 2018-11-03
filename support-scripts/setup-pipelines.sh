@@ -14,20 +14,28 @@ VMWARE_PASSWORD=''
 NSXT_VERSION=2.3
 CONFIG_DIR='/DATA/GIT-REPOS/pks-env/config_files/home-lab'
 
+f_banner(){
+    today=`date +%DD-%MM-%YY_%H:%M:%S`
+
+    echo "*******************************************************************************************"
+    echo "[ $today ]  ${FUNCNAME[ 1 ]}: $*"
+    echo "*******************************************************************************************"
+}
+
 f_info(){
     today=`date +%H:%M:%S`
 
-    echo "*******************************************************************************************"
+    echo "-------------------------------------------------------------------------------------------"
     echo "[ $today ] INF  ${FUNCNAME[ 1 ]}: $*"
-    echo "*******************************************************************************************"
+    echo "-------------------------------------------------------------------------------------------"
 }
 
 f_error(){
     today=`date +%Y-%m-%d.%H:%M:%S`
 
-    echo "*******************************************************************************************"
+    echo "-------------------------------------------------------------------------------------------"
     echo "[ $today ] ERR  ${FUNCNAME[ 1 ]}: $*"
-    echo "*******************************************************************************************"
+    echo "-------------------------------------------------------------------------------------------"
 }
 
 f_verify(){
@@ -142,7 +150,9 @@ f_input_vars_sec() {
 
 f_install_packages() {
 
+    f_banner ""
     f_info "Updating OS and installing packages"
+
     add-apt-repository universe
     apt-get update ; sudo apt-get upgrade
     apt-get install -y openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
@@ -158,6 +168,8 @@ f_install_packages() {
 }
 
 f_download_vmmare_repo(){
+
+    f_banner ""
     wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
     docker load -i nsx-t-install.tar
     mkdir -p /home/concourse
@@ -176,6 +188,8 @@ f_download_vmmare_repo(){
 }
 
 f_start_docker(){
+
+    f_banner ""
 #    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
     f_input_vars CONCOURSE_IP
     f_input_vars EXTERNAL_DNS
@@ -208,6 +222,8 @@ f_start_docker(){
 
 f_clean_docker(){
 
+    f_banner ""
+
     for i in nsx-t-install vmw-cli
     do
         var1=`docker ps -a | awk '{print $8}' |grep $i`
@@ -215,12 +231,14 @@ f_clean_docker(){
             docker rm -f $i
             f_verify
         else
-            f_info "$i does not exist - SKIPPING..."
+            f_info "$i container does not exist - SKIPPING..."
         fi
     done
 }
 
 f_init(){
+
+    f_banner ""
     f_input_vars BITSDIR
 
     source /tmp/pks_variables
