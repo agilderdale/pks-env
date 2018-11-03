@@ -97,7 +97,8 @@ f_choice_question() {
                     f_start_docker;
                     ;;
             [Tt]* ) clear;
-                    f_passwd TEST_VAR;
+                    f_passwd VMWARE_PASSWORD;
+                    echo "VMWARE_PASSWORD="$VMWARE_PASSWORD;
                     f_init;
                     ;;
             [Cc]* ) clear;
@@ -139,6 +140,7 @@ f_input_vars() {
 
 f_passwd(){
 
+    var=$1
     unset password
     echo -n "$1: "
     while IFS= read -p "$prompt" -r -s -n 1 char
@@ -157,7 +159,7 @@ f_passwd(){
         fi
     done
 
-    set $1=$password
+    declare $var=$password
 
     if [[ -z ${!1} ]]
     then
