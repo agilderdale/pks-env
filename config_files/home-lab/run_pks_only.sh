@@ -42,7 +42,7 @@ fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -
 #fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
 #yes | $fly_reset_cmd
 if [[ ! -e ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} ]]; then
-    echo "setting the NSX-t install pipeline $PIPELINE_NAME"
+    echo "setting the PKS install pipeline $PIPELINE_NAME"
     if [[ ! -e ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} ]]; then
         fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
         yes | $fly_reset_cmd
