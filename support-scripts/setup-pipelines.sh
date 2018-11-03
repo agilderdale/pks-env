@@ -277,6 +277,7 @@ f_clean_docker(){
     do
         var1=`docker ps -a |grep $i |awk '{print $1}'`
         if [ ! -z $var1 ] ; then
+            f_info "Removing $i container..."
             docker rm -f $i
             f_verify
         else
