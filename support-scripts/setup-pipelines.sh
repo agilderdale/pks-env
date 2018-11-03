@@ -260,7 +260,7 @@ f_download_vmmare_repo(){
     git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
 
-    cp ${CONFIG_DIR}/*.yml /home/concourse/
+    cp ${CONFIG_DIR}/* /home/concourse/
 }
 
 f_download_ovftool(){
