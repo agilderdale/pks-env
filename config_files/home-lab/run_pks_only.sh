@@ -57,10 +57,10 @@ fi
 #fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME}"
 #yes | $fly_reset_cmd
 # add an alias for set-pipeline command
-echo "alias pks-fly-reset=\"$fly_reset_cmd\"" >> ~/.bashrc
-pks-destroy_cmd="cd $BIND_MOUNT_DIR; fly -t $CONCOURSE_TARGET destroy-pipeline -p $PIPELINE_NAME; docker-compose down; docker stop nginx-server; docker rm nginx-server;"
-echo "alias pks-destroy=\"$destroy_cmd\"" >> ~/.bashrc
-source ~/.bashrc
+#echo "alias pks-fly-reset=\"$fly_reset_cmd\"" >> ~/.bashrc
+#pks-destroy_cmd="cd $BIND_MOUNT_DIR; fly -t $CONCOURSE_TARGET destroy-pipeline -p $PIPELINE_NAME; docker-compose down; docker stop nginx-server; docker rm nginx-server;"
+#echo "alias pks-destroy=\"$destroy_cmd\"" >> ~/.bashrc
+#source ~/.bashrc
 
 while true; do
         is_worker_running=$(docker ps | grep concourse-worker)
@@ -72,9 +72,9 @@ while true; do
         sleep 5
 done
 
-sleep 3d
-fly -t $CONCOURSE_TARGET destroy-pipeline -p $PIPELINE_NAME
-docker-compose down
-docker stop nginx-server
-docker rm nginx-server
-exit 0
+#sleep 3d
+#fly -t $CONCOURSE_TARGET destroy-pipeline -p $PIPELINE_NAME
+#docker-compose down
+#docker stop nginx-server
+#docker rm nginx-server
+#exit 0
