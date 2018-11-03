@@ -295,7 +295,7 @@ f_start_docker(){
       -e VMWARE_USER="$VMWARE_USER" \
       -e VMWARE_PASSWORD="$VMWARE_PASSWORD" \
       -e NSXT_VERSION="$NSXT_VERSION" \
-      nsx-t-install:01
+      nsx-t-install:0.1
 
       f_banner "
                      nsx-t-install docker container has been launched. Exit this script and type:
