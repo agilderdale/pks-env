@@ -184,7 +184,7 @@ nsx_t_nat_rules_spec: |
   # Sample entry for allowing inbound to Harbor
   - t0_router: DefaultT0Router
     nat_type: dnat
-    destination_network: 10.173.61.29    # External IP address for Harbor
+    destination_network: 23.23.23.5    # External IP address for Harbor
     translated_network: 192.168.50.5    # Internal IP of Harbor
     rule_priority: 1024                  # Higher priority
 
@@ -192,7 +192,7 @@ nsx_t_nat_rules_spec: |
   - t0_router: DefaultT0Router
     nat_type: snat
     source_network: 192.168.50.5         # Internal IP of Harbor
-    translated_network: 10.173.61.29     # External IP address for Harbor
+    translated_network: 23.23.23.5     # External IP address for Harbor
     rule_priority: 1024                  # Higher priority
 
 nsx_t_csr_request_spec: |
