@@ -308,8 +308,7 @@ f_clean_docker(){
         var1=`docker ps -a |grep $i |awk '{print $1}'`
         if [ ! -z $var1 ] ; then
             f_info "Removing $i container..."
-            docker rm -f $i
-            f_verify
+            docker rm -f $var1
         else
             f_info "$i container does not exist - SKIPPING..."
         fi
