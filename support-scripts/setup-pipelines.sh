@@ -325,6 +325,8 @@ f_clean_docker(){
             f_info "$i container does not exist - SKIPPING..."
         fi
     done
+    docker volume prune
+    docker ps -a
     echo "-------------------------------------------------------------------------------------------"
 }
 
