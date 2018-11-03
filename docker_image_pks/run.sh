@@ -47,33 +47,6 @@ f_init(){
     #sed -i "/^ *- CONCOURSE_EXTERNAL_URL/ a\    - CONCOURSE_NO_REALLY_I_DONT_WANT_ANY_AUTH=true" docker-compose.yml
 }
 
-
-f_start_concourse(){
-    echo "Bringing up Concourse server in a docker-compose cluster"
-    docker-compose up -d
-
-    # waiting for the concourse API server to start up
-    while true; do
-        curl -s -o /dev/null $CONCOURSE_URL
-        if [[ $? -eq 0 ]]; then
-            break
-        fi
-        echo "Waiting for Concourse web server to be running"
-        sleep 2
-    done
-    echo "brought up the Concourse cluster"
-
-    while true; do
-        is_worker_running=$(docker ps | grep concourse-worker)
-        if [[ ! $is_worker_running ]]; then
-            docker-compose restart concourse-worker
-            echo "concourse worker is down; restarted it"
-            break
-        fi
-        sleep 5
-    done
-}
-
 f_download_ovftool(){
     # download the ovftool and OVA files
     cd $BIND_MOUNT_DIR
@@ -122,6 +95,32 @@ f_download_ovftool(){
     docker run --name nginx-server -v ${BIND_MOUNT_DIR}:/usr/share/nginx/html:ro -p ${IMAGE_WEBSERVER_PORT}:80 -d nginx
 }
 
+f_start_concourse(){
+    echo "Bringing up Concourse server in a docker-compose cluster"
+    docker-compose up -d
+
+    # waiting for the concourse API server to start up
+    while true; do
+        curl -s -o /dev/null $CONCOURSE_URL
+        if [[ $? -eq 0 ]]; then
+            break
+        fi
+        echo "Waiting for Concourse web server to be running"
+        sleep 2
+    done
+    echo "brought up the Concourse cluster"
+
+    while true; do
+        is_worker_running=$(docker ps | grep concourse-worker)
+        if [[ ! $is_worker_running ]]; then
+            docker-compose restart concourse-worker
+            echo "concourse worker is down; restarted it"
+            break
+        fi
+        sleep 5
+    done
+}
+
 f_pipeline(){
     # using fly to start the pipeline
     CONCOURSE_TARGET=nsx-pks-concourse
@@ -160,6 +159,7 @@ f_pipeline(){
 ###########################
 
 f_init
+f_download_ovftool
 f_start_concourse
 
 # Checking and uploading NSX-T pipeline

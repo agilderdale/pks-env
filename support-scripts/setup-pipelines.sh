@@ -3,8 +3,9 @@
 # This script is for setting up concourse pipeline to run NSX-T and PKS install and config.
 #Tested on Ubuntu 18.04 LTS
 # run this script as sudo
+# Make sure that /etc/resolv.conf file on PKS Client VM is pointing to DNS that can resolce the gihub.com etc.
+# You can run this script by calling following command from the command line:
 # bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pipelines.sh)"
-
 
 BINDIR=/usr/local/bin
 #BITSDIR=/DATA/bits
