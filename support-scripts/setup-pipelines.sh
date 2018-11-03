@@ -97,11 +97,6 @@ f_choice_question() {
                     ;;
             [Tt]* ) clear;
                     f_init;
-                    f_input_vars CONCOURSE_IP;
-                    f_input_vars EXTERNAL_DNS;
-                    f_input_vars VMWARE_USER;
-                    f_input_vars_sec VMWARE_PASSWORD;
-                    f_input_vars NSXT_VERSION;
                     ;;
             [Cc]* ) clear;
                     f_clean_docker;
@@ -190,14 +185,6 @@ f_download_vmmare_repo(){
 f_start_docker(){
 
     f_banner ""
-#    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-    f_input_vars CONCOURSE_IP
-    f_input_vars EXTERNAL_DNS
-    f_input_vars VMWARE_USER
-    f_input_vars_sec VMWARE_PASSWORD
-    f_input_vars NSXT_VERSION
-    f_input_vars CONFIG_DIR
-
     source /tmp/pks_variables
 
     docker run --name nsx-t-install -d \
@@ -240,6 +227,13 @@ f_init(){
 
     f_banner ""
     f_input_vars BITSDIR
+#    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+    f_input_vars CONCOURSE_IP
+    f_input_vars EXTERNAL_DNS
+    f_input_vars VMWARE_USER
+    f_input_vars_sec VMWARE_PASSWORD
+    f_input_vars NSXT_VERSION
+    f_input_vars CONFIG_DIR
 
     source /tmp/pks_variables
 
