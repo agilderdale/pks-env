@@ -103,3 +103,15 @@ export BOSH_CLIENT=ops_manager
 export BOSH_CLIENT_SECRET=ILkwwW14fGf5SOA1LpxL1AQl20D7-Aq3
 export BOSH_CA_CERT=/var/tempest/workspaces/default/root_ca_certificate
 export BOSH_ENVIRONMENT=172.16.0.89 bosh
+
+
+docker run --name nsx-t-install -d \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /home/concourse:/home/concourse \
+  -e CONCOURSE_URL="http://10.173.61.30:8080" \
+  -e EXTERNAL_DNS="10.20.20.1" \
+  -e IMAGE_WEBSERVER_PORT=40001 \
+  -e VMWARE_USER='DL_admin@vmware.com' \
+  -e VMWARE_PASSWORD='FT6MFRwzgK832!QU' \
+  -e NSXT_VERSION='2.3'
+  nsx-t-install

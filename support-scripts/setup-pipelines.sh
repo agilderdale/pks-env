@@ -85,11 +85,24 @@ f_main_menu() {
         echo "  p - setup PKS and NSX-T pipelines"
         echo "  t - test variables"
         echo "  c - clean up docker"
+        echo "  o - download ovftool"
+        echo "  n - download nsx-t-appliance 2.3"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (p|e|t|c): " petc
+        read -p "   Select one of the options? (p|e|t|c): " petcno
 
-        case $petc in
+        case $petcno in
+            [Nn]* ) clear;
+                    f_init;
+                    f_install_packages;
+                    f_download_vmmare_repo;
+                    f_start_docker;
+                    ;;
+            [Oo]* ) clear;
+                    f_init;
+                    f_install_packages;
+                    f_download_ovftool;
+                    ;;
             [Pp]* ) clear;
                     f_init;
                     f_install_packages;
@@ -237,6 +250,26 @@ f_download_vmmare_repo(){
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
 
     cp ${CONFIG_DIR}/*.yml /home/concourse/
+}
+
+f_download_ovftool(){
+    npm install vmw-cli --global
+    source /tmp/pks_variables
+    source /tmp/.secret
+
+    cd /home/concourse
+    vmw-cli index OVFTOOL430
+    vmw-cli get VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+}
+
+f_download_nsx(){
+    npm install vmw-cli --global
+    source /tmp/pks_variables
+    source /tmp/.secret
+
+    cd /home/concourse
+    vmw-cli index NSX-T-230
+    vmw-cli get nsx-unified-appliance-2.3.0.0.0.10085405.ova
 }
 
 f_start_docker(){
