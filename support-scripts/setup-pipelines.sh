@@ -15,7 +15,7 @@ NSXT_VERSION=2.3
 CONFIG_DIR='/DATA/GIT-REPOS/pks-env/config_files/home-lab'
 
 f_banner(){
-    today=`date +%DD-%MM-%YY_%H:%M:%S`
+    today=`date +%d-%m-%y_%H:%M:%S`
 
     echo "*******************************************************************************************"
     echo "[ $today ]  ${FUNCNAME[ 1 ]}: $*"
