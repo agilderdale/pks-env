@@ -21,9 +21,9 @@ om_ssh_pwd: "VMware1!"                 # SSH password for Ops Manager (ssh user 
 om_decryption_pwd: "VMware1!"        # Decryption password for Ops Manager exported settings
 om_ntp_servers: 10.173.61.33       # Comma-separated list of NTP Servers
 om_dns_servers: 10.173.61.33              # Comma-separated list of DNS Servers
-om_gateway: 10.173.61.253                # Gateway for Ops Manager network
+om_gateway: 192.168.50.1                # Gateway for Ops Manager network
 om_netmask: 255.255.255.0             # Netmask for Ops Manager network
-om_ip: 10.173.61.26                     # IP to assign to Ops Manager VM
+om_ip: 192.168.50.2                     # IP to assign to Ops Manager VM
 om_vm_network: PKS-Infra              # vCenter network name to use to deploy Ops Manager in
 om_vm_name: opsmanager         # Name to use for Ops Manager VM
 opsman_disk_type: "thin"  # Disk type for Ops Manager VM (thick|thin)
@@ -72,10 +72,10 @@ icmp_checks_enabled: false     # Enable or disable ICMP checks
 
 infra_network_name: "PKS-Infra"
 infra_vsphere_network: "PKS-Infra"             # vCenter Infrastructure network name
-infra_nw_cidr: 10.173.61.0/24                   # Infrastructure network CIDR, ex: 10.0.0.0/22
-infra_excluded_range: 10.173.61.1-10.173.61.26,10.173.61.35-10.173.61.254   # Infrastructure network exclusion range
+infra_nw_cidr: 192.168.50.0/24                   # Infrastructure network CIDR, ex: 10.0.0.0/22
+infra_excluded_range: 192.168.50.1-192.168.50.2   # Infrastructure network exclusion range
 infra_nw_dns: 10.173.61.33                      # Infrastructure network DNS
-infra_nw_gateway: 10.173.61.253                   # Infrastructure network Gateway
+infra_nw_gateway: 192.168.50.1                   # Infrastructure network Gateway
 infra_nw_azs: MGMT-AZ1       # Comma separated list of AZ's to be associated with this network
 
 nsx_networking_enabled: true              # (true|false) to use nsx networking feature. PKS v1.1+ requires it to be true
@@ -87,10 +87,10 @@ nsx_password: "VMware1!"                # password for nsx access
 # Additional network for PKS Controller & Harbor
 pks_network_name: "PKS-Services"             # Logical switch for PKS-Services
 pks_vsphere_network: "PKS-Services"          # vCenter PKS-Services  network name for PKS - if empty quotes, then this network would be skipped
-pks_nw_cidr: 172.15.0.0/24                     # PKS-Services network CIDR, ex: 10.0.0.0/22
-pks_excluded_range: 172.15.0.1                 # PKS-Services network exclusion range
+pks_nw_cidr: 192.168.60.0/24                     # PKS-Services network CIDR, ex: 10.0.0.0/22
+pks_excluded_range: 192.168.60.1                 # PKS-Services network exclusion range
 pks_nw_dns: 10.173.61.33                         # PKS-Services network DNS
-pks_nw_gateway: 172.15.0.1                     # PKS-Services network Gateway
+pks_nw_gateway: 192.168.60.1                     # PKS-Services network Gateway
 pks_nw_azs: COMP-AZ1,COMP-AZ2,COMP-AZ3                # Comma separated list of AZ's to be associated with this network
 is_service_network: true                     # Required select service network option in Ops man true or false
 

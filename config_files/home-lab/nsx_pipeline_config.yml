@@ -158,13 +158,13 @@ nsx_t_nat_rules_spec: |
   - t0_router: DefaultT0Router
     nat_type: dnat
     destination_network: 10.173.61.27    # External IP address for BOSH
-    translated_network: 192.168.50.11    # Internal IP of BOSH
+    translated_network: 192.168.50.3    # Internal IP of BOSH
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from BOSH to external
   - t0_router: DefaultT0Router
     nat_type: snat
-    source_network: 192.168.50.4         # Internal IP of BOSH
+    source_network: 192.168.50.3         # Internal IP of BOSH
     translated_network: 10.173.61.27     # External IP address for BOSH
     rule_priority: 1024                  # Higher priority
 
@@ -172,7 +172,7 @@ nsx_t_nat_rules_spec: |
   - t0_router: DefaultT0Router
     nat_type: dnat
     destination_network: 10.173.61.28    # External IP address for PKS Controller
-    translated_network: 192.168.50.11    # Internal IP of PKS Controller
+    translated_network: 192.168.50.4    # Internal IP of PKS Controller
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from PKS Controller to external
@@ -186,13 +186,13 @@ nsx_t_nat_rules_spec: |
   - t0_router: DefaultT0Router
     nat_type: dnat
     destination_network: 10.173.61.29    # External IP address for Harbor
-    translated_network: 192.168.50.11    # Internal IP of Harbor
+    translated_network: 192.168.50.5    # Internal IP of Harbor
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from BOSH to external
   - t0_router: DefaultT0Router
     nat_type: snat
-    source_network: 192.168.50.4         # Internal IP of Harbor
+    source_network: 192.168.50.5         # Internal IP of Harbor
     translated_network: 10.173.61.29     # External IP address for Harbor
     rule_priority: 1024                  # Higher priority
 
