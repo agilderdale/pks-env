@@ -306,7 +306,7 @@ f_init(){
 #####################################
 # MAIN
 #####################################
-rm -Rf /tmp/.secret
+rm -Rf /tmp/.secret >/dev/null
 
 if [ ! -f /tmp/pks_variables ] ; then
     touch /tmp/pks_variables
@@ -318,8 +318,10 @@ fi
 f_startup_question
 f_choice_question
 
+f_info "Following variables have been used:"
 cat /tmp/pks_variables
-rm -Rf /tmp/.secret
+
+rm -Rf /tmp/.secret >/dev/null
 
 f_info "PKS Client setup COMPLETED - please check logs for details"
 
