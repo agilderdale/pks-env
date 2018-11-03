@@ -296,14 +296,14 @@ f_start_docker(){
 
                      $ docker logs <container ID>
               "
-       sleep 10
+       sleep 5
 }
 
 f_clean_docker(){
 
     f_banner ""
 
-    for i in nsx-t-install vmw-cli
+    for i in nsx-t-install vmw-cli concourse_concourse-worker concourse_concourse-web concourse_concourse-db
     do
         var1=`docker ps -a |grep $i |awk '{print $1}'`
         if [ ! -z $var1 ] ; then
