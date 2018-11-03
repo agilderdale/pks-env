@@ -154,9 +154,10 @@ f_passwd(){
         else
             prompt='*'
             password+="$char"
-            echo $password
         fi
     done
+
+    echo $password
 
 }
 
