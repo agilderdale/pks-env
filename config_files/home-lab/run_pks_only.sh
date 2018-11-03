@@ -39,12 +39,10 @@ PIPELINE_NAME=pks-install
 echo "logging into concourse at $CONCOURSE_URL"
 fly -t $CONCOURSE_TARGET sync
 fly --target $CONCOURSE_TARGET login --insecure --concourse-url $CONCOURSE_URL -n main
-echo "setting the NSX-t install pipeline $PIPELINE_NAME"
 #fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
 #yes | $fly_reset_cmd
-echo "unpausing the pipepline $PIPELINE_NAME"
-fly -t $CONCOURSE_TARGET unpause-pipeline -p $PIPELINE_NAME
 if [[ ! -e ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} ]]; then
+    echo "setting the NSX-t install pipeline $PIPELINE_NAME"
     if [[ ! -e ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} ]]; then
         fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
         yes | $fly_reset_cmd
@@ -52,6 +50,8 @@ if [[ ! -e ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} ]]; then
         fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME}"
         yes | $fly_reset_cmd
     fi
+    echo "unpausing the pipepline $PIPELINE_NAME"
+    fly -t $CONCOURSE_TARGET unpause-pipeline -p $PIPELINE_NAME
 fi
 
 #fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME}"
