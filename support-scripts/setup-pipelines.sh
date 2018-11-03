@@ -207,8 +207,17 @@ f_start_docker(){
 }
 
 f_clean_docker(){
-    docker rm -f vmw-cli nsx-t-install
-    f_verify
+
+    for i in nsx-t-install vmw-cli
+    do
+        var1=`docker ps -a | awk '{print $8}' |grep $i`
+        if [ ! -z $var1 ] ; then
+            docker rm -f $i
+            f_verify
+        else
+            f_info "$i does not exist - SKIPPING..."
+        fi
+    done
 }
 
 f_init(){
