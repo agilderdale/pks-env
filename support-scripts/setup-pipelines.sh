@@ -12,7 +12,7 @@ CONCOURSE_IP=''
 EXTERNAL_DNS=''
 VMWARE_USER=''
 VMWARE_PASSWORD=''
-NSXT_VERSION=2.3
+NSXT_VERSION=2.3.0
 CONFIG_DIR='/DATA/GIT-REPOS/pks-env/config_files/home-lab'
 
 f_banner(){
@@ -76,15 +76,15 @@ f_intro() {
 }
 
 f_main_menu() {
-    clear
     while true; do
+        clear
         echo "*******************************************************************************************"
         echo "  What would you like to do today?"
         echo "*******************************************************************************************"
         echo "  Available options:"
         echo "  p - setup PKS and NSX-T pipelines"
         echo "  t - test variables"
-        echo "  c - clean up docker"
+        echo "  c - clean-up concourse docker containers"
         echo "  o - download ovftool"
         echo "  n - download nsx-t-appliance 2.3"
         echo "  e - exit"
@@ -119,7 +119,11 @@ f_main_menu() {
         esac
 
         f_info "Following variables have been used:"
+        echo ""
+        echo "-------------------------------------------------------------------------------------------"
         cat /tmp/pks_variables
+        echo "-------------------------------------------------------------------------------------------"
+        echo ""
 
         rm -Rf /tmp/.secret >/dev/null
 
