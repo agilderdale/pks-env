@@ -78,7 +78,7 @@ f_choice_question() {
         echo "  c - clean up docker"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (p|e|t|c): " pet
+        read -p "   Select one of the options? (p|e|t|c): " petc
 
         case $petc in
             [Pp]* ) clear;
