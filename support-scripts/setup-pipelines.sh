@@ -97,9 +97,9 @@ f_choice_question() {
                     f_start_docker;
                     ;;
             [Tt]* ) clear;
-                    f_passwd VMWARE_PASSWORD;
-                    source /tmp/.secret;
-                    echo "VMWARE_PASSWORD="$VMWARE_PASSWORD;
+#                    f_passwd VMWARE_PASSWORD;
+#                    source /tmp/.secret;
+#                    echo "VMWARE_PASSWORD="$VMWARE_PASSWORD;
                     f_init;
                     ;;
             [Cc]* ) clear;
@@ -139,7 +139,7 @@ f_input_vars() {
     echo "-------------------------------------------------------------------------------------------"
 }
 
-f_passwd(){
+f_input_vars_sec(){
 
     if [ ! -f /tmp/.secret ] ; then
         touch /tmp/secret
@@ -174,21 +174,24 @@ f_passwd(){
 
     echo ""
     echo "export $1=${!1}" > /tmp/.secret
-}
-
-f_input_vars_sec() {
-
-
-    read -sp "$1: " $1
-    echo
-    if [[ -z ${!1} ]]
-    then
-        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
-        exit 1
-    fi
     echo "Set: $1 = **************"
     echo "-------------------------------------------------------------------------------------------"
+
 }
+
+#f_input_vars_sec() {
+#
+#
+#    read -sp "$1: " $1
+#    echo
+#    if [[ -z ${!1} ]]
+#    then
+#        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+#        exit 1
+#    fi
+#    echo "Set: $1 = **************"
+#    echo "-------------------------------------------------------------------------------------------"
+#}
 
 f_install_packages() {
 
