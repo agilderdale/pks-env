@@ -246,7 +246,7 @@ f_download_vmmare_repo(){
         mkdir -p /DATA/GIT-REPOS/
     fi
 
-    if [ ! -f /tmp/nsx-t-install.tar ] && [ $DOCKER_IMAGE_VERSION -ne "latest" ] ; then
+    if [ ! -f /tmp/nsx-t-install.tar ] && [ "$DOCKER_IMAGE_VERSION" -ne "latest" ] ; then
         wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O /tmp/nsx-t-install.tar
         docker load -i /tmp/nsx-t-install.tar
         f_verify
