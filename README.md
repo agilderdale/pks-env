@@ -1,6 +1,4 @@
-# pks-env
-
-Setup PKS Client VM from standard Ubuntu image:
+## pks-env
 
 # setup-pks-client.sh
 
