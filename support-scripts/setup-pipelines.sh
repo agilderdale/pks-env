@@ -97,7 +97,7 @@ f_choice_question() {
                     f_start_docker;
                     ;;
             [Tt]* ) clear;
-                    f_passwd;
+                    f_passwd TEST_VAR;
                     f_init;
                     ;;
             [Cc]* ) clear;
@@ -108,28 +108,6 @@ f_choice_question() {
         esac
     done
     echo "*******************************************************************************************"
-
-}
-
-f_passwd(){
-
-    unset password
-    echo -n "Enter password: "
-    while IFS= read -p "$prompt" -r -s -n 1 char
-    do
-        # Enter - accept password
-        if [[ $char == $'\0' ]] ; then
-            break
-        fi
-        # Backspace
-        if [[ $char == $'\177' ]] ; then
-            prompt=$'\b \b'
-            password="${password%?}"
-        else
-            prompt='*'
-            password+="$char"
-        fi
-    done
 
 }
 
@@ -159,7 +137,31 @@ f_input_vars() {
     echo "-------------------------------------------------------------------------------------------"
 }
 
+f_passwd(){
+
+    unset password
+    echo -n "$1: "
+    while IFS= read -p "$prompt" -r -s -n 1 char
+    do
+        # Enter - accept password
+        if [[ $char == $'\0' ]] ; then
+            break
+        fi
+        # Backspace
+        if [[ $char == $'\177' ]] ; then
+            prompt=$'\b \b'
+            password="${password%?}"
+        else
+            prompt='*'
+            password+="$char"
+            echo $password
+        fi
+    done
+
+}
+
 f_input_vars_sec() {
+
 
     read -sp "$1: " $1
     echo
