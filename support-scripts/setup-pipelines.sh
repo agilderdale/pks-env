@@ -164,18 +164,16 @@ f_passwd(){
         fi
     done
 
+    declare $var=$password
+
     if [[ -z ${!1} ]]
     then
         f_error "The $1 variable has no default value!!! User input is required - EXITING! "
         exit 1
     fi
 
-    declare $var=$password
-    echo "export $1=${!1}" > /tmp/.secret
-
     echo ""
-#    echo "$password"
-#    echo "$1=${!1}"
+    echo "export $1=${!1}" > /tmp/.secret
 }
 
 f_input_vars_sec() {
