@@ -160,6 +160,7 @@ f_passwd(){
     done
 
     declare $var=$password
+    echo "$1=${!1}"
 
     if [[ -z ${!1} ]]
     then
