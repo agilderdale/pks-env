@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-
-#!/usr/bin/env bash
 # Set this via a env var
 # CONCOURSE_URL="http://10.33.75.99:8080"
 # EXTERNAL_DNS=<dns_ip>
