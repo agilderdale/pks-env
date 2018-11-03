@@ -61,7 +61,7 @@ f_intro() {
     echo "  ====================================================="
     echo ""
     while true; do
-        read -p "    Do you wish to start? (y/n): " yn
+        read -p "    Do you wish to continue? (y/n): " yn
         case $yn in
             [Yy]* ) break;;
             [Nn]* ) echo "            =============="
@@ -180,7 +180,7 @@ f_input_vars_sec(){
 
     echo ""
     echo "export $1=${!1}" > /tmp/.secret
-    echo "Set: $1 = **************"
+    echo "Set: $1 = [ secret ]"
     echo "-------------------------------------------------------------------------------------------"
 
 }
