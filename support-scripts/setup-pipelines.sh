@@ -95,6 +95,9 @@ f_choice_question() {
                     f_input_vars_sec VMWARE_PASSWORD;
                     f_input_vars NSXT_VERSION;
                     ;;
+            [Cc]* ) clear;
+                    f_clean_docker;
+                    break;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
         esac
@@ -201,6 +204,11 @@ f_start_docker(){
               docker logs <container ID> \n
               "
        sleep 10
+}
+
+f_clean_docker(){
+    docker rm -f vmw-cli nsx-t-install
+    f_verify
 }
 
 f_init(){
