@@ -110,6 +110,11 @@ f_choice_question() {
 }
 
 f_input_vars() {
+
+    if [ -f /tmp/pks_variables_old ] ; then
+        source /tmp/pks_variables_old
+    fi
+
     var=$1
     temp=${!1}
     read -p "Set $1 [ default: ${!1} ]: " $1
@@ -251,6 +256,7 @@ f_init(){
 if [ ! -f /tmp/pks_variables ] ; then
     touch /tmp/pks_variables
 else
+    cp /tmp/pks_variables /tmp/pks_variables_old
     >/tmp/pks_variables
 fi
 
