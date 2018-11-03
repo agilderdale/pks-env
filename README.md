@@ -1,7 +1,8 @@
 # pks-env
-Supporting files for PKS opetational
 
 Setup PKS Client VM from standard Ubuntu image:
+
+# setup-pks-client.sh
 
 This script is for setting up PKS Client VM from the scratch.
 Only basic Ubuntu image is required - I personally use Ubuntu Desktop version to have browser:
@@ -10,6 +11,8 @@ https://www.ubuntu.com/download/desktop
 Run as root:
 
 sudo bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pks-client.sh)"
+
+# setup-pks-pipelines.sh
 
 This script is for setting up concourse pipeline to run NSX-T and PKS install and config.
 Tested on Ubuntu 18.04 LTS
