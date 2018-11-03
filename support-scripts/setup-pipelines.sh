@@ -327,6 +327,7 @@ f_clean_docker(){
         fi
     done
     docker volume prune
+    docker system prune
     docker ps -a
     echo "-------------------------------------------------------------------------------------------"
 }
