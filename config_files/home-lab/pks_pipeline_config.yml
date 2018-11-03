@@ -4,7 +4,7 @@ opsman_major_minor_version: ^2\.3.*$   # PCF Ops Manager minor version to track
 pks_major_minor_version: ^1\.2\.0.*$         # use PKS v1.1
 
 # vCenter configuration
-vcenter_host: manager.mylab.local             # vCenter host or IP
+vcenter_host: 10.173.61.22             # vCenter host or IP
 vcenter_usr: administrator@vsphere.local             # vCenter username. If user is tied to a domain, then escape the \, example `domain\\user`
 vcenter_pwd: "VMware1!"          # vCenter password
 vcenter_data_center: Datacenter       # vCenter datacenter
@@ -80,7 +80,7 @@ infra_nw_azs: MGMT-AZ1       # Comma separated list of AZ's to be associated wit
 
 nsx_networking_enabled: true              # (true|false) to use nsx networking feature. PKS v1.1+ requires it to be true
 nsx_mode: nsx-t                           # Valid values: nsx-t, nsx-v
-nsx_address: manager.mylab.local    # address of Nsx Mgr FQDN, not IP
+nsx_address: 10.173.61.23    # address of Nsx Mgr FQDN, not IP
 nsx_username: admin                       # username for nsx access
 nsx_password: "VMware1!"                # password for nsx access
 
