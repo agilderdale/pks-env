@@ -20,8 +20,7 @@ if [[ ! -e ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} ]]; then
 fi
 
 if [[ ! -e ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} ]]; then
-        echo "Config file ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} not found, exiting"
-        exit 1
+        echo "Config file ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} not found - ignoring"
 fi
 
 pipeline_internal_config="pipeline_config_internal.yml"
@@ -45,8 +44,16 @@ echo "setting the NSX-t install pipeline $PIPELINE_NAME"
 #yes | $fly_reset_cmd
 echo "unpausing the pipepline $PIPELINE_NAME"
 fly -t $CONCOURSE_TARGET unpause-pipeline -p $PIPELINE_NAME
-fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
-yes | $fly_reset_cmd
+if [[ ! -e ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} ]]; then
+    if [[ ! -e ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME} ]]; then
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
+        yes | $fly_reset_cmd
+    else
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME}"
+        yes | $fly_reset_cmd
+    fi
+fi
+
 #fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/install-pks-pipeline.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE_NAME}"
 #yes | $fly_reset_cmd
 # add an alias for set-pipeline command
