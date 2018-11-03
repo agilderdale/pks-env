@@ -15,6 +15,7 @@ VMWARE_USER=''
 VMWARE_PASSWORD=''
 NSXT_VERSION=2.3.0
 CONFIG_DIR='/DATA/GIT-REPOS/pks-env/config_files/home-lab'
+DOCKER_IMAGE_VERSION=latest
 
 f_banner(){
     today=`date +%d-%m-%y_%H:%M:%S`
@@ -295,7 +296,7 @@ f_start_docker(){
       -e VMWARE_USER="$VMWARE_USER" \
       -e VMWARE_PASSWORD="$VMWARE_PASSWORD" \
       -e NSXT_VERSION="$NSXT_VERSION" \
-      nsx-t-install:0.1
+      nsx-t-install:${DOCKER_IMAGE_VERSION}
 
       f_banner "
                      nsx-t-install docker container has been launched. Exit this script and type:
@@ -342,6 +343,7 @@ f_init(){
     f_input_vars CONFIG_DIR
     f_input_vars VMWARE_USER
     f_input_vars_sec VMWARE_PASSWORD
+    f_input_vars DOCKER_IMAGE_VERSION
 
     source /tmp/pks_variables
     source /tmp/.secret
