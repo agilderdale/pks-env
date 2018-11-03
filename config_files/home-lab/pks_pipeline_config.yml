@@ -23,7 +23,7 @@ om_ntp_servers: 10.173.61.33       # Comma-separated list of NTP Servers
 om_dns_servers: 10.173.61.33              # Comma-separated list of DNS Servers
 om_gateway: 192.168.50.1                # Gateway for Ops Manager network
 om_netmask: 255.255.255.0             # Netmask for Ops Manager network
-om_ip: 192.168.50.2                     # IP to assign to Ops Manager VM
+om_ip: 23.23.23.2                     # IP to assign to Ops Manager VM
 om_vm_network: PKS-Infra              # vCenter network name to use to deploy Ops Manager in
 om_vm_name: opsmanager         # Name to use for Ops Manager VM
 opsman_disk_type: "thin"  # Disk type for Ops Manager VM (thick|thin)
@@ -105,7 +105,7 @@ pks_tile_uaa_domain_prefix: api # Would be used for UAA as ${prefix}.${pks_syste
 
 # IMPORTANT DNS RESOLUTION FOR PKS CONTROLLER
 # External IP that would be routable via the NSX T0 Router and mapped to ${pks_tile_uaa_domain_prefix}.${pks_system_domain}
-pks_tile_uaa_system_domain_ip: 10.173.61.28
+pks_tile_uaa_system_domain_ip: 23.23.23.4
 
 pks_tile_cli_username: pksadmin
 pks_tile_cli_password: "VMware1!"
