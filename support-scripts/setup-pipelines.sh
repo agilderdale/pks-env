@@ -95,8 +95,7 @@ f_main_menu() {
             [Nn]* ) clear;
                     f_init;
                     f_install_packages;
-                    f_download_vmmare_repo;
-                    f_start_docker;
+                    f_download_nsx;
                     ;;
             [Oo]* ) clear;
                     f_init;
@@ -253,7 +252,6 @@ f_download_vmmare_repo(){
 }
 
 f_download_ovftool(){
-    npm install vmw-cli --global
     source /tmp/pks_variables
     source /tmp/.secret
 
@@ -263,7 +261,6 @@ f_download_ovftool(){
 }
 
 f_download_nsx(){
-    npm install vmw-cli --global
     source /tmp/pks_variables
     source /tmp/.secret
 
