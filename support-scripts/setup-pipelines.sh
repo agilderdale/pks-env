@@ -89,9 +89,9 @@ f_main_menu() {
         echo "  n - download nsx-t-appliance 2.3"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (p|e|t|c): " petcno
+        read -p "   Select one of the options? (p|e|t|c|o|n): " petcon
 
-        case $petcno in
+        case $petcon in
             [Nn]* ) clear;
                     f_init;
                     f_install_packages;
