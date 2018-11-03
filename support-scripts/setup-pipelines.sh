@@ -108,6 +108,14 @@ f_choice_question() {
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
         esac
+
+        f_info "Following variables have been used:"
+        cat /tmp/pks_variables
+
+        rm -Rf /tmp/.secret >/dev/null
+
+        f_info "Pipeline task - COMPLETED"
+
     done
     echo "*******************************************************************************************"
 
