@@ -141,6 +141,7 @@ f_choice_question() {
 
 }
 
+
 f_input_vars() {
     var=$1
     temp=${!1}
