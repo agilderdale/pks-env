@@ -160,7 +160,7 @@ f_passwd(){
     echo ""
     echo "$password"
     set $1=$password
-    echo $1=${!1}
+    echo "$1=${!1}"
 }
 
 f_input_vars_sec() {
