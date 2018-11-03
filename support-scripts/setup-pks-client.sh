@@ -7,7 +7,7 @@
 # Some commands has been used from from pks-prep bdereims@vmware.com
 #Tested on Ubuntu 18.04 LTS
 # run this script as sudo
-# bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/pks-client-setup.sh)"
+# bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pks-client.sh)"
 
 BINDIR=/usr/local/bin
 BOSHRELEASE=5.3.1
