@@ -275,7 +275,7 @@ f_clean_docker(){
 
     for i in nsx-t-install vmw-cli
     do
-        var1=`docker ps -a | awk '{print $8}' |grep $i`
+        var1=`docker ps -a |grep $i |awk '{print $1}'`
         if [ ! -z $var1 ] ; then
             docker rm -f $i
             f_verify
