@@ -7,7 +7,7 @@
 
 
 BINDIR=/usr/local/bin
-BITSDIR=/DATA/bits
+#BITSDIR=/DATA/bits
 CONCOURSE_IP=''
 EXTERNAL_DNS=''
 VMWARE_USER=''
@@ -97,9 +97,6 @@ f_choice_question() {
                     f_start_docker;
                     ;;
             [Tt]* ) clear;
-#                    f_passwd VMWARE_PASSWORD;
-#                    source /tmp/.secret;
-#                    echo "VMWARE_PASSWORD="$VMWARE_PASSWORD;
                     f_init;
                     ;;
             [Cc]* ) clear;
@@ -115,6 +112,7 @@ f_choice_question() {
         rm -Rf /tmp/.secret >/dev/null
 
         f_info "Pipeline task - COMPLETED"
+        sleep 5
 
     done
     echo "*******************************************************************************************"
@@ -291,24 +289,24 @@ f_clean_docker(){
 f_init(){
 
     f_banner ""
-    f_input_vars BITSDIR
+#    f_input_vars BITSDIR
 #    CONCOURSE_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
     f_input_vars CONCOURSE_IP
     f_input_vars EXTERNAL_DNS
-    f_input_vars VMWARE_USER
-    f_input_vars_sec VMWARE_PASSWORD
     f_input_vars NSXT_VERSION
     f_input_vars CONFIG_DIR
+    f_input_vars VMWARE_USER
+    f_input_vars_sec VMWARE_PASSWORD
 
     source /tmp/pks_variables
     source /tmp/.secret
 
-    if [[ ! -e $BITSDIR ]]
-    then
-        f_info "Creating $BITSDIR directory:"
-        mkdir -p $BITSDIR;
-        f_verify
-    fi
+#    if [[ ! -e $BITSDIR ]]
+#    then
+#        f_info "Creating $BITSDIR directory:"
+#        mkdir -p $BITSDIR;
+#        f_verify
+#    fi
 }
 
 #####################################
@@ -325,11 +323,4 @@ fi
 
 f_startup_question
 f_choice_question
-
-f_info "Following variables have been used:"
-cat /tmp/pks_variables
-
-rm -Rf /tmp/.secret >/dev/null
-
-f_info "Pipeline task - COMPLETED"
 
