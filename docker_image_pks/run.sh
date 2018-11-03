@@ -126,11 +126,10 @@ source ~/.bashrc
 f_pipeline(){
     # using fly to start the pipeline
     CONCOURSE_TARGET=nsx-concourse
-    PRODUCT=$1
-    INSTALL_YML=$2
-    GIT_REPO=$3
-    CONFIG_FILE=$4
-    HARBOR_FILE=$5
+    PIPELINE_NAME=${2}
+    pipeline_dir=${ROOT_WORK_DIR}/${1}
+    CONFIG_FILE=$3
+    HARBOR_FILE=$4
 
     echo "Logging into concourse at $CONCOURSE_URL"
     fly -t $CONCOURSE_TARGET sync
@@ -138,12 +137,17 @@ f_pipeline(){
 
     echo "Setting the ${PRODUCT}-install pipeline"
     if [ ! -z $HARBOR_FILE ] ; then
-        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p ${PRODUCT}-install -c ${ROOT_WORK_DIR}/${GIT_REPO}/pipelines/${INSTALL_YML} -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE}"
+#        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/nsx-t-install.yml -l ${BIND_MOUNT_DIR}/${pipeline_internal_config} -l ${BIND_MOUNT_DIR}/${CONFIG_FILE_NAME}"
+#        yes | $fly_reset_cmd
+
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/${PIPELINE_NAME}.yml -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE} -l ${BIND_MOUNT_DIR}/${HARBOR_FILE}"
+        yes | $fly_reset_cmd
     else
-        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p ${PRODUCT}-install -c ${ROOT_WORK_DIR}/${GIT_REPO}/pipelines/${INSTALL_YML} -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE}"
+        fly_reset_cmd="fly -t $CONCOURSE_TARGET set-pipeline -p $PIPELINE_NAME -c ${pipeline_dir}/pipelines/${PIPELINE_NAME}.yml -l ${BIND_MOUNT_DIR}/pipeline_config_internal.yml -l ${BIND_MOUNT_DIR}/${CONFIG_FILE}"
+        yes | $fly_reset_cmd
     fi
 
-    yes | $fly_reset_cmd
+#    yes | $fly_reset_cmd
 
     echo "Unpausing the ${PRODUCT}-install pipepline:"
     fly -t $CONCOURSE_TARGET unpause-pipeline -p ${PRODUCT}-install
@@ -158,9 +162,9 @@ f_pipeline(){
 # Checking and uploading PKS and Harbor pipeline
 if [ -f ${BIND_MOUNT_DIR}/pks_pipeline_config.yml ] ; then
     if [ -f ${BIND_MOUNT_DIR}/harbor_pipeline_config.yml ] ; then
-        f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
+        f_pipeline nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml harbor_pipeline_config.yml
     else
-        f_pipeline pks install-pks-pipeline.yml nsx-t-ci-pipeline pks_pipeline_config.yml
+        f_pipeline nsx-t-ci-pipeline install-pks-pipeline pks_pipeline_config.yml
     fi
 fi
 
