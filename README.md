@@ -2,8 +2,8 @@
 
 ## support-scripts/setup-pks-client.sh
 
-This script is for setting up PKS Client VM from the scratch.
-Only basic Ubuntu image is required - I personally use Ubuntu Desktop version to have browser:
+This script is for setting up PKS Client VM from scratch.
+Only basic Ubuntu image is required - I personally use Ubuntu Desktop to get the browser for application testing:
 https://www.ubuntu.com/download/desktop
 #Tested on Ubuntu 18.04 LTS
 Run as root:
@@ -12,7 +12,7 @@ sudo bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/
 ```
 ## support-scripts/setup-pks-pipelines.sh
 
-This script is for setting up concourse pipeline to run NSX-T and PKS install and config.
+This script allows you to set up Concourse pipelines used to install and configure NSX-T, PKS and Harbor.
 Tested on Ubuntu 18.04 LTS
 Run as root:
 
