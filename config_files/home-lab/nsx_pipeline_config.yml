@@ -50,7 +50,7 @@ vtep_ip_pool_end: 192.168.213.200
 
 # Tier 0 router
 tier0_router_name: DefaultT0Router
-tier0_uplink_port_ip: 10.173.61.35    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
+tier0_uplink_port_ip: 10.173.61.40    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
 tier0_uplink_port_subnet: 24
 tier0_uplink_next_hop_ip: 10.173.61.33
 tier0_uplink_port_ip_2:
