@@ -372,6 +372,12 @@ f_init(){
 #####################################
 # MAIN
 #####################################
+if [ ! -d /home/concourse ] ; then
+    mkdir -p /home/concourse
+else
+    f_info "/home/concourse exists - SKIPPING..."
+fi
+
 rm -Rf /tmp/.secret >/dev/null
 
 f_intro
