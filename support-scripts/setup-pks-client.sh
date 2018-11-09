@@ -182,24 +182,54 @@ f_install_packages() {
     add-apt-repository universe
     f_verify
     apt-get update ; sudo apt-get upgrade
-    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
-    apt-get install -y zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
-    apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
+
+    for pkg in docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools nodejs
+    do
+        dpkg-query -l $pkg > /dev/null 2>&1
+        response=`echo $?`
+        if [ $response -ne 0 ] ; then
+            apt-get install -y $pkg
+        else
+            pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
+            f_info "Already INSTALLED => $pks_version"
+        fi
+    done
+#    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
+#    apt-get install -y zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
+#    apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools
 
     f_info "Installing vmw-cli tool"
-    # vwm-cli - requires nodejs >=8
-    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    apt-get install -y nodejs
-    npm install vmw-cli --global
-    f_verify
+
+    npm list --depth 1 --global vmw-cli > /dev/null 2>&1
+    response=`echo $?`
+
+    if [ $response -ne 0 ] ; then
+        # vwm-cli - requires nodejs >=8
+        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    #    apt-get install -y nodejs
+        npm install vmw-cli --global
+        f_verify
+    else
+        f_info "Already INSTALLED "
+        npm list --depth 1 --global vmw-cli
+    fi
 }
 
 
 f_install_uaac_cli() {
     f_info "Installing UAAC tool"
-    # uuac
-    gem install cf-uaac
-    f_verify
+
+    gem list uaac > /dev/null 2>&1
+    response=`echo $?`
+
+    if [ $response -ne 0 ] ; then
+        # uuac
+        gem install cf-uaac
+        f_verify
+    else
+        f_info "UAAC tool already INSTALLED "
+        gem list uaac |grep cf-uaac
+    fi
 }
 
 f_install_kubectl_cli() {
