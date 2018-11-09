@@ -176,6 +176,7 @@ f_input_vars_sec() {
 
 f_install_packages() {
 
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Updating OS and installing packages"
     add-apt-repository universe
     f_verify
@@ -189,13 +190,14 @@ f_install_packages() {
             apt-get install -y $pkg
         else
             pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
-            f_info "Already installled => $pkg_version - skippping..."
+            f_info "Already installed => $pkg_version - skippping..."
         fi
     done
 #    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
 #    apt-get install -y zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
 #    apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools
 
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing vmw-cli tool"
 
     npm list --depth 1 --global vmw-cli > /dev/null 2>&1
@@ -208,13 +210,14 @@ f_install_packages() {
         npm install vmw-cli --global
         f_verify
     else
-        f_info "Already INSTALLED "
+        f_info "Already installed - skipping... "
         npm list --depth 1 --global vmw-cli
     fi
 }
 
 
 f_install_uaac_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing UAAC tool"
 
     gem list uaac > /dev/null 2>&1
@@ -231,6 +234,7 @@ f_install_uaac_cli() {
 }
 
 f_install_kubectl_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing kubectl CLI"
     # kubectl
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -244,6 +248,7 @@ f_install_kubectl_cli() {
 }
 
 f_install_bosh_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing bosh CLI"
     # bosh
     curl -LO https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-${BOSHRELEASE}-linux-amd64
@@ -259,6 +264,7 @@ f_install_bosh_cli() {
 }
 
 f_install_om_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing OpsManager CLI"
     # om
     curl -LO https://github.com/pivotal-cf/om/releases/download/${OMRELEASE}/om-linux
@@ -274,6 +280,7 @@ f_install_om_cli() {
 }
 
 f_install_helm_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing Helm CLI"
     # helm
     curl -LO https://kubernetes-helm.storage.googleapis.com/helm-v${HELMRELEASE}-linux-amd64.tar.gz
@@ -293,6 +300,7 @@ f_install_helm_cli() {
 }
 
 f_install_pivnet_cli() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Installing pivnet CLI"
     # pivnet cli
     curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNETRELEASE}/pivnet-linux-amd64-${PIVNETRELEASE}
