@@ -189,7 +189,7 @@ f_install_packages() {
             apt-get install -y $pkg
         else
             pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
-            f_info "Already INSTALLED => $pks_version"
+            f_info "Already installled => $pkg_version - skippping..."
         fi
     done
 #    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
