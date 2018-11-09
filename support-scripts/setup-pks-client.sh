@@ -228,7 +228,7 @@ f_install_uaac_cli() {
         gem install cf-uaac
         f_verify
     else
-        f_info "UAAC tool already INSTALLED "
+        f_info "UAAC tool Already installed - skipping..."
         gem list uaac |grep cf-uaac
     fi
 }
