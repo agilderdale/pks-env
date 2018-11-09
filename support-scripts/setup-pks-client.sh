@@ -337,6 +337,7 @@ f_install_pks_cli() {
 }
 
 f_verify_cli_tools() {
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Verifying installed CLI tools"
     if pks --version 2> /dev/null | grep -q 'PKS CLI version' ; then version=`pks --version |awk '{print $4}'` ; echo "$version                          <= PKS CLI       | OK" ; else echo "   PKS CLI FAILED" ;fi
     if kubectl version 2> /dev/null | grep -q 'Client Version:' ; then version=`kubectl version 2>/dev/null |awk '{print $5}'` ; echo "$version                    <= kubectl CLI   | OK" ; else echo "   kubectl CLI FAILED" ;fi
@@ -346,10 +347,11 @@ f_verify_cli_tools() {
     echo""
     f_info "Installing verify CLI tools - COMPLETED"
     sleep 5
+    echo "-------------------------------------------------------------------------------------------"
 }
 
 f_download_git_repos() {
-
+    echo "-------------------------------------------------------------------------------------------"
     f_info "Downloading supporting github repos"
     if [[ ! -e /DATA/GIT-REPOS ]]; then
         mkdir -p /DATA/GIT-REPOS/
