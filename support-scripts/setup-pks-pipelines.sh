@@ -49,7 +49,7 @@ f_verify(){
     fi
 }
 
-f_intro() {
+f_startup_question() {
     clear
     echo "  ====================================================="
     echo "  ====================================================="
@@ -380,6 +380,6 @@ fi
 
 rm -Rf /tmp/.secret >/dev/null
 
-f_intro
+f_startup_question
 f_main_menu
 
