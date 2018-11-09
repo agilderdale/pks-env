@@ -358,11 +358,8 @@ f_download_git_repos() {
     fi
 
     git clone https://github.com/bdereims/pks-prep.git
-    f_verify
     git clone https://github.com/vmware/nsx-t-datacenter-ci-pipelines.git
-    f_verify
     git clone https://github.com/sparameswaran/nsx-t-ci-pipeline.git
-    f_verify
     f_info "Download git repos - COMPLETED"
 
 }
