@@ -370,10 +370,10 @@ f_init(){
     if [ -z $CONCOURSE_IP ] ; then
         CONCOURSE_IP=$(hostname -I)
     fi
-    f_input_vars CONCOURSE_IP "IP address that concourse will be running on - it is the hostname IP that you run this script on. This IP will be used for accessing Concourse URL"
-    f_input_vars EXTERNAL_DNS
-    f_input_vars NSXT_VERSION
-    f_input_vars CONFIG_DIR
+    f_input_vars CONCOURSE_IP "Hostname IP that you run this script on. This IP will be used for accessing Concourse URL"
+    f_input_vars EXTERNAL_DNS "DNS IP used to resolve github.com, etc..."
+    f_input_vars NSXT_VERSION "Keep this version as 2.3.0 or more in the same format"
+    f_input_vars CONFIG_DIR "Directory that contains your predefined nsx_pipeline_config.yml, pks_pipeline_config.yml and/or harbor_pipeline_config.yml"
 
     if [[ -f /home/concourse/nsx-unified-appliance-2.3.0.0.0.10085405.ova ]] && [[ -f /home/concourse/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle ]]
     then
@@ -397,7 +397,7 @@ f_init(){
                 if you can't provide these credentials, please exist the script,copy downloaded packages to /home/concourse/
                 and execute the script again - you will not be asked  to provide credentials if the packages are already in the directory.
                 --------------------------------------------------"
-        f_input_vars VMWARE_USER
+        f_input_vars VMWARE_USER "VMware user to login to myvmware.com for downloading nsx and ovftool packages"
         f_input_vars_sec VMWARE_PASSWORD
     fi
 
