@@ -362,8 +362,23 @@ f_init(){
     f_input_vars EXTERNAL_DNS
     f_input_vars NSXT_VERSION
     f_input_vars CONFIG_DIR
-    f_input_vars VMWARE_USER
-    f_input_vars_sec VMWARE_PASSWORD
+
+    if [[ -f /home/concourse/nsx-unified-appliance-2.3.0.0.0.10085405.ova ]] && [[ -f /home/concourse/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle ]]
+    then
+        f_info "VMWARE_USER and VMWARE_PASSWORD not required as
+                nsx-unified-appliance-2.3.0.0.0.10085405.ova and
+                VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+                already in /home/concourse directory"
+    else
+        f_info "Packages:
+                nsx-unified-appliance-2.3.0.0.0.10085405.ova and
+                VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+                don't exist under /home/concourse directory -
+                VMWARE_USER and VMWARE_PASSWORD are required in order to download these packages"
+        f_input_vars VMWARE_USER
+        f_input_vars_sec VMWARE_PASSWORD
+    fi
+
     f_input_vars DOCKER_IMAGE_VERSION
 
     source /tmp/pks_variables
