@@ -15,13 +15,13 @@ vcenter_datastore: ISCSI-DATASTORE
 
 # NSX manager general network settings
 mgmt_portgroup: 'MGMT-PG'
-dns_server: 10.173.61.33
+dns_server: <IP_Placeholder>
 dns_domain: mylab.local
-ntp_servers: 10.173.61.33
-default_gateway: 10.173.61.253
+ntp_servers: <DNS_IP_Placeholder>
+default_gateway: <DNS_IP_Placeholder>
 netmask: 255.255.255.0
 
-nsx_manager_ip: 10.173.61.23
+nsx_manager_ip: <IP_Placeholder>
 nsx_manager_username: admin
 nsx_manager_password: "VMware1!"
 nsx_manager_assigned_hostname: "manager" # this hostname+dns_domain will be FQDN
@@ -50,15 +50,15 @@ vtep_ip_pool_end: 192.168.213.200
 
 # Tier 0 router
 tier0_router_name: DefaultT0Router
-tier0_uplink_port_ip: 10.173.61.40    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
+tier0_uplink_port_ip: <IP_Placeholder>    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
 tier0_uplink_port_subnet: 24
-tier0_uplink_next_hop_ip: 10.173.61.33
+tier0_uplink_next_hop_ip: <IP_Placeholder>
 tier0_uplink_port_ip_2:
 tier0_ha_vip:
 
 ## Controllers
-controller_ips: 10.173.61.24 #comma separated based on number of required controllers
-controller_default_gateway: 10.173.61.253
+controller_ips: <IP_Placeholder> #comma separated based on number of required controllers
+controller_default_gateway: <GW_IP_Placeholder>
 controller_ip_prefix_length: 24
 controller_hostname_prefix: controller # Generated hostname: controller-1.corp.local.io
 controller_cli_password: "VMware1!" # Min 8 chars, upper, lower, num, special char
@@ -71,8 +71,8 @@ vc_management_network_for_controller: "MGMT-PG"
 controller_shared_secret: "VMware1!"
 
 ## Edge nodes
-edge_ips: 10.173.61.25    #comma separated based in number of required edges
-edge_default_gateway: 10.173.61.253
+edge_ips: <IP_Placeholder>    #comma separated based in number of required edges
+edge_default_gateway: <GW_IP_Placeholder>
 edge_ip_prefix_length: 24
 edge_hostname_prefix: edge
 edge_transport_node_prefix: edge-transport-node
@@ -93,7 +93,7 @@ per_cluster_vlans: 1547  #Comma seprated, order of VLANs applied same as order o
 
 esx_ips: "" # additional esx hosts, if any, to be individually installed
 esx_os_version: "6.5.0"
-esx_root_password: "ca$hc0w"
+esx_root_password: "..."
 esx_hostname_prefix: "esx-host"
 
 esx_available_vmnic: vmnic1 # comma separated physical NICs, applies to both cluster installation or ESXi installation
