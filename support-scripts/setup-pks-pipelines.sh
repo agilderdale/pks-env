@@ -283,9 +283,13 @@ f_download_nsx(){
 
 f_build_nsx-t-install_image(){
 
-    wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
-    docker load -i nsx-t-install.tar
-
+    if [ ! -f /DATA/GIT-REPO/nsx-t-datacenter-ci-pipelines/docker_image/nsx-t-install-09122018.tar ]
+    then
+        wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
+        docker load -i nsx-t-install.tar
+    else
+        docker load -i /DATA/GIT-REPO/nsx-t-datacenter-ci-pipelines/docker_image/nsx-t-install-09122018.tar
+    fi
 }
 
 f_start_docker(){
