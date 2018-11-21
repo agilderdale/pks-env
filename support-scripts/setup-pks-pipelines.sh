@@ -91,7 +91,7 @@ f_main_menu() {
         echo "  n - download nsx-t-appliance 2.3.0"
         echo "  e - exit"
         echo "  NOTE: There are predefined default values for the variables - if you don't need to change them"
-        echo "        simply press 'ENTER' and it will set the default for the runtime"
+        echo "        simply press 'ENTER' and it will set the default for the runtimec"
         echo "*******************************************************************************************"
         read -p "   Select one of the options? (p|e|t|c|o|n): " petcon
 
