@@ -401,7 +401,7 @@ f_init(){
         f_input_vars_sec VMWARE_PASSWORD
     fi
 
-    f_input_vars DOCKER_IMAGE_VERSION
+    f_input_vars DOCKER_IMAGE_VERSION "nsx-t-install image version only if not the latest - latest is the default official image"
 
     source /tmp/pks_variables
     source /tmp/.secret
