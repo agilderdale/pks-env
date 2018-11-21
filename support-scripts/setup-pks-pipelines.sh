@@ -386,8 +386,7 @@ f_init(){
 
                 are already in /home/concourse directory"
     else
-        f_info "--------------------------------------------------
-                NOTE - Packages:
+        f_info "NOTE - Packages:
 
                 nsx-unified-appliance-2.3.0.0.0.10085405.ova
                 VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
@@ -398,8 +397,8 @@ f_init(){
 
                 if you can't provide these credentials, please exist the script,copy downloaded packages to /home/concourse/
                 and execute the script again - you will not be asked  to provide credentials if the packages are already in the directory.
-                --------------------------------------------------"
-        f_input_vars VMWARE_USER "VMware user to login to myvmware.com for downloading nsx and ovftool packages"
+                **********"
+        f_input_vars VMWARE_USER "VMware user to login to myvmware.com to download nsx and ovftool packages"
         f_input_vars_sec VMWARE_PASSWORD
     fi
 
