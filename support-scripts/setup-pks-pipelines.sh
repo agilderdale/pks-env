@@ -147,7 +147,7 @@ f_input_vars() {
 
     var=$1
     temp=${!1}
-    if [ ! -z $COMMENT ] ; then
+    if [ ! -z "$COMMENT" ] ; then
         echo "$COMMENT"
     fi
     read -p "Set $1 [ default: ${!1} ]: " $1
