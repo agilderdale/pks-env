@@ -362,6 +362,9 @@ f_init(){
         >/tmp/pks_variables
     fi
 
+    if [ -z $CONCOURSE_IP ] ; then
+        CONCOURSE_IP=$(hostname -I)
+    fi
     f_input_vars CONCOURSE_IP
     f_input_vars EXTERNAL_DNS
     f_input_vars NSXT_VERSION
