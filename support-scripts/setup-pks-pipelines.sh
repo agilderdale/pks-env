@@ -227,7 +227,7 @@ f_install_packages() {
     apt-get install -y openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
     apt-get install -y net-tools zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
     apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm
-    apt install docker.io
+    apt install -y docker.io
 
     f_info "Installing vmw-cli tool"
     # vwm-cli - requires nodejs >=8
