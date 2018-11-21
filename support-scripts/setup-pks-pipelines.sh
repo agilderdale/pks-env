@@ -281,11 +281,20 @@ f_download_nsx(){
     vmw-cli get nsx-unified-appliance-2.3.0.0.0.10085405.ova
 }
 
+f_build_nsx-t-install_image(){
+
+    wget https://github.com/vmware/nsx-t-datacenter-ci-pipelines/raw/master/docker_image/nsx-t-install-09122018.tar -O nsx-t-install.tar
+    docker load -i nsx-t-install.tar
+
+}
+
 f_start_docker(){
 
     f_banner ""
     source /tmp/pks_variables
     source /tmp/.secret
+
+    f_build_nsx-t-install_image
 
     docker run --name nsx-t-install -d \
       -v /var/run/docker.sock:/var/run/docker.sock \

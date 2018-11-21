@@ -198,19 +198,19 @@ f_install_packages() {
 #    apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools
 
     echo "-------------------------------------------------------------------------------------------"
-    f_info "Installing vmw-cli tool"
 
     npm list --depth 1 --global vmw-cli > /dev/null 2>&1
     response=`echo $?`
 
     if [ $response -ne 0 ] ; then
+        f_info "Installing vmw-cli tool..."
         # vwm-cli - requires nodejs >=8
         curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     #    apt-get install -y nodejs
         npm install vmw-cli --global
         f_verify
     else
-        f_info "Already installed - skipping... "
+        f_info "vmw-cli already installed - skipping... "
         npm list --depth 1 --global vmw-cli
     fi
 }
@@ -218,12 +218,12 @@ f_install_packages() {
 
 f_install_uaac_cli() {
     echo "-------------------------------------------------------------------------------------------"
-    f_info "Installing UAAC tool"
 
     gem list uaac > /dev/null 2>&1
     response=`echo $?`
 
     if [ $response -ne 0 ] ; then
+        f_info "Installing UAAC tool..."
         # uuac
         gem install cf-uaac
         f_verify
@@ -235,6 +235,13 @@ f_install_uaac_cli() {
 
 f_install_kubectl_cli() {
     echo "-------------------------------------------------------------------------------------------"
+    if kubectl version 2> /dev/null | grep -q 'Client Version:'
+    then
+        version=`kubectl version 2>/dev/null |awk '{print $5}'`
+        echo "$version                    <= kubectl CLI   | OK"
+    else
+        echo "   kubectl CLI FAILED" ;fi
+
     f_info "Installing kubectl CLI"
     # kubectl
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
