@@ -1,10 +1,10 @@
 # Pipeline resource configuration
-pivnet_token: dc_esrsyuLqPoKd6S6Cs    # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
+pivnet_token: dc_...d6S6Cs    # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
 opsman_major_minor_version: ^2\.3.*$   # PCF Ops Manager minor version to track
 pks_major_minor_version: ^1\.2\.0.*$         # use PKS v1.1
 
 # vCenter configuration
-vcenter_host: 10.173.61.22             # vCenter host or IP
+vcenter_host: <IP_Placeholder>             # vCenter host or IP
 vcenter_usr: administrator@vsphere.local             # vCenter username. If user is tied to a domain, then escape the \, example `domain\\user`
 vcenter_pwd: "VMware1!"          # vCenter password
 vcenter_data_center: Datacenter       # vCenter datacenter
@@ -19,8 +19,8 @@ opsman_admin_username: admin          # Username for Ops Manager admin account
 opsman_admin_password: "VMware1!"    # Password for Ops Manager admin account
 om_ssh_pwd: "VMware1!"                 # SSH password for Ops Manager (ssh user is ubuntu)
 om_decryption_pwd: "VMware1!"        # Decryption password for Ops Manager exported settings
-om_ntp_servers: 10.173.61.33       # Comma-separated list of NTP Servers
-om_dns_servers: 10.173.61.33              # Comma-separated list of DNS Servers
+om_ntp_servers: <DNS_IP_Placeholder>       # Comma-separated list of NTP Servers
+om_dns_servers: <DNS_IP_Placeholder>              # Comma-separated list of DNS Servers
 om_gateway: 192.168.50.1                # Gateway for Ops Manager network
 om_netmask: 255.255.255.0             # Netmask for Ops Manager network
 om_ip: 23.23.23.2                     # IP to assign to Ops Manager VM
@@ -149,7 +149,7 @@ pks_tile_external_ip_pool_name: snat-vip-pool-for-pks                  # EDIT - 
 pks_tile_container_ip_block_name: PKS-pod-ip-block                     # EDIT - Name of Container IP Block in NSX Mgr to be used for PKS
 pks_tile_nodes_ip_block_name: PKS-node-ip-block                        # EDIT - Name of Node IP Block in NSX Mgr to be used for PKS nodes in v1.1
 pks_tile_vcenter_cluster_list: PKS-COMP                                 # EDIT - List of vcenter clusters for PKS to deploy k8s clusters
-pks_tile_nodes_dns_list: 10.173.61.33                                       # EDIT - DNS server ip list for use by k8s nodes
+pks_tile_nodes_dns_list: <DNS_IP_Placeholder>                                       # EDIT - DNS server ip list for use by k8s nodes
 
 # Syslog Flags
 pks_tile_syslog_migration_enabled: disabled # can be set to 'enabled', if 'disabled' all syslog properties ignored
