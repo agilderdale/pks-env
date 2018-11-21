@@ -1,7 +1,7 @@
 enable_ansible_debug: true # set value to true for verbose output from ansible
 
 # format: "http://<jumphost_ip>:40001"
-nsx_image_webserver: "http://10.27.32.70:40001"
+nsx_image_webserver: "http://<PKSCLIENT_IP_Placeholder>>:40001"
 #ova_file_name: "nsx-unified-appliance-2.2.0.0.0.8680778.ova" #Uncomment this if downloaded file manually and placed under /home/concourse
 #ovftool_file_name: "VMware-ovftool-4.2.0-5965791-lin.x86_64.bundle"   #Uncomment this if downloaded file manually and placed under /home/concourse
 
@@ -15,13 +15,13 @@ vcenter_datastore: Shared-Datastore
 
 # NSX manager general network settings
 mgmt_portgroup: 'DVS-VM'
-dns_server: 10.27.32.68
+dns_server: <DNS_IP_Placeholder>
 dns_domain: poc-gss.local
 ntp_servers: time2.vmware.com
-default_gateway: 10.27.47.254
+default_gateway: <GW_IP_Placeholder>
 netmask: 255.255.240.0
 
-nsx_manager_ip: 10.27.45.83
+nsx_manager_ip: <IP_Placeholder>
 nsx_manager_username: admin
 nsx_manager_password: "VMware123!"
 nsx_manager_assigned_hostname: "manager" # this hostname+dns_domain will be FQDN
@@ -57,8 +57,8 @@ tier0_uplink_port_ip_2:
 tier0_ha_vip:
 
 ## Controllers
-controller_ips: 10.27.45.84 #comma separated based on number of required controllers
-controller_default_gateway: 10.27.47.254
+controller_ips: <CONTROLLER_IP_Placeholder> #comma separated based on number of required controllers
+controller_default_gateway: <GW_IP_Placeholder>
 controller_ip_prefix_length: 20
 controller_hostname_prefix: controller # Generated hostname: controller-1.corp.local.io
 controller_cli_password: "VMware123!" # Min 8 chars, upper, lower, num, special char
@@ -71,8 +71,8 @@ vc_management_network_for_controller: "DVS-VM"
 controller_shared_secret: "VMware123!"
 
 ## Edge nodes
-edge_ips: 10.27.45.85    #comma separated based in number of required edges
-edge_default_gateway: 10.27.47.254
+edge_ips: <EGDE_IP_Placeholder>    #comma separated based in number of required edges
+edge_default_gateway: <GW_IP_Placeholder>
 edge_ip_prefix_length: 20
 edge_hostname_prefix: edge
 edge_transport_node_prefix: edge-transp-node
@@ -93,7 +93,7 @@ per_cluster_vlans: 100  #Comma seprated, order of VLANs applied same as order of
 
 esx_ips: "" # additional esx hosts, if any, to be individually installed
 esx_os_version: "6.5.0"
-esx_root_password: "ca$hc0w"
+esx_root_password: "<password>"
 esx_hostname_prefix: "esx-host"
 
 esx_available_vmnic: vmnic4,vmnic5 # comma separated physical NICs, applies to both cluster installation or ESXi installation
