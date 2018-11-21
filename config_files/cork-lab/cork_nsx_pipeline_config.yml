@@ -6,7 +6,7 @@ nsx_image_webserver: "http://<PKSCLIENT_IP_Placeholder>>:40001"
 #ovftool_file_name: "VMware-ovftool-4.2.0-5965791-lin.x86_64.bundle"   #Uncomment this if downloaded file manually and placed under /home/concourse
 
 # vCenter to deploy the NSX manager
-vcenter_ip: 10.27.32.69
+vcenter_ip: <IP_Placeholder>
 vcenter_username: administrator@vsphere.local
 vcenter_password: "VMware123!"
 vcenter_datacenter: Datacenter
