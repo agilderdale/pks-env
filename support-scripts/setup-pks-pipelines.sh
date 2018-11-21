@@ -139,12 +139,15 @@ f_main_menu() {
 
 f_input_vars() {
 
+    COMMENT="$2"
+
     if [ -f /tmp/pks_variables_old ] ; then
         source /tmp/pks_variables_old
     fi
 
     var=$1
     temp=${!1}
+    echo "$COMMENT"
     read -p "Set $1 [ default: ${!1} ]: " $1
 
     if [[ -z ${!1} ]] ; then
@@ -365,17 +368,19 @@ f_init(){
     if [ -z $CONCOURSE_IP ] ; then
         CONCOURSE_IP=$(hostname -I)
     fi
-    f_input_vars CONCOURSE_IP
+    f_input_vars CONCOURSE_IP "IP address that concourse will be running on - it is the hostname IP that you run this script on. This IP will be used for accessing Concourse URL"
     f_input_vars EXTERNAL_DNS
     f_input_vars NSXT_VERSION
     f_input_vars CONFIG_DIR
 
     if [[ -f /home/concourse/nsx-unified-appliance-2.3.0.0.0.10085405.ova ]] && [[ -f /home/concourse/VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle ]]
     then
-        f_info "VMWARE_USER and VMWARE_PASSWORD not required as
+        f_info "VMWARE_USER and VMWARE_PASSWORD is not required as
+
                 nsx-unified-appliance-2.3.0.0.0.10085405.ova and
                 VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
-                already in /home/concourse directory"
+
+                are already in /home/concourse directory"
     else
         f_info "--------------------------------------------------
                 NOTE - Packages:
