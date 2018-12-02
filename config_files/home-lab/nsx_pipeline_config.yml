@@ -10,18 +10,18 @@ vcenter_ip: 10.173.61.22
 vcenter_username: administrator@vsphere.local
 vcenter_password: "VMware1!"
 vcenter_datacenter: Datacenter
-vcenter_cluster: PKS-MGMT      #management cluster
+vcenter_cluster: MGMT-Cluster      #management cluster
 vcenter_datastore: ISCSI-DATASTORE
 
 # NSX manager general network settings
 mgmt_portgroup: 'MGMT-PG'
-dns_server: <IP_Placeholder>
+dns_server: 10.173.61.33
 dns_domain: mylab.local
-ntp_servers: <DNS_IP_Placeholder>
-default_gateway: <DNS_IP_Placeholder>
+ntp_servers: 10.173.61.33
+default_gateway: 10.173.61.33
 netmask: 255.255.255.0
 
-nsx_manager_ip: <IP_Placeholder>
+nsx_manager_ip: 10.173.61.23
 nsx_manager_username: admin
 nsx_manager_password: "VMware1!"
 nsx_manager_assigned_hostname: "manager" # this hostname+dns_domain will be FQDN
@@ -49,30 +49,30 @@ vtep_ip_pool_start: 192.168.213.10
 vtep_ip_pool_end: 192.168.213.200
 
 # Tier 0 router
-tier0_router_name: DefaultT0Router
-tier0_uplink_port_ip: <IP_Placeholder>    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
+tier0_router_name: T0-Router
+tier0_uplink_port_ip: 10.173.61.35    # putting dummy IP address here from the different subnet as the snat as it is failing NAT rules creation
 tier0_uplink_port_subnet: 24
-tier0_uplink_next_hop_ip: <IP_Placeholder>
+tier0_uplink_next_hop_ip: 10.173.61.253
 tier0_uplink_port_ip_2:
 tier0_ha_vip:
 
 ## Controllers
-controller_ips: <IP_Placeholder> #comma separated based on number of required controllers
-controller_default_gateway: <GW_IP_Placeholder>
+controller_ips: 10.173.61.24 #comma separated based on number of required controllers
+controller_default_gateway: 10.173.61.253
 controller_ip_prefix_length: 24
 controller_hostname_prefix: controller # Generated hostname: controller-1.corp.local.io
 controller_cli_password: "VMware1!" # Min 8 chars, upper, lower, num, special char
 controller_root_password: "VMware1!"
 controller_deployment_size: "SMALL"
 vc_datacenter_for_controller: Datacenter
-vc_cluster_for_controller: PKS-MGMT
+vc_cluster_for_controller: MGMT-Cluster
 vc_datastore_for_controller: ISCSI-DATASTORE
 vc_management_network_for_controller: "MGMT-PG"
 controller_shared_secret: "VMware1!"
 
 ## Edge nodes
-edge_ips: <IP_Placeholder>    #comma separated based in number of required edges
-edge_default_gateway: <GW_IP_Placeholder>
+edge_ips: 10.173.61.25    #comma separated based in number of required edges
+edge_default_gateway: 10.173.61.253
 edge_ip_prefix_length: 24
 edge_hostname_prefix: edge
 edge_transport_node_prefix: edge-transport-node
@@ -80,7 +80,7 @@ edge_cli_password: "VMware1!"
 edge_root_password: "VMware1!"
 edge_deployment_size: "large" #Large recommended for PKS deployments
 vc_datacenter_for_edge: Datacenter
-vc_cluster_for_edge: PKS-MGMT
+vc_cluster_for_edge: MGMT-Cluster
 vc_datastore_for_edge: ISCSI-DATASTORE
 vc_uplink_network_for_edge: "MGMT-PG"
 vc_overlay_network_for_edge: "EDGE-Overlay"
@@ -88,11 +88,11 @@ vc_management_network_for_edge: "MGMT-PG"
 
 ## ESX hosts
 #Intsll vSphere clusters automatically
-clusters_to_install_nsx: PKS-COMP    #Comma seprated
+clusters_to_install_nsx: PKS-Cluster    #Comma seprated
 per_cluster_vlans: 1547  #Comma seprated, order of VLANs applied same as order of clusters
 
 esx_ips: "" # additional esx hosts, if any, to be individually installed
-esx_os_version: "6.5.0"
+esx_os_version: "6.7.0"
 esx_root_password: "..."
 esx_hostname_prefix: "esx-host"
 
@@ -133,63 +133,63 @@ nsx_t_external_ip_pool_spec: |
 nsx_t_nat_rules_spec: |
   nat_rules:
   # Sample entry for  PKS-Infra network
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: snat
     source_network: 192.168.50.0/24      # PKS Infra network cidr
     translated_network: 23.23.23.9    # SNAT External Address for PKS networks
     rule_priority: 8001                  # Lower priority
 
   # Sample entry for allowing inbound to PKS OpsManager
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: dnat
     destination_network: 23.23.23.2    # External IP address for PKS OpsManager
     translated_network: 192.168.50.2     # Internal IP of PKS OpsManager
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from PKS OpsManager to external
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: snat
     source_network: 192.168.50.2         # Internal IP of PKS OpsManager
     translated_network: 23.23.23.2     # External IP address for PKS OpsManager
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing inbound to BOSH
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: dnat
     destination_network: 23.23.23.3    # External IP address for BOSH
     translated_network: 192.168.50.3    # Internal IP of BOSH
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from BOSH to external
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: snat
     source_network: 192.168.50.3         # Internal IP of BOSH
     translated_network: 23.23.23.3     # External IP address for BOSH
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing inbound to PKS Controller
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: dnat
     destination_network: 23.23.23.4    # External IP address for PKS Controller
     translated_network: 192.168.50.4    # Internal IP of PKS Controller
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from PKS Controller to external
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: snat
     source_network: 192.168.50.4         # Internal IP of PKS Controller
     translated_network: 23.23.23.4     # External IP address for PKS Controller
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing inbound to Harbor
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: dnat
     destination_network: 23.23.23.5    # External IP address for Harbor
     translated_network: 192.168.50.5    # Internal IP of Harbor
     rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing outbound from BOSH to external
-  - t0_router: DefaultT0Router
+  - t0_router: T0-Router
     nat_type: snat
     source_network: 192.168.50.5         # Internal IP of Harbor
     translated_network: 23.23.23.5     # External IP address for Harbor
