@@ -16,7 +16,7 @@ vcenter_datastore: ISCSI-DATASTORE
 # NSX manager general network settings
 mgmt_portgroup: 'MGMT-PG'
 dns_server: 10.173.61.33
-dns_domain: mylab.local
+dns_domain: mylab.com
 ntp_servers: 10.173.61.33
 default_gateway: 10.173.61.33
 netmask: 255.255.255.0
