@@ -129,7 +129,9 @@ f_main_menu() {
         echo "-------------------------------------------------------------------------------------------"
         echo ""
 
-        rm -Rf /tmp/.secret >/dev/null
+        if [ -f /tmp/.secret ] ; then
+            rm -Rf /tmp/.secret >/dev/null
+        fi
 
         f_info "Pipeline task - COMPLETED"
         sleep 5
@@ -272,7 +274,10 @@ f_download_vmmare_repo(){
 
 f_download_ovftool(){
     source /tmp/pks_variables
-    source /tmp/.secret
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
 
     cd /home/concourse
     vmw-cli index OVFTOOL430
@@ -281,7 +286,10 @@ f_download_ovftool(){
 
 f_download_nsx(){
     source /tmp/pks_variables
-    source /tmp/.secret
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
 
     cd /home/concourse
     vmw-cli index NSX-T-230
@@ -303,7 +311,10 @@ f_start_docker(){
 
     f_banner ""
     source /tmp/pks_variables
-    source /tmp/.secret
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
 
     f_build_nsx-t-install_image
 
@@ -405,7 +416,10 @@ f_init(){
     f_input_vars DOCKER_IMAGE_VERSION "nsx-t-install image version - change only if your own version is created and uploaded to the local cache - otherwise use latest"
 
     source /tmp/pks_variables
-    source /tmp/.secret
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
 
 #    if [[ ! -e $BITSDIR ]]
 #    then
@@ -425,7 +439,10 @@ else
     f_info "/home/concourse exists - SKIPPING..."
 fi
 
-rm -Rf /tmp/.secret >/dev/null
+if [ -f /tmp/.secret ] ; then
+    rm -Rf /tmp/.secret >/dev/null
+fi
+
 
 f_startup_question
 f_main_menu
