@@ -19,7 +19,7 @@ dns_server: 10.173.61.33
 dns_domain: mylab.com
 ntp_servers: 10.173.61.33
 default_gateway: 10.173.61.33
-netmask: 255.255.252.0
+netmask: 255.255.255.0
 
 nsx_manager_ip: 10.173.61.23
 nsx_manager_username: admin
