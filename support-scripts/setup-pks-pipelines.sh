@@ -393,13 +393,13 @@ f_init(){
         f_info "VMWARE_USER and VMWARE_PASSWORD is not required as
 
                 nsx-unified-appliance-2.3.1.0.0.11294305.ova and
-                VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle
+                VMware-ovftool-4.3.0-10104578-lin.x86_64.bundle
 
                 are already in /home/concourse directory"
     else
         f_info "NOTE - Packages:
 
-                nsx-unified-appliance-2.3.0.0.0.10085405.ova
+                nsx-unified-appliance-2.3.1.0.0.11294305.ova
                 VMware-ovftool-4.3.0-10104578-lin.x86_64.bundle
 
                 don't exist under /home/concourse directory
