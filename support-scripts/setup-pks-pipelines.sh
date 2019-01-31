@@ -292,8 +292,8 @@ f_download_nsx(){
     fi
 
     cd /home/concourse
-    vmw-cli index NSX-T-230
-    vmw-cli get nsx-unified-appliance-2.3.0.0.0.10085405.ova
+    vmw-cli index NSX-T-231
+    vmw-cli get nsx-unified-appliance-2.3.1.0.0.11294305.ova
 }
 
 f_build_nsx-t-install_image(){
