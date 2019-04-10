@@ -14,9 +14,9 @@ BOSHRELEASE=5.4.0
 HELMRELEASE=2.13.0
 OMRELEASE=0.54.0
 PIVNETRELEASE=0.0.56
-PKSRELEASE=1.3.3
+PKSRELEASE=1.3.6
 PIVOTALTOKEN=''
-BITSDIR="/DATA/bits"
+BITSDIR="/DATA/packages"
 
 
 f_info(){
@@ -180,7 +180,10 @@ f_install_packages() {
     f_info "Updating OS and installing packages"
     add-apt-repository universe
     f_verify
-    apt-get update ; sudo apt-get upgrade
+    apt-get update 
+    f_verify
+    apt-get upgrade
+    f_verify
 
     for pkg in docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools nodejs
     do
