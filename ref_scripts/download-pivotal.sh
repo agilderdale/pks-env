@@ -8,8 +8,8 @@ PKS_PKG_NAME="pivotal-container-service-1.2.0-build.47.pivotal"
 HARBOR_PKG_API="https://network.pivotal.io/api/v2/products/harbor-container-registry/releases/190421/product_files/220843/download"
 HARBOR_PKG_NAME="harbor-container-registry-1.6.0-build.35.pivotal"
 
-STEMCELL_PKG_API="https://network.pivotal.io/api/v2/products/stemcells-ubuntu-xenial/releases/214330/product_files/247325/download"
-STEMCELL_PKG_NAME="bosh-stemcell-97.28-vsphere-esxi-ubuntu-xenial-go_agent.tgz"
+STEMCELL_PKG_API="https://network.pivotal.io/api/v2/products/stemcells-ubuntu-xenial/releases/264505/product_files/279631/download"
+STEMCELL_PKG_NAME="bosh-stemcell-170.15-vsphere-esxi-ubuntu-xenial-go_agent.tgz"
 
 #for PREFIX in PKS HARBOR STEMCELL
 for PREFIX in STEMCELL
