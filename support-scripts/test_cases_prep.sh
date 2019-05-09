@@ -467,6 +467,7 @@ f_install_all() {
 f_init(){
     f_input_vars BITSDIR
     f_input_vars HARBOR_URL
+    f_input_vars PROJECT_NAME
 
     source /tmp/pks_variables
 
