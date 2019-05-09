@@ -332,7 +332,7 @@ f_verify_registry_trust() {
     f_verify
 
     f_info "Checking DOCKER install..."
-    docker ps
+    docker ps > /dev/null 2>&1
     f_verify
 
     f_info "Checking CURL install..."
@@ -340,7 +340,7 @@ f_verify_registry_trust() {
     f_verify
 
     f_info "Downloading ca.crt from Harbor to /tmp/ca.crt..."
-    curl https://harbor.mylab.local/api/systeminfo/getcert -k > /tmp/ca.crt
+    curl https://${HARBOR_URL}/api/systeminfo/getcert -k > /tmp/ca.crt
     grep CERTIFICATE /tmp/ca.crt
     f_verify
 
