@@ -354,7 +354,7 @@ f_verify_registry_trust() {
         f_verify
     fi
 
-    if [[ ! -e "~/.docker/tls/${HARBOR_URL}\:4443/" ]]
+    if [[ ! -e ~/.docker/tls/${HARBOR_URL}\:4443/ ]]
     then
         f_info "Creating directory for Trust certificate ~/.docker/tls/${HARBOR_URL}:4443/ :"
         mkdir -p ~/.docker/tls/${HARBOR_URL}\:4443/
