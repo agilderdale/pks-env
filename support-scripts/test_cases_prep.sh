@@ -327,55 +327,69 @@ f_download_git_repos() {
 
 f_config_registry() {
 
+    echo "-------------------"
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
     nslookup ${HARBOR_URL}
     f_verify
 
+    echo "-------------------"
     f_info "Checking DOCKER install..."
     docker ps > /dev/null 2>&1
     f_verify
 
+    echo "-------------------"
     f_info "Checking CURL install..."
     apt list curl |grep curl > /dev/null 2>&1
     f_verify
 
+    echo "-------------------"
     f_info "Downloading ca.crt from Harbor to /tmp/ca.crt..."
     curl https://${HARBOR_URL}/api/systeminfo/getcert -k > /tmp/ca.crt
-    grep CERTIFICATE /tmp/ca.crt
+    grep CERTIFICATE /tmp/ca.crt > /dev/null 2>&1
     f_verify
 
-    if [[ ! -e /etc/docker/certs.d/${HARBOR_URL} ]]
-    then
-        f_info "Creating directory for registry certificate /etc/docker/certs.d/${HARBOR_URL} :"
-        mkdir -p /etc/docker/certs.d/${HARBOR_URL}
-        f_verify
+    echo "-------------------"
+    f_info "Checking /etc/docker/certs.d/${HARBOR_URL}/ca.crt ..."
+    if [[ ! -f /etc/docker/certs.d/${HARBOR_URL}/ca.crt ]] ; then
+        if [[ ! -e /etc/docker/certs.d/${HARBOR_URL} ]] ; then
+            f_info "Creating directory for registry certificate /etc/docker/certs.d/${HARBOR_URL} :"
+            mkdir -p /etc/docker/certs.d/${HARBOR_URL}
+            f_verify
+        fi
         cp /tmp/ca.crt /etc/docker/certs.d/${HARBOR_URL}/
-        ls /etc/docker/certs.d/${HARBOR_URL}/ca.crt
+        ls /etc/docker/certs.d/${HARBOR_URL}/ca.crt > /dev/null 2>&1
         f_verify
     fi
 
-    if [[ ! -e ~/.docker/tls/${HARBOR_URL}\:4443/ ]]
-    then
-        f_info "Creating directory for Trust certificate ~/.docker/tls/${HARBOR_URL}:4443/ :"
-        mkdir -p ~/.docker/tls/${HARBOR_URL}\:4443/
-        f_verify
+    echo "-------------------"
+    f_info "Checking ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt ..."
+    if [[ ! -f ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt ]] ; then
+        if [[ ! -e ~/.docker/tls/${HARBOR_URL}\:4443/ ]] ; then
+            f_info "Creating directory for Trust certificate ~/.docker/tls/${HARBOR_URL}:4443/ :"
+            mkdir -p ~/.docker/tls/${HARBOR_URL}\:4443/
+            f_verify
+        fi
         cp /tmp/ca.crt ~/.docker/tls/${HARBOR_URL}\:4443/
-        ls ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt
+        ls ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt > /dev/null 2>&1
         f_verify
     fi
 
-    if [[ ! -e ~/.docker/trust/ ]]
-    then
-        f_info "Creating directory for Trust certificate ~/.docker/trust/ :"
-        mkdir -p ~/.docker/trust/
+    echo "-------------------"
+    f_info "Checking ~/.docker/trust/ca.crt ..."
+    if [[ ! -f ~/.docker/trust/ca.crt ]] ; then
+        if [[ ! -e ~/.docker/trust/ ]] ; then
+            f_info "Creating directory for Trust certificate ~/.docker/trust/ :"
+            mkdir -p ~/.docker/trust/
+        fi
         cp /tmp/ca.crt ~/.docker/trust/
         f_verify
-        ls ~/.docker/trust/ca.crt
+        ls ~/.docker/trust/ca.crt > /dev/null 2>&1
         f_verify
     fi
 
-    if [[ ! -f /usr/local/share/ca-certificates/ca.crt ]]
-    then
+    echo "-------------------"
+    f_info "Checking /usr/local/share/ca-certificates/ca.crt ..."
+    if [[ ! -f /usr/local/share/ca-certificates/ca.crt ]] ; then
         f_info "Updating ca-certificates..."
         cp /tmp/ca.crt /usr/local/share/ca-certificates/
         update-ca-certificates
