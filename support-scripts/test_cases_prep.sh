@@ -49,6 +49,8 @@ f_startup_question() {
     echo "  ================================================"
     echo "      This VM has to be able to access internet"
     echo "  ================================================"
+    echo "           This script has to run as root "
+    echo "  ================================================"
     echo ""
     while true; do
         read -p "    Do you wish to start? (y/n): " yn
