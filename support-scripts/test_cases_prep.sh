@@ -350,9 +350,9 @@ f_download_docker_images() {
 
     while read -r line
     do
-        docker pull $line
-        docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line
-        docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
+        echo "docker pull $line"
+        echo "docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line"
+        echo "docker push ${HARBOR_URL}/${PROJECT_NAME}/$line"
     done < /tmp/list1
 
 }

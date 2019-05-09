@@ -4,10 +4,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="nsx-t-datacenter-ci-pipelines1" />
-    <orderEntry type="module" module-name="concourse-docker1" />
-    <orderEntry type="module" module-name="nsx-t-ci-pipeline1" />
-    <orderEntry type="module" module-name="nsx-t-gen1" />
     <orderEntry type="module" module-name="logs" />
   </component>
   <component name="TestRunnerService">

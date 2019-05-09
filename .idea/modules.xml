@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../concourse-docker1/.idea/concourse-docker1.iml" filepath="$PROJECT_DIR$/../concourse-docker1/.idea/concourse-docker1.iml" />
       <module fileurl="file://$USER_HOME$/Downloads/logs/.idea/logs.iml" filepath="$USER_HOME$/Downloads/logs/.idea/logs.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../nsx-t-ci-pipeline1/.idea/nsx-t-ci-pipeline1.iml" filepath="$PROJECT_DIR$/../nsx-t-ci-pipeline1/.idea/nsx-t-ci-pipeline1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../nsx-t-datacenter-ci-pipelines1/.idea/nsx-t-datacenter-ci-pipelines1.iml" filepath="$PROJECT_DIR$/../nsx-t-datacenter-ci-pipelines1/.idea/nsx-t-datacenter-ci-pipelines1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../nsx-t-gen1/.idea/nsx-t-gen1.iml" filepath="$PROJECT_DIR$/../nsx-t-gen1/.idea/nsx-t-gen1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/pks-env-new.iml" filepath="$PROJECT_DIR$/.idea/pks-env-new.iml" />
     </modules>
   </component>
