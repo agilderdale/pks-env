@@ -328,7 +328,7 @@ f_download_git_repos() {
 f_verify_registry_trust() {
 
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
-    nslookup ${HARBOR_URL} |grep NXDOMAIN
+    nslookup ${HARBOR_URL}
     f_verify
 
     f_info "Checking DOCKER install..."
