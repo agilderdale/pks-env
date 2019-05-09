@@ -435,7 +435,7 @@ f_download_docker_images() {
         f_info "Preparing $line image..."
         docker pull $line
         docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line
-        echo "docker push ${HARBOR_URL}/${PROJECT_NAME}/$line"
+        docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
     done < /tmp/list1
 
 }
