@@ -2,7 +2,7 @@
 
 # Tested on Ubuntu 19.04 LTS
 # Script will download test cases for PKS,
-# download all required images and re-tag as required to match Harbor private registry naming ready for testing
+# download all required images and re-tag them to match Harbor private registry naming ready for testing
 # valid for PKS 1.4
 # bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/test_cases_prep.sh)"
 
@@ -91,6 +91,7 @@ f_choice_question() {
                     ;;
             [Hh]* ) f_init;
                     f_config_registry;
+                    f_retag_yaml;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -463,6 +464,15 @@ f_download_docker_images() {
         f_verify "Could not push to registry - check if the ${HARBOR_URL}/${PROJECT_NAME} project exists!!!"
     done < /tmp/list1
 
+}
+
+f_retag_yaml() {
+    cp /tmp/list1 /tmp/list2
+    sed -i -e 's/\//\\\//g' /tmp/list2
+    while read -r line
+    do
+        sed -i -e "s/${line}/${HARBOR_URL}\/${PROJECT_NAME}\/${line}/g" *.yaml
+    done < /tmp/list2
 }
 
 f_init(){
