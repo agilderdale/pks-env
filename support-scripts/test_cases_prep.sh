@@ -321,9 +321,12 @@ f_download_git_repos() {
 
 }
 
-f_verify_registry() {
+f_verify_registry_trust() {
+    f_info "Docker install check..."
+    docker ps
+    f_verify
 
-
+    f_info "Curl install check..."
     apt list curl |grep curl > /dev/null 2>&1
     f_verify
     curl https://harbor.mylab.local/api/systeminfo/getcert -k > /tmp/ca.crt
@@ -358,6 +361,9 @@ f_verify_registry() {
         f_verify
     fi
 
+    cp /tmp/ca.crt /usr/local/share/ca-certificates/
+    update-ca-certificates
+    service docker restart
 
 }
 
