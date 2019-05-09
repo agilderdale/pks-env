@@ -321,9 +321,51 @@ f_download_git_repos() {
 
 }
 
+f_verify_registry() {
+
+
+    apt list curl |grep curl > /dev/null 2>&1
+    f_verify
+    curl https://harbor.mylab.local/api/systeminfo/getcert -k > /tmp/ca.crt
+
+    if [[ ! -e /etc/docker/certs.d/${HARBOR_URL} ]]
+    then
+        f_info "Creating directory for registry certificate /etc/docker/certs.d/${HARBOR_URL} :"
+        mkdir -p /etc/docker/certs.d/${HARBOR_URL}
+        f_verify
+        cp /tmp/ca.crt /etc/docker/certs.d/${HARBOR_URL}/
+        ls /etc/docker/certs.d/${HARBOR_URL}/ca.crt
+        f_verify
+    fi
+
+    if [[ ! -e "~/.docker/tls/${HARBOR_URL}\:4443/" ]]
+    then
+        f_info "Creating directory for Trust certificate ~/.docker/tls/${HARBOR_URL}:4443/ :"
+        mkdir -p ~/.docker/tls/${HARBOR_URL}\:4443/
+        f_verify
+        cp /tmp/ca.crt ~/.docker/tls/${HARBOR_URL}\:4443/
+        ls ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt
+        f_verify
+    fi
+
+    if [[ ! -e "~/.docker/trust/" ]]
+    then
+        f_info "Creating directory for Trust certificate ~/.docker/trust/ :"
+        mkdir -p ~/.docker/trust/
+        cp /tmp/ca.crt ~/.docker/trust/
+        f_verify
+        ls ~/.docker/trust/ca.crt
+        f_verify
+    fi
+
+
+}
+
 f_download_docker_images() {
+    f_info "Login to ${HARBOR_URL} private registry. Please type user and then password:"
     docker login $HARBOR_URL
     f_verify
+
     cd /DATA/GIT/k8s-tc-templates/
     >/tmp/list
 
