@@ -73,7 +73,7 @@ f_choice_question() {
         echo "*******************************************************************************************"
         read -p "   Select one of the options? (v|a|h|e): " vahe
 
-        case $vae in
+        case $vahe in
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
