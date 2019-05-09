@@ -88,10 +88,10 @@ f_choice_question() {
             [Aa]* ) f_init;
                     f_download_git_repos;
                     f_download_docker_images;
+                    f_retag_yaml;
                     ;;
             [Hh]* ) f_init;
                     f_config_registry;
-                    f_retag_yaml;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
