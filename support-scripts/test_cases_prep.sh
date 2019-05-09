@@ -82,7 +82,7 @@ f_choice_question() {
                     f_download_docker_images;
                     ;;
             [Hh]* ) f_init;
-                    f_verify_registry_trust;
+                    f_config_registry;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -325,7 +325,7 @@ f_download_git_repos() {
 
 }
 
-f_verify_registry_trust() {
+f_config_registry() {
 
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
     nslookup ${HARBOR_URL}
