@@ -42,6 +42,7 @@ f_startup_question() {
     echo "  =========== PKS TESTING PREP WORK =============="
     echo ""
     echo "  ================================================"
+    echo "      This VM has to be able to access internet"
     echo "  ================================================"
     echo ""
     while true; do
@@ -432,8 +433,8 @@ f_download_docker_images() {
     do
         echo "------------------------"
         f_info "Preparing $line image..."
-        echo "docker pull $line"
-        echo "docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line"
+        docker pull $line
+        docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line
         echo "docker push ${HARBOR_URL}/${PROJECT_NAME}/$line"
     done < /tmp/list1
 
