@@ -177,13 +177,13 @@ f_input_vars_sec() {
 f_install_packages() {
 
     echo "-------------------------------------------------------------------------------------------"
-    f_info "Updating OS and installing packages"
+#    f_info "Updating OS and installing packages"
 #    add-apt-repository universe
-    f_verify
-    apt-get update 
-    f_verify
-    apt-get upgrade
-    f_verify
+#    f_verify
+#    apt-get update 
+#    f_verify
+#    apt-get upgrade
+#    f_verify
 
     for pkg in docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools nodejs
     do
