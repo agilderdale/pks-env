@@ -330,8 +330,8 @@ f_download_docker_images() {
 
     for i in $var1
     do
-        if [[ $i =~ .*image.* ]] ; then
-            echo "not required"
+        if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] ; then
+            echo "" > /dev/null 2>&1
         else
             echo "$i" >> /tmp/list
         fi
