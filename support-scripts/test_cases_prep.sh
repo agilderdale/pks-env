@@ -331,6 +331,7 @@ f_download_docker_images() {
     for i in $var1
     do
         if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] ; then
+            echo "this will not be used: $i"
             echo "" > /dev/null 2>&1
         else
             echo "$i" >> /tmp/list
