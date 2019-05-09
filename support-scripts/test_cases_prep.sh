@@ -325,12 +325,16 @@ f_verify_cli_tools() {
 f_download_git_repos() {
     echo "-------------------------------------------------------------------------------------------"
     f_info "Downloading supporting github repo from https://github.com/csaroka/k8s-tc-templates.git"
-    if [[ ! -e /DATA/GIT ]]; then
+    if [[ -e /DATA/GIT/k8s-tc-templates/ ]]
+    then
+        cd /DATA/GIT/k8s-tc-templates
+        git pull
+    else [[ ! -e /DATA/GIT/ ]]
         mkdir -p /DATA/GIT/
+        cd /DATA/GIT/
+        git clone https://github.com/csaroka/k8s-tc-templates.git
+        f_info "Git repo download - COMPLETED"
     fi
-
-    git clone https://github.com/csaroka/k8s-tc-templates.git
-    f_info "Git repo download - COMPLETED"
 
 }
 
