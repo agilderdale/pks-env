@@ -323,6 +323,7 @@ f_download_git_repos() {
 
 f_download_docker_images() {
     docker login $HARBOR_URL
+    f_verify
     cd /DATA/GIT/k8s-tc-templates/
     >/tmp/list
 
