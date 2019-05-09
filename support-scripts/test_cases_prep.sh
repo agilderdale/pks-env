@@ -68,9 +68,10 @@ f_choice_question() {
         echo "  Available options:"
         echo "  v - verify CLI tools"
         echo "  a - prep all environment"
+        echo "  h - prep access and trust config to Harbor registry"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|e): " vae
+        read -p "   Select one of the options? (v|a|h|e): " vahe
 
         case $vae in
             [Vv]* ) clear;
@@ -79,6 +80,9 @@ f_choice_question() {
             [Aa]* ) f_init;
                     f_download_git_repos;
                     f_download_docker_images;
+                    ;;
+            [Hh]* ) f_init;
+                    f_verify_registry_trust;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -445,6 +449,7 @@ f_install_all() {
 
 f_init(){
     f_input_vars BITSDIR
+    f_input_vars HARBOR_URL
 
     source /tmp/pks_variables
 
