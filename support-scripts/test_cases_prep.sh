@@ -364,7 +364,7 @@ f_verify_registry_trust() {
         f_verify
     fi
 
-    if [[ ! -e "~/.docker/trust/" ]]
+    if [[ ! -e ~/.docker/trust/ ]]
     then
         f_info "Creating directory for Trust certificate ~/.docker/trust/ :"
         mkdir -p ~/.docker/trust/
@@ -374,10 +374,13 @@ f_verify_registry_trust() {
         f_verify
     fi
 
-    cp /tmp/ca.crt /usr/local/share/ca-certificates/
-    update-ca-certificates
-    service docker restart
-
+    if [[ ! -f /usr/local/share/ca-certificates/ca.crt ]]
+    then
+        f_info "Updating ca-certificates..."
+        cp /tmp/ca.crt /usr/local/share/ca-certificates/
+        update-ca-certificates
+        service docker restart
+    fi
 }
 
 f_download_docker_images() {
