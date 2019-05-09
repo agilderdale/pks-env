@@ -330,7 +330,7 @@ f_download_docker_images() {
 
     for i in $var1
     do
-        if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] ; then
+        if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] || [[ $i =~ .*#.* ]] ; then
             echo "this will not be used: $i" > /dev/null 2>&1 # left for testing
         else
             echo "$i" >> /tmp/list
@@ -339,7 +339,7 @@ f_download_docker_images() {
 
     for i in $var2
     do
-        if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] ; then
+        if [[ $i =~ .*image.* ]] || [[ $i =~ .*trustme.* ]] || [[ $i =~ .*project-priv-a.* ]] || [[ $i =~ .*#.* ]] ; then
             echo "not required: $i" > /dev/null 2>&1 # left for testing
         else
             echo "$i" >> /tmp/list
@@ -350,7 +350,7 @@ f_download_docker_images() {
 
     while read -r line
     do
-        f_info "------------------------"
+        echo "------------------------"
         f_info "Preparing $line image..."
         echo "docker pull $line"
         echo "docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line"
