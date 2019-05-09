@@ -334,6 +334,11 @@ f_download_git_repos() {
 f_config_registry() {
 
     echo "-------------------"
+    f_info "Checking nslookup install..."
+    apt list dnsutils |grep dnsutils > /dev/null 2>&1
+    f_verify
+
+    echo "-------------------"
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
     nslookup ${HARBOR_URL}
     f_verify
@@ -404,9 +409,19 @@ f_config_registry() {
 }
 
 f_download_docker_images() {
+    echo "-------------------"
+    f_info "Checking nslookup install..."
+    apt list dnsutils |grep dnsutils > /dev/null 2>&1
+    f_verify
+
+    echo "-------------------"
+    f_info "Checking ${HARBOR_URL} can be resolved by the server..."
+    nslookup ${HARBOR_URL}
+    f_verify
+
     f_info "Login to ${HARBOR_URL} private registry. Please type user and then password:"
     docker login $HARBOR_URL
-    f_verify
+    f_verify "Could not login to $HARBOR_URL registry. CHeck that the URL is correct"
 
     cd /DATA/GIT/k8s-tc-templates/
     >/tmp/list
