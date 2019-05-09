@@ -327,14 +327,13 @@ f_download_git_repos() {
     f_info "Downloading supporting github repo from https://github.com/csaroka/k8s-tc-templates.git"
     if [[ -e /DATA/GIT/k8s-tc-templates/ ]]
     then
-        cd /DATA/GIT/k8s-tc-templates
-        git pull
+        rm -Rf /DATA/GIT/k8s-tc-templates
     else [[ ! -e /DATA/GIT/ ]]
         mkdir -p /DATA/GIT/
-        cd /DATA/GIT/
-        git clone https://github.com/csaroka/k8s-tc-templates.git
-        f_info "Git repo download - COMPLETED"
     fi
+    cd /DATA/GIT/
+    git clone https://github.com/csaroka/k8s-tc-templates.git
+    f_info "Git repo download - COMPLETED"
 
 }
 
