@@ -322,14 +322,23 @@ f_download_git_repos() {
 }
 
 f_verify_registry_trust() {
-    f_info "Docker install check..."
+
+    f_info "Checking ${HARBOR_URL} can be resolved by the server..."
+    nslookup ${HARBOR_URL} |grep NXDOMAIN
+    f_verify
+
+    f_info "Checking DOCKER install..."
     docker ps
     f_verify
 
-    f_info "Curl install check..."
+    f_info "Checking CURL install..."
     apt list curl |grep curl > /dev/null 2>&1
     f_verify
+
+    f_info "Downloading ca.crt from Harbor to /tmp/ca.crt..."
     curl https://harbor.mylab.local/api/systeminfo/getcert -k > /tmp/ca.crt
+    grep CERTIFICATE /tmp/ca.crt
+    f_verify
 
     if [[ ! -e /etc/docker/certs.d/${HARBOR_URL} ]]
     then
