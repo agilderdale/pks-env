@@ -178,7 +178,7 @@ f_install_packages() {
 
     echo "-------------------------------------------------------------------------------------------"
     f_info "Updating OS and installing packages"
-    add-apt-repository universe
+#    add-apt-repository universe
     f_verify
     apt-get update 
     f_verify
