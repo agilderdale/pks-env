@@ -28,8 +28,13 @@ f_error(){
 
 f_verify(){
     rc=`echo $?`
+    msg="$*"
     if [ $rc != 0 ] ; then
-        f_error "Last command - FAILED !!!"
+       if [ -z "$msg" ] ; then
+           f_error "Last command - FAILED !!!"
+        else
+           f_error "$msg"
+        fi
         exit 1
     fi
 }
@@ -434,37 +439,12 @@ f_download_docker_images() {
         echo "------------------------"
         f_info "Preparing $line image..."
         docker pull $line
-        f_verify
+        f_verify "Could not pull the $line image - check if the image name and version is correct!!!"
         docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line
         f_verify
         docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
-        f_verify
+        f_verify "Could not push to registry - check if the ${HARBOR_URL}/${PROJECT_NAME} project exists!!!"
     done < /tmp/list1
-
-}
-
-f_install_all() {
-
-    f_input_vars BOSHRELEASE
-    f_input_vars HELMRELEASE
-    f_input_vars OMRELEASE
-    f_input_vars PIVNETRELEASE
-    f_input_vars PKSRELEASE
-    f_input_vars_sec PIVOTALTOKEN
-
-    source /tmp/pks_variables
-
-    f_install_packages
-    f_install_uaac_cli
-    f_install_kubectl_cli
-    f_install_bosh_cli
-    f_install_om_cli
-    f_install_pivnet_cli
-    f_install_helm_cli
-    f_install_pks_cli
-
-    f_download_git_repos
-    f_verify_cli_tools
 
 }
 
