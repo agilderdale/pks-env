@@ -77,11 +77,12 @@ f_choice_question() {
         echo "  v - verify CLI tools"
         echo "  a - prep all environment"
         echo "  h - prep access and trust config to Harbor registry"
+        echo "  u - PKS user access - create UAAC admin and dev user roles for PKS CLI"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|e): " vahe
+        read -p "   Select one of the options? (v|a|h|u|e): " vahe
 
-        case $vahe in
+        case $vahue in
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
@@ -92,6 +93,9 @@ f_choice_question() {
                     ;;
             [Hh]* ) f_init;
                     f_config_registry;
+                    ;;
+            [Uu]* ) f_init;
+                    f_config_local_uaac;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -339,6 +343,9 @@ f_download_git_repos() {
 
 f_config_registry() {
 
+    f_input_vars HARBOR_URL
+    f_input_vars PROJECT_NAME
+
     echo "-------------------"
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
@@ -478,10 +485,82 @@ f_retag_yaml() {
     done < /tmp/list2
 }
 
+# not in use!!
+f_install_go() {
+    curl -O https://storage.googleapis.com/golang/go1.11.2.linux-amd64.tar.gz
+    tar -xvf go1.11.2.linux-amd64.tar.gz
+    mv go /usr/local/bin/
+    export GOROOT=$HOME/go
+    export GOPATH=$HOME/work
+    export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+    mkdir $GOROOT $GOPATH
+}
+
+
+
+f_SC05-TC03_content_trust() {
+    f_info "Test Case: Container Registry Content Trust"
+
+    echo "-------------------"
+    f_info "Checking wget install..."
+    apt list wget |grep wget > /dev/null 2>&1
+    f_verify "wget is missing - run 'apt install wget' and rerun the script"
+
+    f_info "Downloading harborctl tool..."
+    cd /tmp/
+    wget https://github.com/moooofly/harborctl/releases/download/v1.1.0/harborctl_1.1.0_Linux_x86_64.tar.gz
+    tar -xzvf harborctl_1.1.0_Linux_x86_64.tar.gz
+    chmod 755 /tmp/harborctl
+    mv harborctl $BINDIR/
+
+    f_info "Login to $HARBOR_URL..."
+}
+
+f_config_local_uaac() {
+    OPSMAN_URL=opsman.mylsb.local
+    OPSMAN_ADMIN=admin
+    PKS_API_URL=api.mylab.local
+    DEV_USER=dev-user1
+    ADMIN_USER=admin-user1
+
+    if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else f_error "   OM CLI FAILED" ;fi
+    if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else f_error "   OM CLI FAILED" ;fi
+    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else f_error "   UAA CLI FAILED" ;fi
+
+    f_input_vars OPSMAN_URL
+    f_input_vars OPSMAN_ADMIN
+    f_input_vars_sec OPSMAN_PASSWORD
+    f_input_vars PKS_API_URL
+    f_input_vars_sec DEV_USER_PASSWORD
+    f_input_vars_sec ADMIN_USER_PASSWORD
+
+    GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')
+    ADMIN_SECRET=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products/${GUID}/credentials/.properties.pks_uaa_management_admin_client -s | jq '.credential.value.secret' | tr -d '""')
+
+    uaac target https://${PKS_API_URL}:8443 --skip-ssl-validation
+    f_verify
+    uaac token client get admin -s "${ADMIN_SECRET}"
+    f_verify
+    # Deleting the users if they already exist - clean card
+    uaac user delete $DEV_USER > /dev/null 2>&1
+    uaac user delete $ADMIN_USER > /dev/null 2>&1
+    f_info "Creating $DEV_USER ..."
+    uaac user add $DEV_USER --emails vmware@${PKS_API_URL} -p ${DEV_USER_PASSWORD}
+    f_verify
+    f_info "Assign $DEV_USER to pks.clusters.manage role ..."
+    uaac member add pks.clusters.manage $DEV_USER
+    f_verify
+    f_info "Creating $ADMIN_USER ..."
+    uaac user add $ADMIN_USER --emails demo@${PKS_API_URL} -p ${ADMIN_USER_PASSWORD}
+    f_verify
+    f_info "Assign $ADMIN_USER to pks.clusters.admin role ..."
+    uaac member add pks.clusters.admin $ADMIN_USER
+    f_verify
+}
+
+
 f_init(){
     f_input_vars BITSDIR
-    f_input_vars HARBOR_URL
-    f_input_vars PROJECT_NAME
 
     source /tmp/pks_variables
 
