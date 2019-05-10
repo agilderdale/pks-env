@@ -595,6 +595,16 @@ f_config_local_uaac() {
     f_input_vars OPSMAN_URL
     f_input_vars OPSMAN_ADMIN
     f_input_vars_sec OPSMAN_PASSWORD
+    om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+    resp=$?
+    if [ $resp != 0 ] ; then
+        f_info "Could not verify connection to OPSMANAGER with URL and credentials provided.
+                Try to set OPSMAN_URL as IP if DNS does not work and re-enter user and password:"
+        f_input_vars OPSMAN_URL
+        f_input_vars OPSMAN_ADMIN
+        f_input_vars_sec OPSMAN_PASSWORD
+    fi
+
     f_input_vars PKS_API_URL
     f_input_vars DEV_USER
     f_input_vars_sec DEV_USER_PASSWORD
@@ -677,10 +687,11 @@ f_init(){
 #####################################
 
 if [ ! -f /tmp/pks_variables ] ; then
-    touch /tmp/pks_variables
-else
-    >/tmp/pks_variables
-fi
+   touch /tmp/pks_variables
+    else
+        cp /tmp/pks_variables /tmp/pks_variables_old
+        >/tmp/pks_variables
+    fi
 
 f_startup_question
 f_choice_question
