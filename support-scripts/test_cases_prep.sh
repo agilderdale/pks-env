@@ -346,6 +346,8 @@ f_config_registry() {
     f_input_vars HARBOR_URL
     f_input_vars PROJECT_NAME
 
+    source /tmp/pks_variables
+
     echo "-------------------"
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
@@ -536,6 +538,9 @@ f_config_local_uaac() {
     f_input_vars_sec DEV_USER_PASSWORD
     f_input_vars ADMIN_USER
     f_input_vars_sec ADMIN_USER_PASSWORD
+
+    source /tmp/pks_variables
+
 
     echo "GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')"
     GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')
