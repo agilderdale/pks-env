@@ -40,21 +40,6 @@ f_verify(){
     fi
 }
 
-f_verify_response(){
-    rc=`echo $?`
-    msg="$*"
-    if [ $rc != 0 ] ; then
-       if [ -z "$msg" ] ; then
-           f_error "Last command - FAILED !!!"
-        else
-           f_error "$msg"
-        fi
-        exit 1
-    else
-        f_info "Verification status - SUCCESS"
-    fi
-}
-
 f_startup_question() {
     clear
     echo "  ================================================"
@@ -564,23 +549,31 @@ f_config_local_uaac() {
 
     f_info "Assign $DEV_USER to pks.clusters.manage role ..."
     uaac member add pks.clusters.manage $DEV_USER
-    f_verify_response
+    f_verify
 
     f_info "Creating $ADMIN_USER ..."
     uaac user add $ADMIN_USER --emails demo@${PKS_API_URL} -p ${ADMIN_USER_PASSWORD}
-    f_verify_response
+    f_verify
 
     f_info "Assign $ADMIN_USER to pks.clusters.admin role ..."
     uaac member add pks.clusters.admin $ADMIN_USER
-    f_verify_response
+    f_verify
 
     f_info "Testing login to the PKS CLI as $ADMIN_USER..."
     pks login -a https://api.mylab.local  -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
-    f_verify_response
+    f_verify
+
+    f_info "Display clusters as $ADMIN_USER..."
+    pks clusters
+    f_verify
 
     f_info "Testing login to the PKS CLI as $DEV_USER..."
     pks login -a https://api.mylab.local  -u $DEV_USER -p $DEV_USER_PASSWORD -k
-    f_verify_response
+    f_verify
+
+    f_info "Display clusters as $DEV_USER..."
+    pks clusters
+    f_verify
 }
 
 
