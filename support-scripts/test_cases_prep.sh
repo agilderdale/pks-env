@@ -554,17 +554,29 @@ f_config_local_uaac() {
     # Deleting the users if they already exist - clean card
     uaac user delete $DEV_USER > /dev/null 2>&1
     uaac user delete $ADMIN_USER > /dev/null 2>&1
+
     f_info "Creating $DEV_USER ..."
     uaac user add $DEV_USER --emails vmware@${PKS_API_URL} -p ${DEV_USER_PASSWORD}
     f_verify
+
     f_info "Assign $DEV_USER to pks.clusters.manage role ..."
     uaac member add pks.clusters.manage $DEV_USER
     f_verify
+
     f_info "Creating $ADMIN_USER ..."
     uaac user add $ADMIN_USER --emails demo@${PKS_API_URL} -p ${ADMIN_USER_PASSWORD}
     f_verify
+
     f_info "Assign $ADMIN_USER to pks.clusters.admin role ..."
     uaac member add pks.clusters.admin $ADMIN_USER
+    f_verify
+
+    f_info "Testing login to the PKS CLI as $ADMIN_USER..."
+    pks login -a https://api.mylab.local  -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
+    f_verify
+
+    f_info "Testing login to the PKS CLI as $DEV_USER..."
+    pks login -a https://api.mylab.local  -u $DEV_USER -p $DEV_USER_PASSWORD -k
     f_verify
 }
 
