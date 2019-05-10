@@ -79,11 +79,12 @@ f_choice_question() {
         echo "  a - prep all environment"
         echo "  h - prep access and trust config to Harbor registry"
         echo "  u - PKS user access - create UAAC admin and dev user roles for PKS CLI"
+        echo "  c - Create K8s Cluster"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|u|e): " vahue
+        read -p "   Select one of the options? (v|a|h|u|c|e): " vahuce
 
-        case $vahue in
+        case $vahuce in
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
@@ -97,6 +98,9 @@ f_choice_question() {
                     ;;
             [Uu]* ) f_init;
                     f_config_local_uaac;
+                    ;;
+            [Cc]* ) f_init;
+                    f_create_k8s_cluster;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -157,46 +161,6 @@ f_input_vars_old() {
     echo "---------------------------"
 }
 
-f_input_vars_sec_old(){
-
-    if [ ! -f /tmp/.secret ] ; then
-        touch /tmp/secret
-    fi
-
-    var=$1
-    unset password
-    echo -n "$1: "
-    while IFS= read -p "$prompt" -r -s -n 1 char
-    do
-        # Enter - accept password
-        if [[ $char == $'\0' ]] ; then
-            break
-        fi
-        # Backspace
-        if [[ $char == $'\177' ]] ; then
-            prompt=$'\b \b'
-            password="${password%?}"
-        else
-            prompt='*'
-            password+="$char"
-        fi
-    done
-
-    declare $var=$password
-
-    if [[ -z ${!1} ]]
-    then
-        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
-        exit 1
-    fi
-
-    echo ""
-    echo "export $1=${!1}" > /tmp/.secret
-    echo "Set: $1 = [ secret ]"
-    echo "-------------------------------------------------------------------------------------------"
-
-}
-
 f_input_vars_sec() {
 
     read -sp "$1: " $1
@@ -210,51 +174,6 @@ f_input_vars_sec() {
     echo "Set: $1 = **************"
     echo "---------------------------"
 }
-
-f_install_packages() {
-
-    echo "-------------------------------------------------------------------------------------------"
-#    f_info "Updating OS and installing packages"
-#    add-apt-repository universe
-#    f_verify
-#    apt-get update 
-#    f_verify
-#    apt-get upgrade
-#    f_verify
-
-    for pkg in docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools nodejs
-    do
-        dpkg-query -l $pkg > /dev/null 2>&1
-        response=`echo $?`
-        if [ $response -ne 0 ] ; then
-            apt-get install -y $pkg
-        else
-            pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
-            f_info "Already installed => $pkg_version - skippping..."
-        fi
-    done
-#    apt-get install -y docker openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential
-#    apt-get install -y zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev
-#    apt-get install -y sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools
-
-    echo "-------------------------------------------------------------------------------------------"
-
-    npm list --depth 1 --global vmw-cli > /dev/null 2>&1
-    response=`echo $?`
-
-    if [ $response -ne 0 ] ; then
-        f_info "Installing vmw-cli tool..."
-        # vwm-cli - requires nodejs >=8
-        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    #    apt-get install -y nodejs
-        npm install vmw-cli --global
-        f_verify
-    else
-        f_info "vmw-cli already installed - skipping... "
-        npm list --depth 1 --global vmw-cli
-    fi
-}
-
 
 f_install_uaac_cli() {
     echo "-------------------------------------------------------------------------------------------"
@@ -649,7 +568,7 @@ f_config_local_uaac() {
     f_verify
 
     f_info "Testing login to the PKS CLI as $ADMIN_USER..."
-    pks login -a https://api.mylab.local  -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
+    pks login -a https://${PKS_API_URL} -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
     f_verify
 
     f_info "Display clusters as $ADMIN_USER..."
@@ -657,12 +576,52 @@ f_config_local_uaac() {
     f_verify
 
     f_info "Testing login to the PKS CLI as $DEV_USER..."
-    pks login -a https://api.mylab.local  -u $DEV_USER -p $DEV_USER_PASSWORD -k
+    pks login -a https://${PKS_API_URL} -u $DEV_USER -p $DEV_USER_PASSWORD -k
     f_verify
 
     f_info "Display clusters as $DEV_USER..."
     pks clusters
     f_verify
+}
+
+f_config_k8s_user_local() {
+    /DATA/GIT/k8s-tc-templates
+
+}
+
+f_create_k8s_cluster(){
+
+    f_input_vars ADMIN_USER
+    f_input_vars_sec ADMIN_USER_PASSWORD
+
+    source /tmp/pks_variables
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
+
+    f_info "Creating MEDIUM network profile..."
+    echo "{ "name": "lb-profile-medium", "description": "Network profile for MEDIUM size NSX-T load balancer", "parameters": { "lb_size": "medium" } }" > /tmp/lb-medium.json
+    pks create-network-profile /tmp/lb-medium.json
+    f_verify
+    f_info "Logging to PKS CLI as $ADMIN_USER:"
+    pks login -a https://${PKS_API_URL} -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
+    f_verify
+    pks network-profiles
+    pks plans
+    f_info "From the information above specify number of nodes and plan to create used to create K8s cluster:"
+    f_input_vars WORKER_NODES
+    f_input_vars CLUSTER_PLAN
+    f_input_vars NETWORK_PROFILE
+    f_input_vars CLUSTER_NAME
+    f_input_vars CLUSTER_HOST_NAME
+
+    source /tmp/pks_variables
+
+    f_info "Following command will run:"
+    echo "pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}"
+#    pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}
+
 }
 
 
