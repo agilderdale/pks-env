@@ -517,7 +517,7 @@ f_SC05-TC03_content_trust() {
 }
 
 f_config_local_uaac() {
-    OPSMAN_URL=opsman.mylsb.local
+    OPSMAN_URL=opsman.mylab.local
     OPSMAN_ADMIN=admin
     PKS_API_URL=api.mylab.local
     DEV_USER=dev-user1
@@ -537,7 +537,9 @@ f_config_local_uaac() {
     f_input_vars ADMIN_USER
     f_input_vars_sec ADMIN_USER_PASSWORD
 
+    echo "GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')"
     GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')
+    echo "ADMIN_SECRET=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products/${GUID}/credentials/.properties.pks_uaa_management_admin_client -s | jq '.credential.value.secret' | tr -d '""')"
     ADMIN_SECRET=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products/${GUID}/credentials/.properties.pks_uaa_management_admin_client -s | jq '.credential.value.secret' | tr -d '""')
 
     uaac target https://${PKS_API_URL}:8443 --skip-ssl-validation
