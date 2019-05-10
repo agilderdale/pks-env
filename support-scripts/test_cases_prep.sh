@@ -106,8 +106,38 @@ f_choice_question() {
 
 }
 
-
 f_input_vars() {
+
+    COMMENT="$2"
+
+    if [ -f /tmp/pks_variables_old ] ; then
+        source /tmp/pks_variables_old
+    fi
+
+    var=$1
+    temp=${!1}
+    if [ ! -z "$COMMENT" ] ; then
+        echo "$COMMENT"
+    fi
+    read -p "Set $1 [ default: ${!1} ]: " $1
+
+    if [[ -z ${!1} ]] ; then
+        if [[ -z $temp ]] ; then
+            f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+            exit 1
+        else
+            declare $var=$temp
+            echo "export $var=${!var}" >> /tmp/pks_variables
+            echo "Set to default: $var="${!var}
+        fi
+    else
+        echo "Variable set to: $1 = " ${!1}
+        echo "export $1=${!1}" >> /tmp/pks_variables
+    fi
+    echo "-------------------------------------------------------------------------------------------"
+}
+
+f_input_vars_old() {
     var=$1
     temp=${!1}
     read -p "Set $1 [ default: ${!1} ]: " $1
@@ -127,7 +157,47 @@ f_input_vars() {
     echo "---------------------------"
 }
 
-f_input_vars_sec() {
+f_input_vars_sec(){
+
+    if [ ! -f /tmp/.secret ] ; then
+        touch /tmp/secret
+    fi
+
+    var=$1
+    unset password
+    echo -n "$1: "
+    while IFS= read -p "$prompt" -r -s -n 1 char
+    do
+        # Enter - accept password
+        if [[ $char == $'\0' ]] ; then
+            break
+        fi
+        # Backspace
+        if [[ $char == $'\177' ]] ; then
+            prompt=$'\b \b'
+            password="${password%?}"
+        else
+            prompt='*'
+            password+="$char"
+        fi
+    done
+
+    declare $var=$password
+
+    if [[ -z ${!1} ]]
+    then
+        f_error "The $1 variable has no default value!!! User input is required - EXITING! "
+        exit 1
+    fi
+
+    echo ""
+    echo "export $1=${!1}" > /tmp/.secret
+    echo "Set: $1 = [ secret ]"
+    echo "-------------------------------------------------------------------------------------------"
+
+}
+
+f_input_vars_sec_old() {
 
     read -sp "$1: " $1
     echo
