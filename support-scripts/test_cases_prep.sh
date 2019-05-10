@@ -603,6 +603,8 @@ f_config_local_uaac() {
         f_input_vars OPSMAN_URL
         f_input_vars OPSMAN_ADMIN
         f_input_vars_sec OPSMAN_PASSWORD
+        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+        f_verify "Wrong information for the provided variables. Please verify and try again later!!!"
     fi
 
     f_input_vars PKS_API_URL
