@@ -626,6 +626,7 @@ f_create_k8s_cluster(){
 
     f_info "Following command will run:"
     echo "pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}"
+    pks login -a https://${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
     pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}
 
 }
