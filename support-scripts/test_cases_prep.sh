@@ -419,6 +419,10 @@ f_config_registry() {
 
     source /tmp/pks_variables
 
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
+
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
     f_verify
@@ -599,6 +603,9 @@ f_config_local_uaac() {
 
     source /tmp/pks_variables
 
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
 
     echo "GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')"
     GUID=$(om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s | jq '.[] | select(.installation_name | contains("pivotal-container-service"))  | .guid' | tr -d '""')
@@ -651,6 +658,11 @@ f_init(){
     f_input_vars BITSDIR
 
     source /tmp/pks_variables
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
+
 
     if [[ ! -e $BITSDIR ]]
     then
