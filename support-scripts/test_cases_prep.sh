@@ -80,7 +80,7 @@ f_choice_question() {
         echo "  u - PKS user access - create UAAC admin and dev user roles for PKS CLI"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|u|e): " vahe
+        read -p "   Select one of the options? (v|a|h|u|e): " vahue
 
         case $vahue in
             [Vv]* ) clear;
