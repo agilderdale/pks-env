@@ -157,7 +157,7 @@ f_input_vars_old() {
     echo "---------------------------"
 }
 
-f_input_vars_sec(){
+f_input_vars_sec_old(){
 
     if [ ! -f /tmp/.secret ] ; then
         touch /tmp/secret
@@ -197,7 +197,7 @@ f_input_vars_sec(){
 
 }
 
-f_input_vars_sec_old() {
+f_input_vars_sec() {
 
     read -sp "$1: " $1
     echo
