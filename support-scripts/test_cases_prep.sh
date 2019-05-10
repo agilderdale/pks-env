@@ -591,6 +591,8 @@ f_config_k8s_user_local() {
 
 f_create_k8s_cluster(){
 
+    PKS_API_URL=api.mylab.local
+    f_input_vars PKS_API_URL
     f_input_vars ADMIN_USER
     f_input_vars_sec ADMIN_USER_PASSWORD
 
@@ -605,7 +607,7 @@ f_create_k8s_cluster(){
     pks create-network-profile /tmp/lb-medium.json
     f_verify
     f_info "Logging to PKS CLI as $ADMIN_USER :"
-    pks login -a ${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
+    pks login -a https://${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
     f_verify
     pks network-profiles
     pks plans
