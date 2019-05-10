@@ -601,11 +601,15 @@ f_create_k8s_cluster(){
     if [ -f /tmp/.secret ] ; then
         source /tmp/.secret
     fi
+    pks network-profiles |grep medium > /dev/null 2>&1
+    resp=$?
+    if [ $resp != 0 ] ; then
+        f_info "Creating MEDIUM network profile..."
+        echo "{ \"name\": \"lb-profile-medium\", \"description\": \"Network profile for MEDIUM size NSX-T load balancer\", \"parameters\": { \"lb_size\": \"medium\" } }" > /tmp/lb-medium.json
+        pks create-network-profile /tmp/lb-medium.json
+        f_verify
+    fi
 
-    f_info "Creating MEDIUM network profile..."
-    echo "{ \"name\": \"lb-profile-medium\", \"description\": \"Network profile for MEDIUM size NSX-T load balancer\", \"parameters\": { \"lb_size\": \"medium\" } }" > /tmp/lb-medium.json
-    pks create-network-profile /tmp/lb-medium.json
-    f_verify
     f_info "Logging to PKS CLI as $ADMIN_USER :"
     pks login -a https://${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
     f_verify
@@ -622,7 +626,7 @@ f_create_k8s_cluster(){
 
     f_info "Following command will run:"
     echo "pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}"
-#    pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}
+    pks create-cluster ${CLUSTER_NAME} --external-hostname ${CLUSTER_HOST_NAME} --plan ${CLUSTER_PLAN} --num-nodes ${WORKER_NODES} --network-profile ${NETWORK_PROFILE}
 
 }
 
