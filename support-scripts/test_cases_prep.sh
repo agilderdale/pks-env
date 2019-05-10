@@ -605,7 +605,7 @@ f_create_k8s_cluster(){
     pks create-network-profile /tmp/lb-medium.json
     f_verify
     f_info "Logging to PKS CLI as $ADMIN_USER :"
-    pks login -a https://${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
+    pks login -a ${PKS_API_URL} -u ${ADMIN_USER} -p ${ADMIN_USER_PASSWORD} -k
     f_verify
     pks network-profiles
     pks plans
