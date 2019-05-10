@@ -591,6 +591,11 @@ f_config_k8s_user_local() {
 
 f_create_k8s_cluster(){
 
+    f_info "Checking all CLI tools are installed ..."
+    if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else f_error "   OM CLI FAILED" ;fi
+    if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else f_error "   OM CLI FAILED" ;fi
+    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else f_error "   UAA CLI FAILED" ;fi
+
     PKS_API_URL=api.mylab.local
     f_input_vars PKS_API_URL
     f_input_vars ADMIN_USER
