@@ -601,7 +601,7 @@ f_create_k8s_cluster(){
     fi
 
     f_info "Creating MEDIUM network profile..."
-    echo "{ "name": "lb-profile-medium", "description": "Network profile for MEDIUM size NSX-T load balancer", "parameters": { "lb_size": "medium" } }" > /tmp/lb-medium.json
+    echo "{ \"name\": \"lb-profile-medium\", \"description\": \"Network profile for MEDIUM size NSX-T load balancer\", \"parameters\": { \"lb_size\": \"medium\" } }" > /tmp/lb-medium.json
     pks create-network-profile /tmp/lb-medium.json
     f_verify
     f_info "Logging to PKS CLI as $ADMIN_USER:"
