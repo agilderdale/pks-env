@@ -15,6 +15,7 @@ BITSDIR="/DATA/packages"
 f_info(){
     today=`date +%H:%M:%S`
 
+    echo "-------------------"
     echo "[ $today ] INF  ${FUNCNAME[ 1 ]}: $*"
 }
 
@@ -36,6 +37,21 @@ f_verify(){
            f_error "$msg"
         fi
         exit 1
+    fi
+}
+
+f_verify_response(){
+    rc=`echo $?`
+    msg="$*"
+    if [ $rc != 0 ] ; then
+       if [ -z "$msg" ] ; then
+           f_error "Last command - FAILED !!!"
+        else
+           f_error "$msg"
+        fi
+        exit 1
+    else
+        f_info "Verification status - SUCCESS"
     fi
 }
 
@@ -348,33 +364,27 @@ f_config_registry() {
 
     source /tmp/pks_variables
 
-    echo "-------------------"
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
     f_verify
 
-    echo "-------------------"
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
     nslookup ${HARBOR_URL}
     f_verify
 
-    echo "-------------------"
     f_info "Checking DOCKER install..."
     docker ps > /dev/null 2>&1
     f_verify
 
-    echo "-------------------"
     f_info "Checking CURL install..."
     apt list curl |grep curl > /dev/null 2>&1
     f_verify
 
-    echo "-------------------"
     f_info "Downloading ca.crt from Harbor to /tmp/ca.crt..."
     curl https://${HARBOR_URL}/api/systeminfo/getcert -k > /tmp/ca.crt
     grep CERTIFICATE /tmp/ca.crt > /dev/null 2>&1
     f_verify
 
-    echo "-------------------"
     f_info "Checking /etc/docker/certs.d/${HARBOR_URL}/ca.crt ..."
     if [[ ! -f /etc/docker/certs.d/${HARBOR_URL}/ca.crt ]] ; then
         if [[ ! -e /etc/docker/certs.d/${HARBOR_URL} ]] ; then
@@ -387,7 +397,6 @@ f_config_registry() {
         f_verify
     fi
 
-    echo "-------------------"
     f_info "Checking ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt ..."
     if [[ ! -f ~/.docker/tls/${HARBOR_URL}\:4443/ca.crt ]] ; then
         if [[ ! -e ~/.docker/tls/${HARBOR_URL}\:4443/ ]] ; then
@@ -400,7 +409,6 @@ f_config_registry() {
         f_verify
     fi
 
-    echo "-------------------"
     f_info "Checking ~/.docker/trust/ca.crt ..."
     if [[ ! -f ~/.docker/trust/ca.crt ]] ; then
         if [[ ! -e ~/.docker/trust/ ]] ; then
@@ -413,7 +421,6 @@ f_config_registry() {
         f_verify
     fi
 
-    echo "-------------------"
     f_info "Checking /usr/local/share/ca-certificates/ca.crt ..."
     if [[ ! -f /usr/local/share/ca-certificates/ca.crt ]] ; then
         f_info "Updating ca-certificates..."
@@ -424,12 +431,10 @@ f_config_registry() {
 }
 
 f_download_docker_images() {
-    echo "-------------------"
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
     f_verify
 
-    echo "-------------------"
     f_info "Checking ${HARBOR_URL} can be resolved by the server..."
     nslookup ${HARBOR_URL}
     f_verify
@@ -466,7 +471,6 @@ f_download_docker_images() {
 
     while read -r line
     do
-        echo "------------------------"
         f_info "Preparing $line image..."
         docker pull $line
         f_verify "Could not pull the $line image - check if the image name and version is correct!!!"
@@ -503,7 +507,6 @@ f_install_go() {
 f_SC05-TC03_content_trust() {
     f_info "Test Case: Container Registry Content Trust"
 
-    echo "-------------------"
     f_info "Checking wget install..."
     apt list wget |grep wget > /dev/null 2>&1
     f_verify "wget is missing - run 'apt install wget' and rerun the script"
@@ -561,23 +564,23 @@ f_config_local_uaac() {
 
     f_info "Assign $DEV_USER to pks.clusters.manage role ..."
     uaac member add pks.clusters.manage $DEV_USER
-    f_verify
+    f_verify_response
 
     f_info "Creating $ADMIN_USER ..."
     uaac user add $ADMIN_USER --emails demo@${PKS_API_URL} -p ${ADMIN_USER_PASSWORD}
-    f_verify
+    f_verify_response
 
     f_info "Assign $ADMIN_USER to pks.clusters.admin role ..."
     uaac member add pks.clusters.admin $ADMIN_USER
-    f_verify
+    f_verify_response
 
     f_info "Testing login to the PKS CLI as $ADMIN_USER..."
     pks login -a https://api.mylab.local  -u $ADMIN_USER -p $ADMIN_USER_PASSWORD -k
-    f_verify
+    f_verify_response
 
     f_info "Testing login to the PKS CLI as $DEV_USER..."
     pks login -a https://api.mylab.local  -u $DEV_USER -p $DEV_USER_PASSWORD -k
-    f_verify
+    f_verify_response
 }
 
 
