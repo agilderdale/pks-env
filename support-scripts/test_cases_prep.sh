@@ -85,7 +85,7 @@ f_choice_question() {
         echo "*******************************************************************************************"
         read -p "   Select one of the options? (v|a|h|u|c|b|e): " vahucbe
 
-        case $vahuce in
+        case $vahucbe in
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
