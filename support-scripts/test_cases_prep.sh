@@ -695,6 +695,7 @@ f_configure_bosh_env() {
         fi
     else
         f_info "Root CA Cert exists and is valid..."
+    fi
 
     for i in 1 2 3 4
     do
