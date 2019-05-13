@@ -709,6 +709,8 @@ f_configure_bosh_env() {
         mv /tmp/root_ca_certificate ~/.bosh/root_ca_certificate
     fi
 
+    ls ~/.bosh
+
     >/tmp/BOSH.env
 
     for i in 1 2 3 4
@@ -718,7 +720,10 @@ f_configure_bosh_env() {
 
     source /tmp/BOSH.env
 
-    bosh vms
+    ls ~/.bosh
+
+    f_info "Executing bosh vms command"
+#    bosh vms
 
 #    PASSWD=$( om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/director/credentials/director_credentials -s | jq '.[] | .value.password' | sed -e "s/\"//g"  | sed -e "\/var\/tempest\/workspaces\/default/\~\/.bosh\/root_ca_cert//g'" )
 #
