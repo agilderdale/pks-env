@@ -686,15 +686,27 @@ f_configure_bosh_env() {
     om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/certificate_authorities -s | jq -r '.certificate_authorities | select(map(.active == true))[0] | .cert_pem' > /tmp/root_ca_certificate
     (ls ~/.bosh/root_ca_certificate >> /dev/null 2>&1 && RESULT="yes") || RESULT="no"
     if [[ $RESULT="yes" ]] ; then
+        f_info "Certificate already exist - validating ~/.bosh/root_ca_certificate..."
         if ! diff -q ~/.bosh/root_ca_certificate  /tmp/root_ca_certificate &>/dev/null; then
             >&2 echo "different"
+            f_info "Existing vertificate is invalid - moving new one to ~/.bosh/root_ca_certificate..."
             DATE=`date +%F`
             mv ~/.bosh/root_ca_certificate_${DATE}
             mv /tmp/root_ca_certificate ~/.bosh/root_ca_certificate
             f_verify
+            f_info "Note: Old certificate has been archived to ~/.bosh/root_ca_certificate_${DATE}..."
+        else
+            f_info "Root CA Cert exists and is valid..."
         fi
     else
-        f_info "Root CA Cert exists and is valid..."
+        (ls ~/.bosh >> /dev/null 2>&1 && RESULT="yes") || RESULT="no"
+        if [[ $RESULT="no" ]] ; then
+            f_info "Directory ~/.bosh does not exist - create new one..."
+            mkdir -p ~/.bosh
+            f_verify
+        fi
+        f_info "Certificate does not exist - moving one to ~/.bosh/root_ca_certificate..."
+        mv /tmp/root_ca_certificate ~/.bosh/root_ca_certificate
     fi
 
     for i in 1 2 3 4
