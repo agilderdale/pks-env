@@ -80,9 +80,10 @@ f_choice_question() {
         echo "  h - prep access and trust config to Harbor registry"
         echo "  u - PKS user access - create UAAC admin and dev user roles for PKS CLI"
         echo "  c - Create K8s Cluster"
+        echo "  b - Configure access to BOSH CLI on the client VM"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|u|c|e): " vahuce
+        read -p "   Select one of the options? (v|a|h|u|c|b|e): " vahucbe
 
         case $vahuce in
             [Vv]* ) clear;
@@ -101,6 +102,9 @@ f_choice_question() {
                     ;;
             [Cc]* ) f_init;
                     f_create_k8s_cluster;
+                    ;;
+            [Bb]* ) f_init;
+                    f_configure_bosh_env;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -499,22 +503,20 @@ f_SC05-TC03_content_trust() {
     f_info "Login to $HARBOR_URL..."
 }
 
-f_config_local_uaac() {
+f_om_validation() {
+    # Requires API uri input as first value
+    API_CALL="$1"
+    f_info "Checking all CLI tools are installed ..."
+    if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else f_error "   OM CLI FAILED" ;fi
+
     OPSMAN_URL=opsman.mylab.local
     OPSMAN_ADMIN=admin
     PKS_API_URL=api.mylab.local
-    DEV_USER=dev-user1
-    ADMIN_USER=admin-user1
-
-    f_info "Checking all CLI tools are installed ..."
-    if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else f_error "   OM CLI FAILED" ;fi
-    if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else f_error "   OM CLI FAILED" ;fi
-    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else f_error "   UAA CLI FAILED" ;fi
 
     f_input_vars OPSMAN_URL
     f_input_vars OPSMAN_ADMIN
     f_input_vars_sec OPSMAN_PASSWORD
-    om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+    om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p ${API_CALL} -s > /dev/null 2>&1
     resp=$?
     if [ $resp != 0 ] ; then
         f_info "Could not verify connection to OPSMANAGER with URL and credentials provided.
@@ -522,9 +524,42 @@ f_config_local_uaac() {
         f_input_vars OPSMAN_URL
         f_input_vars OPSMAN_ADMIN
         f_input_vars_sec OPSMAN_PASSWORD
-        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p ${API_CALL} -s > /dev/null 2>&1
         f_verify "Wrong information for the provided variables. Please verify and try again later!!!"
     fi
+
+}
+
+f_config_local_uaac() {
+    OPSMAN_URL=opsman.mylab.local
+    OPSMAN_ADMIN=admin
+    PKS_API_URL=api.mylab.local
+    DEV_USER=dev-user1
+    ADMIN_USER=admin-user1
+
+    f_om_validation /api/v0/deployed/products
+
+#    f_info "Checking all CLI tools are installed ..."
+#    if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else f_error "   OM CLI FAILED" ;fi
+
+
+#    f_input_vars OPSMAN_URL
+#    f_input_vars OPSMAN_ADMIN
+#    f_input_vars_sec OPSMAN_PASSWORD
+#    om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+#    resp=$?
+#    if [ $resp != 0 ] ; then
+#        f_info "Could not verify connection to OPSMANAGER with URL and credentials provided.
+#                Try to set OPSMAN_URL as IP if DNS does not work and re-enter user and password:"
+#        f_input_vars OPSMAN_URL
+#        f_input_vars OPSMAN_ADMIN
+#        f_input_vars_sec OPSMAN_PASSWORD
+#        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/products -s > /dev/null 2>&1
+#        f_verify "Wrong information for the provided variables. Please verify and try again later!!!"
+#    fi
+
+    if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else f_error "   OM CLI FAILED" ;fi
+    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else f_error "   UAA CLI FAILED" ;fi
 
     f_input_vars PKS_API_URL
     f_input_vars DEV_USER
@@ -584,10 +619,10 @@ f_config_local_uaac() {
     f_verify
 }
 
-f_config_k8s_user_local() {
-    /DATA/GIT/k8s-tc-templates
-
-}
+#f_config_k8s_user_local() {
+#    /DATA/GIT/k8s-tc-templates
+#
+#}
 
 f_create_k8s_cluster(){
 
@@ -636,6 +671,45 @@ f_create_k8s_cluster(){
 
 }
 
+f_configure_bosh_env() {
+
+    f_info "Checking all CLI tools are installed ..."
+    if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else f_error "   OM CLI FAILED" ;fi
+
+    f_om_validation /api/v0/deployed/products
+    # USER : director
+    # PASSWD : https://OPS-MANAGER-FQDN/api/v0/deployed/director/credentials/director_credentials
+
+    source /tmp/pks_variables
+
+    f_info "Downloading Root CA Cert ..."
+    om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/certificate_authorities -s | jq -r '.certificate_authorities | select(map(.active == true))[0] | .cert_pem' > /tmp/root_ca_certificate
+    (ls ~/.bosh/root_ca_certificate >> /dev/null 2>&1 && RESULT="yes") || RESULT="no"
+    if [[ $RESULT="yes" ]] ; then
+        if ! diff -q ~/.bosh/root_ca_certificate  /tmp/root_ca_certificate &>/dev/null; then
+            >&2 echo "different"
+            DATE=`date +%F`
+            mv ~/.bosh/root_ca_certificate_${DATE}
+            mv /tmp/root_ca_certificate ~/.bosh/root_ca_certificate
+            f_verify
+        fi
+    else
+        f_info "Root CA Cert exists and is valid..."
+
+    for i in 1 2 3 4
+    do
+        om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print $3}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> /tmp/BOSH.env
+    done
+
+    source /tmp/BOSH.env
+
+    bosh vms
+
+#    PASSWD=$( om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/director/credentials/director_credentials -s | jq '.[] | .value.password' | sed -e "s/\"//g"  | sed -e "\/var\/tempest\/workspaces\/default/\~\/.bosh\/root_ca_cert//g'" )
+#
+#    echo -e "director\n${PASSWD}" | bosh -e pks log-in
+
+}
 
 f_init(){
     f_input_vars BITSDIR
