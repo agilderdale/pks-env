@@ -709,6 +709,8 @@ f_configure_bosh_env() {
         mv /tmp/root_ca_certificate ~/.bosh/root_ca_certificate
     fi
 
+    >/tmp/BOSH.env
+
     for i in 1 2 3 4
     do
         om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print $3}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> /tmp/BOSH.env
