@@ -711,14 +711,14 @@ f_configure_bosh_env() {
 
     ls ~/.bosh
 
-    >/tmp/BOSH.env
+    >~/.bosh/BOSH.env
 
     for i in 1 2 3 4
     do
-        om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print $3}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> /tmp/BOSH.env
+        om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print $3}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> ~/.bosh/BOSH.env
     done
 
-    source /tmp/BOSH.env
+    source ~/.bosh/BOSH.env
 
     ls ~/.bosh
 
