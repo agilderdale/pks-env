@@ -687,7 +687,7 @@ f_configure_bosh_env() {
     source /tmp/pks_variables
 
     f_info "Downloading Root CA Cert ..."
-    om -t https://10.173.61.130 -u admin -p VMware1! -k curl -p /api/v0/certificate_authorities -s | jq -r '.certificate_authorities | select(map(.active == true))[0] | .cert_pem' > /tmp/root_ca_certificate
+    om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/certificate_authorities -s | jq -r '.certificate_authorities | select(map(.active == true))[0] | .cert_pem' > /tmp/root_ca_certificate
     (ls ~/.bosh/root_ca_certificate >> /dev/null 2>&1 && RESULT="yes") || RESULT="no"
     if [[ $RESULT="yes" ]] ; then
         f_info "Certificate already exist - validating ~/.bosh/root_ca_certificate..."
