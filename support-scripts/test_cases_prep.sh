@@ -757,7 +757,7 @@ f_prep_nsx_vip_cert() {
 
     FILE="/tmp/nsx-cert.cnf"
 
-    /bin/cat <<EOM >$FILE
+    /bin/cat <<EOF >$FILE
 
         [ req ]
         default_bits = 2048
@@ -774,7 +774,7 @@ f_prep_nsx_vip_cert() {
         subjectAltName = @alt_names
         [alt_names]
         DNS.1 = ${NSX_MANAGER_COMMONNAME}
-    EOM
+    EOF
 
     cat /tmp/nsx-cert.cnf
 
