@@ -739,56 +739,55 @@ f_configure_bosh_env() {
 
 f_prep_nsx_vip_cert() {
 
-    for pkg in openssl
-    do
-        dpkg-query -l $pkg > /dev/null 2>&1
-        response=`echo $?`
-        if [ $response -ne 0 ] ; then
-            apt-get install -y $pkg
-        else
-            pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
-            f_info "Already installed => $pkg_version - skippping..."
-        fi
-    done
-
-    f_input_vars NSX_MANAGER_COMMONNAME
-    f_input_vars NSX_MANAGER_IP_ADDRESS
-
-
-    FILE="/tmp/nsx-cert.cnf"
-
-    cat > ${FILE} << 'EOF'
-
-        [ req ]
-        default_bits = 2048
-        distinguished_name = req_distinguished_name
-        req_extensions = req_ext
-        prompt = no
-        [ req_distinguished_name ]
-        countryName = US
-        stateOrProvinceName = California
-        localityName = CA
-        organizationName = NSX
-        commonName = ${NSX_MANAGER_COMMONNAME}
-        [ req_ext ]
-        subjectAltName = @alt_names
-        [alt_names]
-        DNS.1 = ${NSX_MANAGER_COMMONNAME}
-    EOF
-
-    cat /tmp/nsx-cert.cnf
-
-    openssl req -newkey rsa:2048 -x509 -nodes -keyout /tmp/nsx.key -new -out /tmp/nsx.crt -subj /CN=${NSX_MANAGER_COMMONNAME} \
-    > -reqexts SAN -extensions SAN -config <(cat /tmp/nsx-cert.cnf \
-    >  <(printf "[SAN]\nsubjectAltName=DNS:${NSX_MANAGER_COMMONNAME},IP:${NSX_MANAGER_IP_ADDRESS}")) -sha256 -days 365
-
-    f_info "NSX Manager VIP certificate:"
-    /tmp/nsx.crt
-    f_info "NSX Manager VIP key:"
-    /tmp/nsx.key
-    f_info "Verifying certificate details:"
-    openssl x509 -in /tmp/nsx.crt -text -noout
-
+#    for pkg in openssl
+#    do
+#        dpkg-query -l $pkg > /dev/null 2>&1
+#        response=`echo $?`
+#        if [ $response -ne 0 ] ; then
+#            apt-get install -y $pkg
+#        else
+#            pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
+#            f_info "Already installed => $pkg_version - skippping..."
+#        fi
+#    done
+#
+#    f_input_vars NSX_MANAGER_COMMONNAME
+#    f_input_vars NSX_MANAGER_IP_ADDRESS
+#
+#
+#    FILE="/tmp/nsx-cert.cnf"
+#
+#    cat <<'EOF' > $FILE
+#       " [ req ]"
+#        default_bits = 2048
+#        distinguished_name = req_distinguished_name
+#        req_extensions = req_ext
+#        prompt = no
+#        [ req_distinguished_name ]
+#        countryName = US
+#        stateOrProvinceName = California
+#        localityName = CA
+#        organizationName = NSX
+#        commonName = $NSX_MANAGER_COMMONNAME
+#        [ req_ext ]
+#        subjectAltName = @alt_names
+#        [alt_names]
+#        DNS.1 = $NSX_MANAGER_COMMONNAME
+#    EOF
+#
+#    cat /tmp/nsx-cert.cnf
+#
+#    openssl req -newkey rsa:2048 -x509 -nodes -keyout /tmp/nsx.key -new -out /tmp/nsx.crt -subj /CN=${NSX_MANAGER_COMMONNAME} \
+#    > -reqexts SAN -extensions SAN -config <(cat /tmp/nsx-cert.cnf \
+#    >  <(printf "[SAN]\nsubjectAltName=DNS:${NSX_MANAGER_COMMONNAME},IP:${NSX_MANAGER_IP_ADDRESS}")) -sha256 -days 365
+#
+#    f_info "NSX Manager VIP certificate:"
+#    /tmp/nsx.crt
+#    f_info "NSX Manager VIP key:"
+#    /tmp/nsx.key
+#    f_info "Verifying certificate details:"
+#    openssl x509 -in /tmp/nsx.crt -text -noout
+#
 
 }
 
