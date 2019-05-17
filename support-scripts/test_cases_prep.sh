@@ -757,7 +757,7 @@ f_prep_nsx_vip_cert() {
 
     FILE="/tmp/nsx-cert.cnf"
 
-    /bin/cat >$FILE <<EOF
+    cat > ${FILE} << 'EOF'
 
         [ req ]
         default_bits = 2048
