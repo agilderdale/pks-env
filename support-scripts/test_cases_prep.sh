@@ -84,7 +84,7 @@ f_choice_question() {
         echo "  x - Generate NSX Manager VIP certificate"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|u|c|b|x|e): " vahucbe
+        read -p "   Select one of the options? (v|a|h|u|c|b|x|e): " vahucbxe
 
         case $vahucbxe in
             [Vv]* ) clear;
@@ -738,6 +738,7 @@ f_configure_bosh_env() {
 }
 
 f_prep_nsx_vip_cert() {
+    f_info "Placeholder"
 
 #    for pkg in openssl
 #    do
