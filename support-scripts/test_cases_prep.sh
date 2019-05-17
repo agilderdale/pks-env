@@ -81,11 +81,12 @@ f_choice_question() {
         echo "  u - PKS user access - create UAAC admin and dev user roles for PKS CLI"
         echo "  c - Create K8s Cluster"
         echo "  b - Configure access to BOSH CLI on the client VM"
+        echo "  x - Generate NSX Manager VIP certificate"
         echo "  e - exit"
         echo "*******************************************************************************************"
-        read -p "   Select one of the options? (v|a|h|u|c|b|e): " vahucbe
+        read -p "   Select one of the options? (v|a|h|u|c|b|x|e): " vahucbe
 
-        case $vahucbe in
+        case $vahucbxe in
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
@@ -105,6 +106,9 @@ f_choice_question() {
                     ;;
             [Bb]* ) f_init;
                     f_configure_bosh_env;
+                    ;;
+            [Xx]* ) f_init;
+                    f_prep_nsx_vip_cert;
                     ;;
             [Ee]* ) exit;;
             * ) echo "Please answer one of the available options";;
@@ -734,6 +738,18 @@ f_configure_bosh_env() {
 }
 
 f_prep_nsx_vip_cert() {
+
+    for pkg in openssl
+    do
+        dpkg-query -l $pkg > /dev/null 2>&1
+        response=`echo $?`
+        if [ $response -ne 0 ] ; then
+            apt-get install -y $pkg
+        else
+            pkg_version=`dpkg-query -l $pkg |grep $pkg |awk '{print $2, $3}'`
+            f_info "Already installed => $pkg_version - skippping..."
+        fi
+    done
 
     f_input_vars NSX_MANAGER_COMMONNAME
     f_input_vars NSX_MANAGER_IP_ADDRESS
