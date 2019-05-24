@@ -717,13 +717,16 @@ f_configure_bosh_env() {
     ls ~/.bosh
 
     >~/.bosh/BOSH.env
+    >~/.bosh/BOSH.env.1
 
     f_info "Gather variables for BOSH.env ..."
     for i in 1 2 3 4
     do
-        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print \$${i}}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> ~/.bosh/BOSH.env
+        om -t https://${OPSMAN_URL} -u "${OPSMAN_ADMIN}" -p "${OPSMAN_PASSWORD}" -k curl -p /api/v0/deployed/director/credentials/bosh_commandline_credentials -s | jq '.[]' | awk "{print \$${i}}" | sed 's/"//g' | sed 's/\/var\/tempest\/workspaces\/default/~\/.bosh/g' >> ~/.bosh/BOSH.env.1
     done
-
+    
+    sed 's/^/export /g' BOSH.env.1 > BOSH.env
+    
     source ~/.bosh/BOSH.env
 
     ls ~/.bosh
