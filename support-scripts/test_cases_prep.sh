@@ -726,10 +726,11 @@ f_configure_bosh_env() {
     done
     
     sed 's/^/export /g' ~/.bosh/BOSH.env.1 > ~/.bosh/BOSH.env
+    rm -Rf ~/.bosh/BOSH.env.1
     
     source ~/.bosh/BOSH.env
 
-    ls ~/.bosh
+    cat ~/.bosh/BOSH.env
 
     f_info "Executing bosh vms command"
 #    bosh vms
