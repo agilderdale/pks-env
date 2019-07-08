@@ -93,7 +93,7 @@ f_choice_question() {
             [Aa]* ) f_init;
                     f_download_git_repos;
                     f_download_docker_images;
-                    f_retag_yaml;
+#                    f_retag_yaml;
                     ;;
             [Hh]* ) f_init;
                     f_config_registry;
@@ -417,6 +417,16 @@ f_config_registry() {
 }
 
 f_download_docker_images() {
+
+    f_input_vars HARBOR_URL
+    f_input_vars PROJECT_NAME
+
+    source /tmp/pks_variables
+
+    if [ -f /tmp/.secret ] ; then
+        source /tmp/.secret
+    fi
+
     f_info "Checking nslookup install..."
     apt list dnsutils |grep dnsutils > /dev/null 2>&1
     f_verify
@@ -465,6 +475,8 @@ f_download_docker_images() {
         docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
         f_verify "Could not push to registry - check if the ${HARBOR_URL}/${PROJECT_NAME} project exists!!!"
     done < /tmp/list1
+    
+    f_retag_yaml
 
 }
 
