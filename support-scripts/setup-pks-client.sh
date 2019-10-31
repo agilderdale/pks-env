@@ -10,11 +10,11 @@
 # bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pks-client.sh)"
 
 BINDIR=/usr/local/bin
-BOSHRELEASE=5.5.0
+BOSHRELEASE=6.1.1
 HELMRELEASE=2.13.1
-OMRELEASE=1.0.0
-PIVNETRELEASE=0.0.58
-PKSRELEASE=1.4.0
+OMRELEASE=4.2.0
+PIVNETRELEASE=0.0.71
+PKSRELEASE=1.5.1
 PIVOTALTOKEN=''
 BITSDIR="/DATA/packages"
 
