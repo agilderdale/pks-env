@@ -27,3 +27,12 @@ You can run this script by calling following command from the command line:
 ```
 sudo bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/setup-pks-pipelines.sh)"
 ```
+
+## support-scripts/test_cases_prep.sh
+
+Test cases prep script:
+
+```
+sudo bash -c "$(wget -O - https://raw.githubusercontent.com/agilderdale/pks-env/master/support-scripts/test_cases_prep.sh)"
+```
+
