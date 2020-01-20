@@ -427,17 +427,17 @@ f_download_docker_images() {
         source /tmp/.secret
     fi
 
-    f_info "Checking nslookup install..."
-    apt list dnsutils |grep dnsutils > /dev/null 2>&1
-    f_verify
+#    f_info "Checking nslookup install..."
+#    apt list dnsutils |grep dnsutils > /dev/null 2>&1
+#    f_verify
 
-    f_info "Checking ${HARBOR_URL} can be resolved by the server..."
-    nslookup ${HARBOR_URL}
-    f_verify
+#    f_info "Checking ${HARBOR_URL} can be resolved by the server..."
+#    nslookup ${HARBOR_URL}
+#    f_verify
 
-    f_info "Login to ${HARBOR_URL} private registry. Please type user and then password:"
-    docker login $HARBOR_URL
-    f_verify "Could not login to $HARBOR_URL registry. CHeck that the URL is correct"
+#    f_info "Login to ${HARBOR_URL} private registry. Please type user and then password:"
+#    docker login $HARBOR_URL
+#    f_verify "Could not login to $HARBOR_URL registry. CHeck that the URL is correct"
 
     cd /DATA/GIT/k8s-tc-templates/
     >/tmp/list
@@ -472,8 +472,8 @@ f_download_docker_images() {
         f_verify "Could not pull the $line image - check if the image name and version is correct!!!"
         docker tag $line ${HARBOR_URL}/${PROJECT_NAME}/$line
         f_verify
-        docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
-        f_verify "Could not push to registry - check if the ${HARBOR_URL}/${PROJECT_NAME} project exists!!!"
+#        docker push ${HARBOR_URL}/${PROJECT_NAME}/$line
+#        f_verify "Could not push to registry - check if the ${HARBOR_URL}/${PROJECT_NAME} project exists!!!"
     done < /tmp/list1
     
     f_retag_yaml
