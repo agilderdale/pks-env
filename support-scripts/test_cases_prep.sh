@@ -90,7 +90,7 @@ f_choice_question() {
             [Vv]* ) clear;
                     f_verify_cli_tools;
                     ;;
-            [Aa]* ) f_init;
+            [Aa]* ) #f_init;
                     f_download_git_repos;
                     f_download_docker_images;
 #                    f_retag_yaml;
