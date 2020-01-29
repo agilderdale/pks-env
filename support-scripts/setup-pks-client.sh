@@ -313,7 +313,7 @@ f_install_pivnet_cli() {
     echo "-------------------------------------------------------------------------------------------"
     f_info "Installing pivnet CLI"
     # pivnet cli
-    curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNETRELEASE}/pivnet-linux-amd64-${PIVNETRELEASE}
+    curl -LO https://github.com/pivotal-cf/pivnet-cli/releases/download/v${PIVNETRELEASE}/pivnet-linux-amd64-${PIVNETRELEASE} -k
     f_verify
 
     chown root pivnet-linux-amd64-${PIVNETRELEASE}
