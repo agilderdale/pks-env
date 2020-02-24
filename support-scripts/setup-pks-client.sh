@@ -290,7 +290,7 @@ f_install_om_cli() {
     echo "-------------------------------------------------------------------------------------------"
     f_info "Installing OpsManager CLI"
     # om
-    curl -LO https://github.com/pivotal-cf/om/releases/download/${OMRELEASE}/om-linux
+    curl -LO https://github.com/pivotal-cf/om/releases/download/${OMRELEASE}/om-linux-${OMRELEASE}.tar.gz
     f_verify
     chown root om-linux
     f_verify
