@@ -290,15 +290,19 @@ f_install_om_cli() {
     echo "-------------------------------------------------------------------------------------------"
     f_info "Installing OpsManager CLI"
     # om
+    mkdir -p ${BITSDIR}/om-release
+    cd ${BITSDIR}/om-release
     curl -LO https://github.com/pivotal-cf/om/releases/download/${OMRELEASE}/om-linux-${OMRELEASE}.tar.gz
     f_verify
-    chown root om-linux
+    tar -xzvf om-linux-${OMRELEASE}.tar.gz
+    chown root om
     f_verify
-    chmod ugo+x om-linux
+    chmod ugo+x om
     f_verify
-    mv om-linux ${BINDIR}/om
+    mv om ${BINDIR}/om
     f_verify
-
+    cd ${BITSDIR}
+    rm -Rf ${BITSDIR}/om-release
     f_info "Installing om CLI - COMPLETED"
 }
 
