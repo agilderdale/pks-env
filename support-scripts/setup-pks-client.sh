@@ -215,20 +215,20 @@ f_install_packages() {
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     apt-get install -y nodejs
     
-    npm list --depth 1 --global vmw-cli > /dev/null 2>&1
-    response=`echo $?`
+#    npm list --depth 1 --global vmw-cli > /dev/null 2>&1
+#    response=`echo $?`
 
-    if [ $response -ne 0 ] ; then
-        f_info "Installing vmw-cli tool..."
+#    if [ $response -ne 0 ] ; then
+#        f_info "Installing vmw-cli tool..."
         # vwm-cli - requires nodejs >=8
-        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+#        curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     #    apt-get install -y nodejs
-        npm install vmw-cli --global
-        f_verify
-    else
-        f_info "vmw-cli already installed - skipping... "
-        npm list --depth 1 --global vmw-cli
-    fi
+#        npm install vmw-cli --global
+#        f_verify
+#    else
+#        f_info "vmw-cli already installed - skipping... "
+#        npm list --depth 1 --global vmw-cli
+#    fi
 }
 
 
