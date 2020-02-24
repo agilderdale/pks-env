@@ -379,7 +379,7 @@ f_verify_cli_tools() {
     if kubectl version 2> /dev/null | grep -q 'Client Version:' ; then version=`kubectl version 2>/dev/null |awk '{print $5}'` ; echo "$version                    <= kubectl CLI   | OK" ; else echo "   kubectl CLI FAILED" ;fi
     if om version 2> /dev/null | grep -q .[0-9]* ; then version=`om version 2> /dev/null` ; echo "$version                                   <= OM CLI        | OK" ; else echo "   OM CLI FAILED" ;fi
     if bosh -version 2> /dev/null | grep -q 'version' ; then version=`bosh -version |awk '{print $2}'` ; echo "$version      <= BOSH CLI      | OK" ; else echo "   OM CLI FAILED" ;fi
-    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else echo "   UAA CLI FAILED" ;fi
+#    if uaac version 2> /dev/null | grep -q 'UAA client ' ; then version=`uaac version |awk '{print $3}'` ;echo "$version                                    <= UAA CLI       | OK" ; else echo "   UAA CLI FAILED" ;fi
     echo""
     f_info "Installing verify CLI tools - COMPLETED"
     sleep 5
@@ -404,7 +404,7 @@ f_install_all() {
 
     f_input_vars BOSHRELEASE
     f_input_vars HELMRELEASE
-    f_input_vars OMRELEASE
+ #   f_input_vars OMRELEASE
     f_input_vars PIVNETRELEASE
     f_input_vars PKSRELEASE
     f_input_vars_sec PIVOTALTOKEN
@@ -412,7 +412,7 @@ f_install_all() {
     source /tmp/pks_variables
 
     f_install_packages
-    f_install_uaac_cli
+#    f_install_uaac_cli
     f_install_kubectl_cli
     f_install_bosh_cli
     f_install_om_cli
