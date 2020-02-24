@@ -185,7 +185,7 @@ f_install_packages() {
 #    apt-get upgrade
 #    f_verify
 
-    for pkg in docker.io openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools nodejs
+    for pkg in docker.io openssh-server git apt-transport-https ca-certificates curl software-properties-common build-essential zlibc zlib1g-dev ruby ruby-dev openssl libxslt1-dev libxml2-dev libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 sshpass jq dnsmasq iperf3 sshpass ipcalc curl npm net-tools
     do
         dpkg-query -l $pkg > /dev/null 2>&1
         response=`echo $?`
@@ -211,7 +211,10 @@ f_install_packages() {
         pkg_version=`dpkg-query -l curl |grep curl |awk '{print $2, $3}'`
         f_info "Already installed => $pkg_version - skippping..."
     fi
-   
+
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    apt-get install -y nodejs
+    
     npm list --depth 1 --global vmw-cli > /dev/null 2>&1
     response=`echo $?`
 
