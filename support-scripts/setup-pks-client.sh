@@ -202,6 +202,16 @@ f_install_packages() {
 
     echo "-------------------------------------------------------------------------------------------"
 
+    dpkg-query -l curl > /dev/null 2>&1
+    response=`echo $?`
+    if [ $response -ne 0 ] ; then
+        apt-get install -y curl
+        f_verify
+    else
+        pkg_version=`dpkg-query -l curl |grep curl |awk '{print $2, $3}'`
+        f_info "Already installed => $pkg_version - skippping..."
+    fi
+   
     npm list --depth 1 --global vmw-cli > /dev/null 2>&1
     response=`echo $?`
 
